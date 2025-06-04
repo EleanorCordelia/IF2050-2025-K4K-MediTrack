@@ -4,30 +4,13 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="commit landing">
-      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MainApp.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/doctor.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/dummy.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-jadwal.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-konsultasi.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-laporan.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-obat.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-pengaturan.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-rekomendasi.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/logo.png" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/desktop.ini" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="Add menu after landing">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/DashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/dashboard.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/login.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/register.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_15_40__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_15_40__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_16_19__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_16_19__Changes_.xml" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -85,7 +68,7 @@
   "keyToString": {
     "Gradle.MediTrack-Tugas-Besar-DRPL:app [:app:MainApp.main()].executor": "Run",
     "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "Merging menu",
+    "git-widget-placeholder": "autentikasi",
     "ignore.virus.scanning.warn.message": "true",
     "kotlin-language-version-configured": "true",
     "last_opened_file_path": "C:/Users/LENOVO/Documents/SEMESTER 6/RPL/TUBES HAHAHIHI/MediTrack-Tugas-Besar-DRPL",
@@ -178,6 +161,7 @@
     <MESSAGE value="Add landing page" />
     <MESSAGE value="commit menu" />
     <MESSAGE value="commit landing" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit landing" />
+    <MESSAGE value="Add menu after landing" />
+    <option name="LAST_COMMIT_MESSAGE" value="Add menu after landing" />
   </component>
 </project>
