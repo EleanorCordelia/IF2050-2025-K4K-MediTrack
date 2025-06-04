@@ -4,7 +4,31 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="commit landing" />
+    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="commit landing">
+      <change afterPath="$PROJECT_DIR$/.gitattributes" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MainApp.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/doctor.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/dummy.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-jadwal.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-konsultasi.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-laporan.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-obat.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-pengaturan.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/icon-rekomendasi.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/images/logo.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/desktop.ini" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/libs.versions.toml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.jar" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradle/wrapper/gradle-wrapper.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/gradlew.bat" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/settings.gradle" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -61,7 +85,7 @@
   &quot;keyToString&quot;: {
     &quot;Gradle.MediTrack-Tugas-Besar-DRPL:app [:app:MainApp.main()].executor&quot;: &quot;Run&quot;,
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
-    &quot;git-widget-placeholder&quot;: &quot;menu&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;Merging menu&quot;,
     &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
     &quot;last_opened_file_path&quot;: &quot;C:/Users/LENOVO/Documents/SEMESTER 6/RPL/TUBES HAHAHIHI/MediTrack-Tugas-Besar-DRPL&quot;,
