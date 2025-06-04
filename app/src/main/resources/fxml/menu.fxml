@@ -1,0 +1,560 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.chart.CategoryAxis?>
+<?import javafx.scene.chart.LineChart?>
+<?import javafx.scene.chart.NumberAxis?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Region?>
+<?import javafx.scene.layout.StackPane?>
+<?import javafx.scene.layout.TilePane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="800.0" prefWidth="1500.0" style="-fx-background-color: #FAFBFC; -fx-font-family: 'Poppins';" xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meditrack.MenuController">
+    <VBox fx:id="sidebar" alignment="TOP_CENTER" layoutY="1.0" prefHeight="800.0" prefWidth="260.0" spacing="15.0" style="-fx-background-color: #10217D;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <padding>
+            <Insets top="20.0" />
+        </padding>
+        <HBox alignment="CENTER" prefHeight="60.0" prefWidth="200.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/images/logo.png" />
+            </ImageView>
+            <Label text="MediTrack" textFill="white">
+                <font>
+                    <Font name="Poppins SemiBold" size="24.0" />
+                </font>
+                <HBox.margin>
+                    <Insets left="10.0" />
+                </HBox.margin>
+            </Label>
+        </HBox>
+        <VBox fx:id="menuContainer" spacing="8.0" style="-fx-padding: 10 20;" VBox.vgrow="ALWAYS">
+            <Button fx:id="menuButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button-active" text="Menu" textFill="white">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-rekomendasi.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font name="Poppins Medium" size="15.0" />
+                </font>
+            </Button>
+            <Button fx:id="rekomendasiButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Rekomendasi" textFill="#A5B2E4">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-rekomendasi.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font name="Poppins Regular" size="15.0" />
+                </font>
+            </Button>
+            <Button fx:id="obatButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Obat" textFill="#A5B2E4">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-obat.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font name="Poppins Regular" size="15.0" />
+                </font>
+            </Button>
+            <Button fx:id="laporanButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Laporan Kesehatan" textFill="#A5B2E4">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-laporan.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font name="Poppins Regular" size="15.0" />
+                </font>
+            </Button>
+            <Button fx:id="konsultasiButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Konsultasi" textFill="#A5B2E4">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-konsultasi.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font name="Poppins Regular" size="15.0" />
+                </font>
+            </Button>
+            <Button fx:id="jadwalButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Jadwal" textFill="#A5B2E4">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-jadwal.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font name="Poppins Regular" size="15.0" />
+                </font>
+            </Button>
+            <Button fx:id="pengaturanButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Pengaturan" textFill="#A5B2E4">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-pengaturan.png" />
+                    </ImageView>
+                </graphic>
+                <font>
+                    <Font name="Poppins Regular" size="15.0" />
+                </font>
+            </Button>
+        </VBox>
+        <Button fx:id="logoutButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Keluar" textFill="#A5B2E4">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0">
+                    <Image url="@/images/dummy.png" />
+                </ImageView>
+            </graphic>
+            <font>
+                <Font name="Poppins Regular" size="15.0" />
+            </font>
+            <VBox.margin>
+                <Insets bottom="30.0" left="20.0" right="20.0" />
+            </VBox.margin>
+        </Button>
+    </VBox>
+
+    <HBox alignment="CENTER_LEFT" layoutX="260.0" layoutY="1.0" prefHeight="80.0" prefWidth="1240.0" style="-fx-background-color: white; -fx-padding: 10 30;" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+        <Label text="Menu">
+            <font>
+                <Font name="Poppins SemiBold" size="22.0" />
+            </font>
+        </Label>
+        <TextField prefHeight="45.0" prefWidth="350.0" promptText="Cari di sini..." style="-fx-background-color: #F9FAFB; -fx-background-radius: 8; -fx-border-color: #E0E0E0; -fx-border-radius: 8; -fx-padding: 0 15;">
+            <HBox.margin>
+                <Insets left="30.0" />
+            </HBox.margin>
+            <font>
+                <Font name="Poppins Regular" size="14.0" />
+            </font>
+        </TextField>
+        <Region HBox.hgrow="ALWAYS" />
+        <HBox alignment="CENTER_RIGHT" spacing="15.0">
+            <Label text="Indo (IDN)" textFill="#555555">
+                <font>
+                    <Font name="Poppins Regular" size="14.0" />
+                </font>
+            </Label>
+            <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/images/dummy.png" />
+            </ImageView>
+            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/images/dummy.png" />
+            </ImageView>
+            <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
+                <Image url="@/images/dummy.png" />
+            </ImageView>
+            <VBox>
+                <Label text="Carlos" textFill="#151D48">
+                    <font>
+                        <Font name="Poppins Medium" size="15.0" />
+                    </font>
+                </Label>
+                <Label text="Pengguna" textFill="#737791">
+                    <font>
+                        <Font name="Poppins Regular" size="12.0" />
+                    </font>
+                </Label>
+            </VBox>
+        </HBox>
+    </HBox>
+
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER" layoutX="260.0" layoutY="80.0" prefHeight="720.0" prefWidth="1240.0" style="-fx-background-color: #FAFBFC;" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="260.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="80.0">
+        <StackPane fx:id="mainContentStackPane" alignment="TOP_LEFT">
+            <AnchorPane fx:id="dashboardViewPane" minHeight="0.0" minWidth="0.0" style="-fx-background-color: #FAFBFC;" visible="true" managed="true">
+                <VBox spacing="25.0" AnchorPane.leftAnchor="30.0" AnchorPane.rightAnchor="30.0" AnchorPane.topAnchor="30.0" AnchorPane.bottomAnchor="30.0">
+                    <VBox spacing="5.0" style="-fx-padding: 20px; -fx-background-color: white; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);">
+                        <Label style="-fx-text-fill: #112F82;" textFill="#112f82"> <font>
+                            <Font name="Poppins Regular" size="28.0" />
+                        </font>
+                            <graphic>
+                                <Text fx:id="greetingText" text="Selamat Datang, Carlos!" />
+                            </graphic>
+                        </Label>
+                        <Label maxWidth="700.0" text="Mulai perjalanan kesehatanmu bersama MediTrack dengan fitur lengkap yang membantu memantau, mengelola, dan meningkatkan kualitas hidup setiap hari." textFill="#5A6474" wrapText="true">
+                            <font>
+                                <Font name="Poppins Regular" size="14.0" />
+                            </font>
+                        </Label>
+                    </VBox>
+
+                    <HBox alignment="CENTER_LEFT" spacing="20.0">
+                        <Label text="Ringkasan Hari Ini" textFill="#05004E">
+                            <font>
+                                <Font name="Poppins SemiBold" size="20.0" />
+                            </font>
+                        </Label>
+                        <Label text="Ringkasan Kondisi Tubuh" textFill="#737791">
+                            <font>
+                                <Font name="Poppins Regular" size="13.0" />
+                            </font>
+                        </Label>
+                        <Region HBox.hgrow="ALWAYS" />
+                        <Button fx:id="unduhRingkasanButton" onAction="#handleUnduhRingkasanAction" minHeight="35.0" style="-fx-background-color: transparent; -fx-border-color: #C3D3E2; -fx-border-radius: 6; -fx-text-fill: #0F3659;" text="Unduh">
+                            <font>
+                                <Font name="Poppins Medium" size="13.0" />
+                            </font>
+                            <graphic>
+                                <ImageView fitHeight="16.0" fitWidth="16.0" pickOnBounds="true" preserveRatio="true">
+                                    <Image url="@/images/dummy.png" />
+                                </ImageView>
+                            </graphic>
+                        </Button>
+                    </HBox>
+                    <HBox spacing="15.0">
+                        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="5" style="-fx-padding: 15px; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3); -fx-background-color: #FFE2E5;">
+                            <ImageView fitHeight="35.0" fitWidth="35.0">
+                                <Image url="@/images/dummy.png" />
+                            </ImageView>
+                            <Label fx:id="gejalaTerkiniValue" style="-fx-font-family: Poppins SemiBold; -fx-font-size: 18px; -fx-text-fill: #151D48;" text="Pusing" />
+                            <Label style="-fx-font-family: Poppins Regular; -fx-font-size: 13px; -fx-text-fill: #425166;" text="Gejala Terkini" />
+                            <Label style="-fx-font-family: Poppins Medium; -fx-font-size: 11px; -fx-text-fill: #4079ED;" text="0,5% dari kemarin" />
+                        </VBox>
+                        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="5" style="-fx-padding: 15px; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3); -fx-background-color: #DCFCE7;">
+                            <ImageView fitHeight="35.0" fitWidth="35.0">
+                                <Image url="@/images/dummy.png" />
+                            </ImageView>
+                            <Label fx:id="asupanNutrisiValue" style="-fx-font-family: Poppins SemiBold; -fx-font-size: 18px; -fx-text-fill: #151D48;" text="15%" />
+                            <Label style="-fx-font-family: Poppins Regular; -fx-font-size: 13px; -fx-text-fill: #425166;" text="Asupan Nutrisi" />
+                            <Label style="-fx-font-family: Poppins Medium; -fx-font-size: 11px; -fx-text-fill: #4079ED;" text="+1,2% dari hari Selasa" />
+                        </VBox>
+                        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="5" style="-fx-padding: 15px; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3); -fx-background-color: #FFF4DE;">
+                            <ImageView fitHeight="35.0" fitWidth="35.0">
+                                <Image url="@/images/dummy.png" />
+                            </ImageView>
+                            <Label fx:id="statusTubuhValue" style="-fx-font-family: Poppins SemiBold; -fx-font-size: 18px; -fx-text-fill: #151D48;" text="Perlu Perhatian" />
+                            <Label style="-fx-font-family: Poppins Regular; -fx-font-size: 13px; -fx-text-fill: #425166;" text="Status Tubuh" />
+                            <Label style="-fx-font-family: Poppins Medium; -fx-font-size: 11px; -fx-text-fill: #4079ED;" text="+5% dari kemarin" />
+                        </VBox>
+                        <VBox styleClass="summary-card" HBox.hgrow="ALWAYS" alignment="CENTER_LEFT" spacing="5" style="-fx-padding: 15px; -fx-background-radius: 10px; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 10, 0, 0, 3); -fx-background-color: #F3E8FF;">
+                            <ImageView fitHeight="35.0" fitWidth="35.0">
+                                <Image url="@/images/dummy.png" />
+                            </ImageView>
+                            <Label fx:id="levelAktivitasValue" style="-fx-font-family: Poppins SemiBold; -fx-font-size: 18px; -fx-text-fill: #151D48;" text="Sibuk" />
+                            <Label style="-fx-font-family: Poppins Regular; -fx-font-size: 13px; -fx-text-fill: #425166;" text="Level Aktivitas" />
+                            <Label style="-fx-font-family: Poppins Medium; -fx-font-size: 11px; -fx-text-fill: #4079ED;" text="+8% dari hari Rabu" />
+                        </VBox>
+                    </HBox>
+
+                    <HBox spacing="20.0">
+                        <VBox HBox.hgrow="ALWAYS" spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);">
+                            <Label text="Wawasan Kesehatan" textFill="#05004E">
+                                <font>
+                                    <Font name="Poppins SemiBold" size="20.0" />
+                                </font>
+                            </Label>
+                            <LineChart fx:id="healthChart" prefHeight="280.0">
+                                <xAxis>
+                                    <CategoryAxis label="Bulan" side="BOTTOM" />
+                                </xAxis>
+                                <yAxis>
+                                    <NumberAxis label="Nilai" side="LEFT" />
+                                </yAxis>
+                            </LineChart>
+                            <HBox alignment="CENTER" spacing="20.0">
+                                <HBox alignment="CENTER" spacing="5.0">
+                                    <Circle fill="#A700FF" radius="5.0" />
+                                    <Label text="Kualitas Tidur" />
+                                </HBox>
+                                <HBox alignment="CENTER" spacing="5.0">
+                                    <Circle fill="#EF4444" radius="5.0" />
+                                    <Label text="Tingkat Stres" />
+                                </HBox>
+                                <HBox alignment="CENTER" spacing="5.0">
+                                    <Circle fill="#3CD856" radius="5.0" />
+                                    <Label text="Tingkat Hidrasi" />
+                                </HBox>
+                            </HBox>
+                        </VBox>
+
+                        <VBox spacing="20.0" prefWidth="350.0">
+                            <VBox spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label text="Jadwal Hari Ini" textFill="#05004E">
+                                        <font><Font name="Poppins SemiBold" size="18.0" /></font>
+                                    </Label>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="Lihat Selengkapnya" onAction="#handleLihatSemuaJadwal" style="-fx-background-color: transparent; -fx-text-fill: #0F3659; -fx-border-color: #C3D3E2; -fx-border-radius: 6; -fx-padding: 5 10;" >
+                                        <font><Font size="11.0" /></font>
+                                    </Button>
+                                </HBox>
+                                <ListView fx:id="jadwalListView" prefHeight="150.0" />
+                            </VBox>
+                            <VBox spacing="10.0" style="-fx-background-color: white; -fx-padding: 20; -fx-background-radius: 12; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 10, 0, 0, 4);">
+                                <HBox alignment="CENTER_LEFT">
+                                    <Label text="Kondisi Hari Ini" textFill="#05004E">
+                                        <font><Font name="Poppins SemiBold" size="18.0" /></font>
+                                    </Label>
+                                    <Region HBox.hgrow="ALWAYS"/>
+                                    <Button text="Lihat Selengkapnya" onAction="#handleLihatSemuaKondisi" style="-fx-background-color: transparent; -fx-text-fill: #0F3659; -fx-border-color: #C3D3E2; -fx-border-radius: 6; -fx-padding: 5 10;">
+                                        <font><Font size="11.0" /></font>
+                                    </Button>
+                                </HBox>
+                                <HBox alignment="CENTER" spacing="15.0" style="-fx-padding: 10 0;">
+                                    <VBox alignment="CENTER" spacing="5">
+                                        <StackPane>
+                                            <Circle fill="#FFE2E5" radius="40.0" />
+                                            <Circle fill="#FF0000" radius="35.0" />
+                                            <ImageView fitHeight="30" fitWidth="30"><Image url="@/images/dummy.png" /></ImageView>
+                                        </StackPane>
+                                        <Label fx:id="detakJantungValue" text="84 BPM"><font><Font name="Poppins Bold" size="14.0" /></font></Label>
+                                        <Label text="Detak Jantung" textFill="#737791"><font><Font size="11.0" /></font></Label>
+                                    </VBox>
+                                    <VBox alignment="CENTER" spacing="5">
+                                        <StackPane>
+                                            <Circle fill="#FFF4DE" radius="40.0" />
+                                            <Circle fill="#FFC800" radius="35.0" />
+                                            <ImageView fitHeight="30" fitWidth="30"><Image url="@/images/dummy.png" /></ImageView>
+                                        </StackPane>
+                                        <Label fx:id="stresValue" text="Tinggi"><font><Font name="Poppins Bold" size="14.0" /></font></Label>
+                                        <Label text="Tingkat Stres" textFill="#737791"><font><Font size="11.0" /></font></Label>
+                                    </VBox>
+                                    <VBox alignment="CENTER" spacing="5">
+                                        <StackPane>
+                                            <Circle fill="#DCFCE7" radius="40.0" />
+                                            <Circle fill="#3CD856" radius="35.0" />
+                                            <ImageView fitHeight="30" fitWidth="30"><Image url="@/images/dummy.png" /></ImageView>
+                                        </StackPane>
+                                        <Label fx:id="tidurValue" text="3.5 Jam"><font><Font name="Poppins Bold" size="14.0" /></font></Label>
+                                        <Label text="Durasi Tidur" textFill="#737791"><font><Font size="11.0" /></font></Label>
+                                    </VBox>
+                                </HBox>
+                            </VBox>
+                        </VBox>
+                    </HBox>
+
+                    <VBox alignment="CENTER" spacing="15.0" style="-fx-background-color: #1D4ED8; -fx-padding: 40 20; -fx-background-radius: 12;">
+                        <ImageView fitHeight="48.0" fitWidth="48.0">
+                            <Image url="@/images/logo.png" />
+                        </ImageView>
+                        <Label text="Buat Rekomendasi Obat dan Suplemen?" textFill="white">
+                            <font>
+                                <Font name="Poppins SemiBold" size="22.0" />
+                            </font>
+                        </Label>
+                        <Label text="Klik Sehatmu Dimulai di Sini" textFill="rgba(255,255,255,0.8)">
+                            <font>
+                                <Font name="Poppins Medium" size="14.0" />
+                            </font>
+                        </Label>
+                        <Button fx:id="generateRekomendasiButton" onAction="#handleGenerateRekomendasiAction" style="-fx-background-color: white; -fx-text-fill: #1D4ED8; -fx-background-radius: 8; -fx-padding: 10 30;" text="Generate">
+                            <font>
+                                <Font name="Poppins SemiBold" size="15.0" />
+                            </font>
+                        </Button>
+                    </VBox>
+
+                    <VBox spacing="15.0">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label textFill="#0A1B4C">
+                                <font><Font name="Poppins Bold" size="20.0" /></font>
+                                <graphic>
+                                    <Text>
+                                        <fx:define>
+                                            <Font fx:id="poppinsBold20" name="Poppins Bold" size="20.0" />
+                                            <Font fx:id="poppinsRegular20Black" name="Poppins Regular" size="20.0" />
+                                        </fx:define>
+                                        <Text text="Keinginan Akan " fill="#0A1B4C" font="${poppinsRegular20Black}" />
+                                        <Text text="Obat dan Gaya Hidup Sehat" fill="#112F82" font="${poppinsBold20}" />
+                                    </Text>
+                                </graphic>
+                            </Label>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="Lihat Semua" style="-fx-background-color: transparent; -fx-text-fill: #10217D; -fx-underline: true;" onAction="#lihatSemuaObat">
+                                <font><Font name="Poppins Medium" size="13.0" /></font>
+                            </Button>
+                        </HBox>
+                        <Label maxWidth="800.0" text="Temukan berbagai kebutuhan obat dan produk kesehatan yang kamu inginkan, serta dukung gaya hidup sehatmu dengan mudah melalui layanan lengkap dari MediTrack." textFill="#5A6474" wrapText="true">
+                            <font><Font name="Poppins Regular" size="13.0" /></font>
+                        </Label>
+                        <TilePane fx:id="kategoriObatPane" hgap="15.0" prefColumns="5" vgap="15.0" />
+                    </VBox>
+
+                    <VBox spacing="15.0" style="-fx-background-color: #F9FBFC; -fx-padding: 20px; -fx-background-radius: 12;">
+                        <HBox alignment="CENTER_LEFT">
+                            <Label textFill="#0A1B4C">
+                                <font><Font name="Poppins Bold" size="20.0" /></font>
+                                <graphic>
+                                    <Text>
+                                        <Text text="Lakukan Konsultasi " fill="BLACK" font="${poppinsRegular20Black}" />
+                                        <Text text="Cepat" fill="#10217D" font="${poppinsBold20}" />
+                                    </Text>
+                                </graphic>
+                            </Label>
+                            <Region HBox.hgrow="ALWAYS" />
+                            <Button text="Lihat Semua" style="-fx-background-color: transparent; -fx-text-fill: #10217D; -fx-underline: true;" onAction="#lihatSemuaKonsultasi">
+                                <font><Font name="Poppins Medium" size="13.0" /></font>
+                            </Button>
+                        </HBox>
+                        <TilePane fx:id="konsultasiCepatPane" alignment="CENTER" hgap="25.0" prefColumns="6" tileAlignment="CENTER" vgap="25.0" />
+                    </VBox>
+
+                    <VBox spacing="15.0">
+                        <Label textFill="#0A1B4C">
+                            <font><Font name="Poppins Bold" size="20.0" /></font>
+                            <graphic>
+                                <Text>
+                                    <Text text="Dokter Terbaik Terdekat " fill="#112F82" font="${poppinsBold20}" />
+                                    <Text text="Dari Anda" fill="BLACK" font="${poppinsRegular20Black}" />
+                                </Text>
+                            </graphic>
+                        </Label>
+                        <ScrollPane fx:id="dokterScrollPane" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" prefHeight="340.0">
+                            <HBox fx:id="dokterListContainer" spacing="15.0" style="-fx-padding: 10;" />
+                        </ScrollPane>
+                    </VBox>
+
+                    <StackPane style="-fx-background-color: #112F82; -fx-padding: 40; -fx-background-radius: 12;">
+                        <VBox alignment="CENTER" spacing="20.0">
+                            <Label text="Umpan Balik Pasien Kami tentang MediTrack" textFill="white">
+                                <font><Font name="Poppins SemiBold" size="22.0" /></font>
+                            </Label>
+                            <HBox alignment="CENTER" spacing="30.0">
+                                <Button fx:id="prevTestimonialButton" style="-fx-background-color: rgba(255,255,255,0.2); -fx-background-radius: 50;" text="&lt;">
+                                    <font><Font name="Poppins Bold" size="18.0" /></font>
+                                </Button>
+                                <HBox alignment="CENTER_LEFT" spacing="30.0">
+                                    <ImageView fx:id="testimonialImageView" fitHeight="120.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true" />
+                                    <VBox spacing="10.0" maxWidth="500.0">
+                                        <Label fx:id="testimonialQuoteLabel" textFill="white" wrapText="true">
+                                            <font><Font name="Poppins Regular" size="15.0" /></font>
+                                        </Label>
+                                        <Label fx:id="testimonialAuthorLabel" textFill="white">
+                                            <font><Font name="Poppins Bold" size="16.0" /></font>
+                                        </Label>
+                                        <Label fx:id="testimonialAuthorRoleLabel" textFill="rgba(255,255,255,0.7)">
+                                            <font><Font name="Poppins Regular" size="13.0" /></font>
+                                        </Label>
+                                    </VBox>
+                                </HBox>
+                                <Button fx:id="nextTestimonialButton" style="-fx-background-color: rgba(255,255,255,0.2); -fx-background-radius: 50;" text="&gt;">
+                                    <font><Font name="Poppins Bold" size="18.0" /></font>
+                                </Button>
+                            </HBox>
+                        </VBox>
+                    </StackPane>
+
+                    <VBox spacing="15.0">
+                        <Label textFill="#0A1B4C">
+                            <font><Font name="Poppins Bold" size="20.0" /></font>
+                            <graphic>
+                                <Text>
+                                    <Text text="Dari Kami" fill="BLACK" font="${poppinsRegular20Black}" />
+                                    <Text text=", Untuk Dunia" fill="#112F82" font="${poppinsBold20}" />
+                                </Text>
+                            </graphic>
+                        </Label>
+                        <ScrollPane fx:id="founderScrollPane" fitToHeight="true" hbarPolicy="AS_NEEDED" vbarPolicy="NEVER" prefHeight="280.0">
+                            <HBox fx:id="founderListContainer" spacing="15.0" style="-fx-padding: 10;" />
+                        </ScrollPane>
+                    </VBox>
+
+                    <HBox spacing="50.0" style="-fx-padding: 30 0; -fx-border-width: 1 0 0 0; -fx-border-color: #E0E0E0;">
+                        <VBox spacing="10.0" prefWidth="300.0">
+                            <HBox alignment="CENTER_LEFT" spacing="10.0">
+                                <ImageView fitHeight="30.0" fitWidth="30.0">
+                                    <Image url="@/images/logo.png" />
+                                </ImageView>
+                                <Label text="MediTrack" textFill="#121212">
+                                    <font><Font name="Poppins Bold" size="18.0" /></font>
+                                </Label>
+                            </HBox>
+                            <Label text="MediTrack adalah platform kesehatan yang memudahkan Anda mengelola kesehatan dengan fitur konsultasi dokter dan pembelian obat secara online." textFill="#5A6474" wrapText="true">
+                                <font><Font name="Poppins Regular" size="12.0" /></font>
+                            </Label>
+                        </VBox>
+                        <VBox spacing="8.0">
+                            <Label text="Overview" textFill="#10217D"><font><Font name="Poppins Bold" size="14.0" /></font></Label>
+                            <Label text="Obat" styleClass="footer-link" onMouseClicked="#handleFooterLinkAction"/>
+                            <Label text="Wearable" styleClass="footer-link" onMouseClicked="#handleFooterLinkAction"/>
+                            <Label text="Kesehatan" styleClass="footer-link" onMouseClicked="#handleFooterLinkAction"/>
+                        </VBox>
+                        <VBox spacing="8.0">
+                            <Label text="Perusahaan" textFill="#10217D"><font><Font name="Poppins Bold" size="14.0" /></font></Label>
+                            <Label text="Menu" styleClass="footer-link" onMouseClicked="#handleFooterLinkAction"/>
+                            <Label text="Tentang Kami" styleClass="footer-link" onMouseClicked="#handleFooterLinkAction"/>
+                            <Label text="Pelayanan" styleClass="footer-link" onMouseClicked="#handleFooterLinkAction"/>
+                        </VBox>
+                        <VBox spacing="8.0">
+                            <Label text="Media Sosial" textFill="#112F82"><font><Font name="Poppins Bold" size="14.0" /></font></Label>
+                            <HBox spacing="10.0">
+                                <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleSocialMediaLinkAction"><Image url="@/images/dummy.png" /></ImageView>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleSocialMediaLinkAction"><Image url="@/images/dummy.png" /></ImageView>
+                                <ImageView fitHeight="20.0" fitWidth="20.0" onMouseClicked="#handleSocialMediaLinkAction"><Image url="@/images/dummy.png" /></ImageView>
+                            </HBox>
+                        </VBox>
+                    </HBox>
+                    <Region prefHeight="30.0" />
+                </VBox>
+            </AnchorPane>
+
+            <VBox fx:id="rekomendasiViewPane" alignment="CENTER" spacing="20" style="-fx-padding: 50;" visible="false" managed="false">
+                <Label text="Halaman Rekomendasi" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #10217D;"/>
+                <Label text="Fitur untuk mendapatkan rekomendasi obat dan suplemen berdasarkan keluhan atau kebutuhan Anda." wrapText="true" textAlignment="CENTER"/>
+                <Button text="Mulai Rekomendasi" onAction="#handleMulaiRekomendasiAction" style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;"/>
+            </VBox>
+
+            <VBox fx:id="obatViewPane" alignment="TOP_CENTER" spacing="20" style="-fx-padding: 50;" visible="false" managed="false">
+                <Label text="Manajemen Obat Anda" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #10217D;"/>
+                <Label text="Lihat, tambah, atau atur pengingat untuk obat-obatan Anda."/>
+                <ListView fx:id="obatListView" prefHeight="300"/>
+                <Button text="Tambah Obat Baru" onAction="#handleTambahObatAction" style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;"/>
+            </VBox>
+
+            <VBox fx:id="laporanViewPane" alignment="TOP_CENTER" spacing="20" style="-fx-padding: 50;" visible="false" managed="false">
+                <Label text="Laporan Kesehatan Anda" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #10217D;"/>
+                <Label text="Pantau progres kesehatan Anda melalui grafik dan data terperinci."/>
+                <LineChart fx:id="laporanHealthChart" title="Grafik Kesehatan Tambahan">
+                    <xAxis><CategoryAxis label="Tanggal" /></xAxis>
+                    <yAxis><NumberAxis label="Indikator" /></yAxis>
+                </LineChart>
+                <Button text="Ekspor Laporan" onAction="#handleEksporLaporanAction" style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;"/>
+            </VBox>
+
+            <VBox fx:id="konsultasiViewPane" alignment="TOP_CENTER" spacing="20" style="-fx-padding: 50;" visible="false" managed="false">
+                <Label text="Konsultasi Dokter" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #10217D;"/>
+                <Label text="Temukan dokter dan mulai sesi konsultasi online."/>
+                <TextField fx:id="cariDokterField" promptText="Cari dokter atau spesialisasi..." prefWidth="400"/>
+                <ListView fx:id="konsultasiDokterListView" prefHeight="300"/>
+                <Button text="Mulai Chat dengan Dokter Pilihan" onAction="#handleMulaiChatAction" style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;"/>
+            </VBox>
+
+            <VBox fx:id="jadwalViewPane" alignment="TOP_CENTER" spacing="20" style="-fx-padding: 50;" visible="false" managed="false">
+                <Label text="Jadwal Aktivitas &amp; Pengingat" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #10217D;"/>
+                <ListView fx:id="jadwalDetailListView" prefHeight="400.0"/>
+                <Button text="Tambah Jadwal Baru" onAction="#handleTambahJadwalAction" style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;"/>
+            </VBox>
+
+            <VBox fx:id="pengaturanViewPane" alignment="TOP_LEFT" spacing="20" style="-fx-padding: 50;" visible="false" managed="false">
+                <Label text="Pengaturan Akun" style="-fx-font-size: 28px; -fx-font-weight: bold; -fx-text-fill: #10217D;"/>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Nama Pengguna:" prefWidth="120"/>
+                    <TextField fx:id="namaPenggunaField" promptText="Carlos" prefWidth="300"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Email:" prefWidth="120"/>
+                    <TextField fx:id="emailField" promptText="carlos@example.com" prefWidth="300"/>
+                </HBox>
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Notifikasi:" prefWidth="120"/>
+                    <CheckBox fx:id="notifikasiCheckBox" text="Aktifkan Notifikasi Email" selected="true"/>
+                </HBox>
+                <Button text="Simpan Pengaturan" onAction="#handleSimpanPengaturanAction" style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-font-size: 16px; -fx-padding: 10 20; -fx-background-radius: 8;"/>
+            </VBox>
+
+        </StackPane>
+    </ScrollPane>
+</AnchorPane>
