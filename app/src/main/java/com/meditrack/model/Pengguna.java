@@ -80,4 +80,30 @@ public class Pengguna {
     public void setBeratBadan(Double beratBadan) {
         this.beratBadan = beratBadan;
     }
+
+    private String noHp;
+    private String avatarPath;
+
+    // 🔥 Tambahkan getter dan setter
+
+    public String getNoHp() {
+        return noHp;
+    }
+
+    public void setNoHp(String noHp) {
+        this.noHp = noHp;
+    }
+
+    public String getAvatarPath() {
+        return avatarPath;
+    }
+
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
+    }
+
+    public int getId() {
+        return idPengguna;
+    }
+
 }

@@ -461,7 +461,7 @@ public class MenuController implements Initializable {
             return;
         }
 
-        setActiveButton(clickedButton); // Pindahkan ini setelah pengecekan logout
+        setActiveButton(clickedButton);
 
         if (clickedButton == menuButton) {
             showView(dashboardViewPane);
@@ -477,21 +477,25 @@ public class MenuController implements Initializable {
             showView(jadwalViewPane);
         } else if (clickedButton == pengaturanButton) {
             showView(pengaturanViewPane);
-        }
-    }
 
-    private void setActiveButton(Button activeButton) {
-        List<Button> sidebarButtons = Arrays.asList(menuButton, rekomendasiButton, obatButton, laporanButton, konsultasiButton, jadwalButton, pengaturanButton);
-        for (Button btn : sidebarButtons) {
-            if (btn != null) {
-                btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #A5B2E4; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px; -fx-alignment: baseline-left; -fx-pref-width: 200px;");
-                setButtonIcon(btn, false);
+            // Tambahkan logika ini untuk navigasi ke manajemenpengguna.fxml
+            try {
+                URL manajemenPenggunaFxmlUrl = getClass().getResource("/fxml/manajemenpengguna.fxml");
+                if (manajemenPenggunaFxmlUrl == null) {
+                    System.err.println("Error: Cannot find /fxml/manajemenpengguna.fxml.");
+                    return;
+                }
+                Parent penggunaRoot = FXMLLoader.load(manajemenPenggunaFxmlUrl);
+                Scene penggunaScene = new Scene(penggunaRoot);
+                Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                currentStage.setScene(penggunaScene);
+                currentStage.setTitle("MediTrack - Manajemen Pengguna");
+                currentStage.show();
+            } catch (IOException e) {
+                System.err.println("IOException during Pengaturan navigation:");
+                e.printStackTrace();
+                showErrorDialog("Navigasi Gagal", "Gagal membuka halaman Manajemen Pengguna.");
             }
-        }
-        if (activeButton != null && activeButton != logoutButton) { // Jangan set style aktif untuk logout
-            activeButton.setStyle("-fx-background-color: #1751C2; -fx-text-fill: white; -fx-font-family: 'Poppins Medium'; -fx-font-size: 15px; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-alignment: baseline-left; -fx-pref-width: 200px;");
-            setButtonIcon(activeButton, true);
-            currentActiveButton = activeButton;
         }
     }
 
@@ -528,6 +532,29 @@ public class MenuController implements Initializable {
         Image newImage = loadImage(finalIconPath);
         if (newImage != null) {
             iconView.setImage(newImage);
+        }
+    }
+
+    private void setActiveButton(Button activeButton) {
+        List<Button> sidebarButtons = Arrays.asList(
+                menuButton,
+                rekomendasiButton,
+                obatButton,
+                laporanButton,
+                konsultasiButton,
+                jadwalButton,
+                pengaturanButton
+        );
+        for (Button btn : sidebarButtons) {
+            if (btn != null) {
+                btn.setStyle("-fx-background-color: transparent; -fx-text-fill: #A5B2E4; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px; -fx-alignment: baseline-left; -fx-pref-width: 200px;");
+                setButtonIcon(btn, false);
+            }
+        }
+        if (activeButton != null && activeButton != logoutButton) {
+            activeButton.setStyle("-fx-background-color: #1751C2; -fx-text-fill: white; -fx-font-family: 'Poppins Medium'; -fx-font-size: 15px; -fx-padding: 10px 20px; -fx-background-radius: 8px; -fx-alignment: baseline-left; -fx-pref-width: 200px;");
+            setButtonIcon(activeButton, true);
+            currentActiveButton = activeButton;
         }
     }
 
@@ -839,5 +866,22 @@ public class MenuController implements Initializable {
             imageView.setClip(clip);
         }
     }
+    @FXML
+    private void handleUserProfileClicked(MouseEvent event) {
+        System.out.println("Nama pengguna diklik, membuka halaman manajemen pengguna...");
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/manajemenpengguna.fxml"));
+            Parent root = loader.load();
+            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            Scene scene = new Scene(root);
+            stage.setScene(scene);
+            stage.setTitle("MediTrack - Manajemen Pengguna");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorDialog("Navigasi Gagal", "Gagal membuka halaman manajemen pengguna.");
+        }
+    }
+
     //</editor-fold>
 }

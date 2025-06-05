@@ -1,0 +1,222 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.shape.Circle?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane xmlns="http://javafx.com/javafx/21"
+            xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.meditrack.ManajemenPenggunaController"
+            prefHeight="800.0" prefWidth="1200.0"
+            style="-fx-background-color: #FAFBFC; -fx-font-family: 'Poppins';">
+
+    <!-- Sidebar -->
+    <VBox fx:id="sidebar" alignment="TOP_CENTER" prefHeight="800.0" prefWidth="260.0" spacing="15.0"
+          style="-fx-background-color: #10217D;"
+          AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <padding>
+            <Insets top="20.0"/>
+        </padding>
+
+        <!-- Logo -->
+        <HBox alignment="CENTER" spacing="10.0" prefHeight="60.0">
+            <ImageView fitHeight="40.0" fitWidth="40.0">
+                <Image url="@/images/logo.png"/>
+            </ImageView>
+            <Label text="MediTrack" textFill="white">
+                <font>
+                    <Font name="Poppins SemiBold" size="24.0"/>
+                </font>
+            </Label>
+        </HBox>
+
+        <!-- Sidebar Menu Buttons -->
+        <VBox spacing="8.0" style="-fx-padding: 10 20;" VBox.vgrow="ALWAYS">
+            <Button fx:id="menuButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                    maxWidth="Infinity" onAction="#handleSidebarButton"
+                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px;">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-laporan.png"/>
+                    </ImageView>
+                </graphic>
+                <text>Menu</text>
+            </Button>
+
+            <!-- Tombol lain (sama seperti menu.fxml) -->
+            <Button fx:id="rekomendasiButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                    maxWidth="Infinity" onAction="#handleSidebarButton"
+                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px;"
+                    text="Rekomendasi">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-rekomendasi.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="obatButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                    maxWidth="Infinity" onAction="#handleSidebarButton"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px;"
+                    text="Obat">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-obat.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="laporanButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                    maxWidth="Infinity" onAction="#handleSidebarButton"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px;"
+                    text="Laporan">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-laporan.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="konsultasiButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                    maxWidth="Infinity" onAction="#handleSidebarButton"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px;"
+                    text="Konsultasi">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-konsultasi.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="jadwalButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                    maxWidth="Infinity" onAction="#handleSidebarButton"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px;"
+                    text="Jadwal">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-jadwal.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+
+            <Button fx:id="pengaturanButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                    maxWidth="Infinity" onAction="#handleSidebarButton"
+                    style="-fx-background-color: transparent; -fx-text-fill: white; -fx-font-family: 'Poppins Regular'; -fx-font-size: 15px; -fx-padding: 10px 20px;"
+                    text="Pengaturan">
+                <graphic>
+                    <ImageView fitHeight="20.0" fitWidth="20.0">
+                        <Image url="@/images/icon-pengaturan.png"/>
+                    </ImageView>
+                </graphic>
+            </Button>
+        </VBox>
+
+        <!-- Logout Button -->
+        <Button fx:id="logoutButton" alignment="BASELINE_LEFT" graphicTextGap="15.0"
+                onAction="#handleSidebarButton" style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
+                text="Keluar">
+            <graphic>
+                <ImageView fitHeight="20.0" fitWidth="20.0">
+                    <Image url="@/images/person-icon.jpg"/>
+                </ImageView>
+            </graphic>
+        </Button>
+    </VBox>
+
+    <!-- Main Content -->
+    <ScrollPane fitToWidth="true" hbarPolicy="NEVER"
+                AnchorPane.leftAnchor="260.0" AnchorPane.topAnchor="0.0"
+                AnchorPane.rightAnchor="0.0" AnchorPane.bottomAnchor="0.0">
+        <VBox spacing="20" style="-fx-padding: 20;">
+            <Label text="Manajemen Akun"
+                   style="-fx-font-size: 24px; -fx-font-weight: BOLD; -fx-text-fill: #0A1B4C;"/>
+
+            <!-- Profile Section -->
+            <VBox spacing="10" alignment="CENTER" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 20;">
+                <StackPane prefHeight="80.0" prefWidth="80.0">
+                    <Circle radius="40.0" style="-fx-fill: #D9D9D9;"/>
+                    <ImageView fx:id="profileAvatar" fitHeight="70.0" fitWidth="70.0">
+                        <image>
+                            <Image url="@/images/carlos_fernando.jpg"/>
+                        </image>
+                        <clip>
+                            <Circle radius="35.0" centerX="35.0" centerY="35.0"/>
+                        </clip>
+                    </ImageView>
+                    <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true"
+                               style="-fx-cursor: hand;"
+                               onMouseClicked="#handleChangeProfilePicture">
+                        <image>
+                            <Image url="@/images/edit-icon.png"/>
+                        </image>
+                        <StackPane.margin>
+                            <Insets left="50.0" top="50.0"/>
+                        </StackPane.margin>
+                    </ImageView>
+                </StackPane>
+                <Label fx:id="profileName" text="Carlos Fernando"
+                       style="-fx-font-size: 18px; -fx-font-weight: SEMI_BOLD; -fx-text-fill: #151D48;"/>
+
+                <Label fx:id="emailLabel" text="-"
+                       style="-fx-font-size: 14px; -fx-text-fill: #737791;"/>
+                <Label fx:id="phoneLabel" text="-"
+                       style="-fx-font-size: 14px; -fx-text-fill: #737791;"/>
+                <Label fx:id="dobLabel" text="-"
+                       style="-fx-font-size: 14px; -fx-text-fill: #737791;"/>
+                <Label fx:id="genderLabel" text="-"
+                       style="-fx-font-size: 14px; -fx-text-fill: #737791;"/>
+                <Label fx:id="profileAlteress" text="Alteress"
+                       style="-fx-font-size: 12px; -fx-text-fill: #737791;"/>
+            </VBox>
+
+            <!-- User Info Section -->
+            <VBox spacing="10" style="-fx-background-color: white; -fx-background-radius: 8; -fx-padding: 20; -fx-pref-width: 700;">
+                <Label text="Edit Informasi Pengguna"
+                       style="-fx-font-size: 16px; -fx-font-weight: BOLD; -fx-text-fill: #0A1B4C;"/>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Nama:" prefWidth="120"/>
+                    <TextField fx:id="namaField" promptText="Nama Lengkap" prefWidth="500"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Email:" prefWidth="120"/>
+                    <TextField fx:id="emailField" promptText="Email" prefWidth="500"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Password:" prefWidth="120"/>
+                    <PasswordField fx:id="passwordField" promptText="Password Baru" prefWidth="500"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tanggal Lahir:" prefWidth="120"/>
+                    <DatePicker fx:id="tanggalLahirPicker" prefWidth="500"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Jenis Kelamin:" prefWidth="120"/>
+                    <ChoiceBox fx:id="jenisKelaminChoiceBox" prefWidth="500"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Tinggi Badan (m):" prefWidth="120"/>
+                    <TextField fx:id="tinggiBadanField" promptText="Contoh: 1.65" prefWidth="500"/>
+                </HBox>
+
+                <HBox spacing="10" alignment="CENTER_LEFT">
+                    <Label text="Berat Badan (kg):" prefWidth="120"/>
+                    <TextField fx:id="beratBadanField" promptText="Contoh: 55.0" prefWidth="500"/>
+                </HBox>
+
+                <Button text="Simpan Perubahan"
+                        onAction="#handleUpdateUserInfo"
+                        style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-background-radius: 8;"/>
+            </VBox>
+        </VBox>
+    </ScrollPane>
+</AnchorPane>
