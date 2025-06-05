@@ -19,7 +19,7 @@
             <TableColumn text="ID Detail"   fx:id="colIdDetail"     prefWidth="80"  />
             <TableColumn text="ID Jadwal"    fx:id="colIdJadwal"     prefWidth="80"  />
             <TableColumn text="Waktu Mulai"  fx:id="colWaktuMulai"   prefWidth="120" />
-            <TableColumn text="Waktu Selesai"fx:id="colWaktuSelesai" prefWidth="120" />
+            <TableColumn text="Waktu Selesai" fx:id="colWaktuSelesai" prefWidth="120" />
             <TableColumn text="Deskripsi"    fx:id="colDeskripsi"    prefWidth="200" />
             <TableColumn text="Kategori"     fx:id="colKategori"     prefWidth="100" />
         </columns>
