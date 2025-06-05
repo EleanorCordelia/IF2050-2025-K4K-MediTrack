@@ -107,4 +107,32 @@ public class PenggunaDAO {
             return false;
         }
     }
+
+    public Pengguna getPenggunaByEmailAndPassword(String email, String password) {
+        String sql = "SELECT * FROM pengguna WHERE email = ? AND password = ?";
+        try (Connection conn = SQLiteConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+
+            ps.setString(1, email);
+            ps.setString(2, password);
+
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Pengguna(
+                        rs.getInt("idPengguna"),
+                        rs.getString("nama"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("tanggalLahir"),
+                        rs.getString("jenisKelamin"),
+                        rs.getObject("tinggiBadan") != null ? rs.getDouble("tinggiBadan") : null,
+                        rs.getObject("beratBadan") != null ? rs.getDouble("beratBadan") : null
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }

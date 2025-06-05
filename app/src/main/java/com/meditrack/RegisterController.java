@@ -1,5 +1,7 @@
 package com.meditrack;
 
+import com.meditrack.dao.PenggunaDAO;
+import com.meditrack.model.Pengguna;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,14 +17,15 @@ import java.util.Objects;
 public class RegisterController {
 
     @FXML private TextField fullNameField;
-    @FXML private TextField usernameField;
+    @FXML private TextField usernameField; // optional (belum dipakai di DAO)
     @FXML private TextField emailField;
     @FXML private PasswordField passwordField;
     @FXML private PasswordField confirmPasswordField;
     @FXML private ComboBox<String> genderComboBox;
     @FXML private DatePicker dobPicker;
 
-    // Handle Registrasi button click
+    private final PenggunaDAO penggunaDAO = new PenggunaDAO(); // DAO untuk connect DB
+
     @FXML
     private void handleRegister(ActionEvent event) {
         String fullName = fullNameField.getText();
@@ -34,7 +37,7 @@ public class RegisterController {
 
         // Basic validation
         if (fullName.isEmpty() || email.isEmpty() ||
-                password.isEmpty() || confirmPassword.isEmpty() || dob.isEmpty() || gender.isEmpty()) {
+                password.isEmpty() || confirmPassword.isEmpty() || dob.isEmpty() || gender == null) {
             showAlert(Alert.AlertType.WARNING, "Form Belum Lengkap", "Silakan lengkapi semua kolom.");
             return;
         }
@@ -55,26 +58,38 @@ public class RegisterController {
             return;
         }
 
+        // Simpan ke database menggunakan PenggunaDAO
+        Pengguna newUser = new Pengguna();
+        newUser.setNama(fullName);
+        newUser.setEmail(email);
+        newUser.setPassword(password); // plaintext, dev only! Sebaiknya di-hash.
+        newUser.setTanggalLahir(dob);
+        newUser.setJenisKelamin(gender);
 
-        // You could later save this user to DB or memory
-        showAlert(Alert.AlertType.INFORMATION, "Registrasi Berhasil", "Akun berhasil dibuat untuk " + fullName + "!");
-        UserStore.addUser(email, password);
+        boolean success = penggunaDAO.insertPengguna(newUser);
 
-
-        try {
-            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login.fxml")));
-            Stage stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Login - MediTrack");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Gagal", "Tidak dapat mengarahkan ke halaman login.");
+        if (success) {
+            showAlert(Alert.AlertType.INFORMATION, "Registrasi Berhasil", "Akun berhasil dibuat untuk " + fullName + "!");
+            navigateToLogin(event);
+        } else {
+            showAlert(Alert.AlertType.ERROR, "Registrasi Gagal", "Terjadi kesalahan saat menyimpan data pengguna.");
         }
-
     }
 
-    // Method to validate allowed email domains
+    /**
+     * Handler untuk tombol Registrasi dengan Google.
+     * Implementasi logika untuk registrasi via Google akan ada di sini.
+     * Untuk saat ini, hanya menampilkan pesan placeholder.
+     * @param event ActionEvent yang terjadi
+     */
+    @FXML
+    private void handleRegisterGoogle(ActionEvent event) {
+        System.out.println("Tombol Registrasi dengan Google diklik!");
+        showAlert(Alert.AlertType.INFORMATION, "Fitur Dalam Pengembangan", "Registrasi dengan Google akan segera hadir!");
+        // TODO: Implementasikan logika untuk registrasi dengan Google
+        // Misalnya, membuka browser untuk autentikasi OAuth, dll.
+    }
+
     private boolean isEmailDomainValid(String email) {
         String[] allowedDomains = {"@gmail.com", "@outlook.com", "@yahoo.com", "@student.itb.ac.id"};
         for (String domain : allowedDomains) {
@@ -84,36 +99,55 @@ public class RegisterController {
         }
         return false;
     }
-    // Method to ensure password is strong
+
     private boolean isPasswordStrong(String password) {
         boolean hasUppercase = password.matches(".*[A-Z].*");
         boolean hasLowercase = password.matches(".*[a-z].*");
         boolean hasDigit = password.matches(".*\\d.*");
-        boolean hasSymbol = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>\\/?].*");
+        // Pastikan simbol Anda tidak mengandung karakter khusus regex tanpa di-escape
+        boolean hasSymbol = password.matches(".*[!@#$%^&*()_+\\-=\\[\\]{};':\"\\\\|,.<>/?].*");
         return hasUppercase && hasLowercase && hasDigit && hasSymbol;
     }
 
-
-    // Handle "Masuk di sini" link click
     @FXML
     private void handleBackToLogin(MouseEvent event) {
         try {
+            // Mendapatkan sumber event dan meng-cast ke Node untuk mendapatkan Scene dan Window
             Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login.fxml")));
-            Stage stage = (Stage) ((javafx.scene.text.Text) event.getSource()).getScene().getWindow();
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Login - MediTrack");
             stage.show();
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Gagal", "Tidak dapat kembali ke halaman login.");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "File FXML Tidak Ditemukan", "Pastikan path ke login.fxml sudah benar.");
         }
     }
 
-    // Utility method for showing alert popups
+    private void navigateToLogin(ActionEvent event) {
+        try {
+            // Mendapatkan sumber event dan meng-cast ke Node untuk mendapatkan Scene dan Window
+            Parent root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/fxml/login.fxml")));
+            Stage stage = (Stage) ((javafx.scene.Node) event.getSource()).getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login - MediTrack");
+            stage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Gagal", "Tidak dapat mengarahkan ke halaman login.");
+        } catch (NullPointerException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "File FXML Tidak Ditemukan", "Pastikan path ke login.fxml sudah benar.");
+        }
+    }
+
     private void showAlert(Alert.AlertType type, String title, String message) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
-        alert.setHeaderText(null);
+        alert.setHeaderText(null); // Tidak menampilkan header text
         alert.setContentText(message);
         alert.showAndWait();
     }

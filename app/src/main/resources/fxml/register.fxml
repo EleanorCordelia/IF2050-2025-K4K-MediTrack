@@ -4,112 +4,101 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
 <?import javafx.scene.image.*?>
-
 <?import javafx.collections.FXCollections?>
 <?import java.lang.String?>
-<AnchorPane xmlns:fx="http://javafx.com/fxml"
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="com.meditrack.RegisterController"
-            prefWidth="1920.0" prefHeight="1201.0"
+            prefWidth="1200.0" prefHeight="700.0"
             style="-fx-background-color: white;">
 
-    <!-- Right background image -->
-    <ImageView fitWidth="1028" fitHeight="1223" layoutX="872" layoutY="-22" preserveRatio="true" mouseTransparent="true">
-        <image>
-            <Image url="@../images/login background.png" />
-        </image>
-    </ImageView>
+    <left>
+        <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
+            <content>
+                <VBox spacing="15.0" alignment="TOP_CENTER" prefWidth="580.0">
+                    <padding>
+                        <Insets top="30.0" left="40.0" right="40.0" bottom="30.0"/>
+                    </padding>
 
-    <!-- Logo and header -->
-    <HBox layoutX="43" layoutY="32" spacing="10" alignment="CENTER_LEFT">
-        <StackPane prefWidth="56" prefHeight="56" style="-fx-background-color: #112F82; -fx-background-radius: 8;">
-            <ImageView fitWidth="40" fitHeight="40">
+                    <HBox spacing="10.0" alignment="CENTER_LEFT" maxWidth="500.0">
+                        <StackPane prefWidth="50.0" prefHeight="50.0" style="-fx-background-color: #112F82; -fx-background-radius: 8;">
+                            <ImageView fitWidth="30.0" fitHeight="30.0">
+                                <image>
+                                    <Image url="@../images/logo.png"/>
+                                </image>
+                            </ImageView>
+                        </StackPane>
+                        <Label text="MediTrack"
+                               style="-fx-font-family: 'Poppins'; -fx-font-size: 24; -fx-font-weight: 600; -fx-text-fill: #151D48;"/>
+                    </HBox>
+
+                    <Label text="Gabung dengan MediTrack"
+                           style="-fx-font-family: 'Poppins'; -fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #112F82;"/>
+
+                    <VBox spacing="10.0" maxWidth="500.0">
+                        <Label text="Nama Lengkap" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                        <TextField fx:id="fullNameField" promptText="Nama Pengguna" prefHeight="40.0"/>
+
+                        <Label text="Email" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                        <TextField fx:id="emailField" promptText="contoh@email.com" prefHeight="40.0"/>
+
+                        <Label text="Kata Sandi" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                        <PasswordField fx:id="passwordField" promptText="Setidaknya 8 Karakter" prefHeight="40.0"/>
+
+                        <Label text="Konfirmasi Kata Sandi" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                        <PasswordField fx:id="confirmPasswordField" promptText="Setidaknya 8 Karakter" prefHeight="40.0"/>
+
+                        <Label text="Tanggal Lahir" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                        <DatePicker fx:id="dobPicker" promptText="Tanggal Lahir" prefHeight="40.0" prefWidth="Infinity"/>
+
+                        <Label text="Jenis Kelamin" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                        <ComboBox fx:id="genderComboBox" promptText="Pilih Jenis Kelamin" prefHeight="40.0" prefWidth="Infinity">
+                            <items>
+                                <FXCollections fx:factory="observableArrayList">
+                                    <String fx:value="Pria"/>
+                                    <String fx:value="Wanita"/>
+                                </FXCollections>
+                            </items>
+                        </ComboBox>
+
+                        <HBox alignment="CENTER" style="-fx-padding: 5 0 0 0;">
+                            <Button text="Registrasi" onAction="#handleRegister"
+                                    style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #173EAD; -fx-background-radius: 8;"
+                                    prefHeight="45.0"/> </HBox>
+
+                        <Separator/>
+
+                        <HBox alignment="CENTER">
+                            <Label text="Atau" style="-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #294957;"/>
+                        </HBox>
+
+                        <HBox alignment="CENTER">
+                            <Button text="Registrasi dengan Google" onAction="#handleRegisterGoogle"
+                                    style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: #F3F9FA; -fx-background-radius: 8;"
+                                    prefHeight="45.0"/> </HBox>
+
+                        <HBox alignment="CENTER" style="-fx-padding: 5 0 0 0;">
+                            <TextFlow textAlignment="CENTER">
+                                <Text text="Sudah Punya Akun? " style="-fx-fill: #313957; -fx-font-family: 'Poppins';"/>
+                                <Text text="Masuk" style="-fx-fill: #1E4AE9; -fx-font-weight: bold; -fx-font-family: 'Poppins';" onMouseClicked="#handleBackToLogin"/>
+                            </TextFlow>
+                        </HBox>
+                    </VBox>
+                </VBox>
+            </content>
+        </ScrollPane>
+    </left>
+
+    <right>
+        <StackPane prefWidth="600.0" style="-fx-background-color: lightgray;">
+            <ImageView fitWidth="600.0" fitHeight="700.0" preserveRatio="false">
                 <image>
-                    <Image url="@../images/logo.png" />
+                    <Image url="@../images/login.jpg"/>
                 </image>
             </ImageView>
         </StackPane>
-        <Label text="MediTrack" style="-fx-font-family: 'Poppins'; -fx-font-size: 30; -fx-text-fill: #151D48; -fx-font-weight: 600;" />
-    </HBox>
+    </right>
 
-    <Label layoutX="341" layoutY="45" text="Beranda" style="-fx-font-family: 'Poppins'; -fx-font-size: 18; -fx-text-fill: black;" />
-
-    <!-- Register form section -->
-    <VBox layoutX="112" layoutY="121" spacing="20" prefWidth="673">
-        <TextFlow textAlignment="CENTER">
-            <Text text="Gabung " style="-fx-font-family: 'Poppins'; -fx-font-size: 32; -fx-font-weight: 700; -fx-fill: black;" />
-            <Text text="dengan " style="-fx-font-family: 'Poppins'; -fx-font-size: 32; -fx-font-weight: 400; -fx-fill: #112F82;" />
-            <Text text="MediTrack" style="-fx-font-family: 'Poppins'; -fx-font-size: 32; -fx-font-weight: 600; -fx-fill: #112F82;" />
-        </TextFlow>
-
-        <VBox spacing="12">
-            <Label text="Nama Lengkap" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"/>
-            <TextField fx:id="fullNameField" promptText="Nama Pengguna" styleClass="input" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"
-            />
-
-            <Label text="Email" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;" />
-            <TextField fx:id="emailField" promptText="contoh@email.com" styleClass="input" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"
-            />
-
-            <Label text="Kata Sandi" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"/>
-            <PasswordField fx:id="passwordField" promptText="Setidaknya 8 Karakter" styleClass="input" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"
-            />
-
-            <Label text="Konfirmasi Kata Sandi" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"/>
-            <PasswordField fx:id="confirmPasswordField" promptText="Setidaknya 8 Karakter" styleClass="input"  style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"
-            />
-
-
-            <Label text="Tanggal Lahir" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"/>
-            <DatePicker fx:id="dobPicker" promptText="Tanggal Lahir" prefWidth="673"
-                        style="-fx-background-radius: 12; -fx-font-family: 'Poppins'; -fx-text-fill: #0C1421;" />
-
-            <Label text="Jenis Kelamin" style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-text-fill: #0C1421;"/>
-            <ComboBox fx:id="genderComboBox" promptText="Pilih Jenis Kelamin" prefWidth="673" style="-fx-background-radius: 12; ">
-                <items>
-                    <FXCollections fx:factory="observableArrayList">
-                        <String fx:value="Pria" />
-                        <String fx:value="Wanita" />
-                    </FXCollections>
-                </items>
-            </ComboBox>
-        </VBox>
-
-        <Button text="Registrasi" onAction="#handleRegister" prefWidth="673" prefHeight="48"
-                style="-fx-font-family: 'Poppins'; -fx-font-size: 20; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #173EAD; -fx-background-radius: 12;"
-        />
-
-        <Separator prefWidth="673" />
-        <Label text="Atau" style="-fx-alignment: center; -fx-text-fill: #294957;" />
-
-        <Button text="Registrasi dengan Google" prefWidth="673" prefHeight="48"
-                style="-fx-font-family: 'Poppins'; -fx-font-size: 20; -fx-font-weight: bold; -fx-background-color: #F3F9FA; -fx-background-radius: 12;" />
-
-        <TextFlow textAlignment="CENTER">
-            <Text text="Sudah Punya Akun? " style="-fx-fill: #313957;" />
-            <Text text="Masuk" style="-fx-fill: #1E4AE9; -fx-font-weight: bold;" onMouseClicked="#handleBackToLogin" />
-        </TextFlow>
-    </VBox>
-
-    <!-- Dummy.png Icon -->
-    <ImageView layoutX="930" layoutY="810" fitWidth="42" fitHeight="42" preserveRatio="true" mouseTransparent="true">
-        <image>
-            <Image url="@../images/dummy.png" />
-        </image>
-    </ImageView>
-
-    <!-- Bottom-Right Text -->
-    <TextFlow layoutX="970" layoutY="810">
-        <Text text="Hidup Sehat dengan " fill="white">
-            <font>
-                <Font name="Poppins Regular" size="32" />
-            </font>
-        </Text>
-        <Text text="MediTrack" fill="white">
-            <font>
-                <Font name="Poppins Medium" size="32" />
-            </font>
-        </Text>
-    </TextFlow>
-
-</AnchorPane>
+</BorderPane>

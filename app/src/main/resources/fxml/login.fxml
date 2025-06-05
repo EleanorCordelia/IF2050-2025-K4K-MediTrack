@@ -1,200 +1,90 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import javafx.geometry.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.image.Image?>
-<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 <?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
 
-<AnchorPane prefHeight="700.0" prefWidth="1000.0" style="-fx-background-color: white;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meditrack.LoginController">
-    <children>
-        <ImageView fitHeight="1149.0" fitWidth="1028.0" layoutX="892.0" layoutY="-22.0" pickOnBounds="true" preserveRatio="true">
-            <image>
-                <Image url="@../images/login background.png" />
-            </image>
-        </ImageView>
-        <HBox alignment="CENTER_LEFT" layoutX="43.0" layoutY="32.65" prefHeight="56.0" prefWidth="220.0" spacing="10">
-            <children>
-                <StackPane alignment="CENTER" prefHeight="56.0" prefWidth="56.0" style="-fx-background-color: #112F82; -fx-background-radius: 8;">
-                    <ImageView fitHeight="40.0" fitWidth="40.0" pickOnBounds="true" preserveRatio="true">
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="com.meditrack.LoginController"
+            prefWidth="1200.0" prefHeight="700.0"
+            style="-fx-background-color: white;">
+
+    <!-- Kiri: Form Login -->
+    <left>
+        <VBox spacing="20.0" alignment="TOP_CENTER" prefWidth="600.0">
+            <padding>
+                <Insets top="50.0" left="30.0" right="30.0" bottom="50.0"/>
+            </padding>
+
+            <!-- Header -->
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <StackPane prefWidth="50.0" prefHeight="50.0" style="-fx-background-color: #112F82; -fx-background-radius: 8;">
+                    <ImageView fitWidth="30.0" fitHeight="30.0">
                         <image>
-                            <Image url="@../images/logo.png" />
+                            <Image url="@../images/logo.png"/>
                         </image>
                     </ImageView>
                 </StackPane>
-                <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 600;" text="MediTrack" textFill="#151d48">
-                    <font>
-                        <Font size="30.0" />
-                    </font>
-                </Label>
-            </children>
-        </HBox>
-        <Label layoutX="341.0" layoutY="45.48" style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Beranda" textFill="black">
-            <font>
-                <Font size="18.39" />
-            </font>
-        </Label>
+                <Label text="MediTrack"
+                       style="-fx-font-family: 'Poppins'; -fx-font-size: 24; -fx-font-weight: 600; -fx-text-fill: #151D48;"/>
+            </HBox>
 
-        <VBox alignment="TOP_CENTER" layoutX="122.0" layoutY="149.0" prefWidth="673.0" spacing="30.0">
-            <children>
-                <VBox alignment="TOP_CENTER" spacing="28.0">
-                    <children>
-                        <Label alignment="CENTER" contentDisplay="CENTER" prefHeight="36.0" prefWidth="673.0" textAlignment="CENTER">
-                            <font>
-                                <Font name="Poppins" size="36.0" />
-                            </font>
-                            <graphic>
-                                <TextFlow textAlignment="CENTER">
-                                    <children>
-                                        <Text fill="#0c1421" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Telusuri " wrappingWidth="140.0">
-                                            <font>
-                                                <Font size="36.0" />
-                                            </font>
-                                        </Text>
-                                        <Text fill="#0c1421" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins'; -fx-font-weight: 700;" text="Kesehatanmu" wrappingWidth="230.0">
-                                            <font>
-                                                <Font size="36.0" />
-                                            </font>
-                                        </Text>
-                                        <Text fill="#0c1421" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="!" wrappingWidth="10.0">
-                                            <font>
-                                                <Font size="36.0" />
-                                            </font>
-                                        </Text>
-                                    </children>
-                                </TextFlow>
-                            </graphic>
-                        </Label>
-                    </children>
-                </VBox>
-                <Label alignment="CENTER" contentDisplay="CENTER" textAlignment="CENTER">
-                    <font>
-                        <Font name="Poppins" size="32.0" />
-                    </font>
-                    <graphic>
-                        <TextFlow textAlignment="CENTER">
-                            <children>
-                                <Text fill="#112f82" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="dengan ">
-                                    <font>
-                                        <Font size="32.0" />
-                                    </font>
-                                </Text>
-                                <Text fill="#112f82" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins'; -fx-font-weight: 600;" text="MediTrack">
-                                    <font>
-                                        <Font size="32.0" />
-                                    </font>
-                                </Text>
-                            </children>
-                        </TextFlow>
-                    </graphic>
-                </Label>
-                <VBox alignment="CENTER" spacing="24.0">
-                    <children>
-                        <VBox spacing="8.0" styleClass="input-field-container">
-                            <children>
-                                <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Email" textFill="#0c1421">
-                                    <font>
-                                        <Font size="16.0" />
-                                    </font>
-                                </Label>
-                                <TextField fx:id="emailField" prefHeight="48.0" prefWidth="673.0" promptText="contoh@email.com" style="-fx-background-color: #F7FBFF; -fx-background-radius: 12; -fx-border-color: #D4D7E3; -fx-border-radius: 12; -fx-border-width: 1;">
-                                    <font>
-                                        <Font name="Poppins Regular" size="16.0" />
-                                    </font>
-                                </TextField>
-                            </children>
-                        </VBox>
-                        <VBox spacing="8.0" styleClass="input-field-container">
-                            <children>
-                                <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Kata Sandi" textFill="#0c1421">
-                                    <font>
-                                        <Font size="16.0" />
-                                    </font>
-                                </Label>
-                                <PasswordField fx:id="passwordField" prefHeight="48.0" prefWidth="673.0" promptText="Setidaknya 8 Karakter" style="-fx-background-color: #F7FBFF; -fx-background-radius: 12; -fx-border-color: #D4D7E3; -fx-border-radius: 12; -fx-border-width: 1;">
-                                    <font>
-                                        <Font name="Poppins Regular" size="16.0" />
-                                    </font>
-                                </PasswordField>
-                            </children>
-                        </VBox>
-                        <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Lupa Kata Sandi?" textFill="#1e4ae9">
-                            <font>
-                                <Font size="16.0" />
-                            </font>
-                        </Label>
-                        <Button fx:id="loginButton" mnemonicParsing="false" onAction="#handleLoginButton" prefHeight="48.0" prefWidth="673.0" style="-fx-background-color: #173EAD; -fx-background-radius: 12;" text="Masuk" textFill="WHITE">
-                            <font>
-                                <Font name="Poppins Bold" size="20.0" />
-                            </font>
-                            <VBox.margin>
-                                <Insets top="16.0" />
-                            </VBox.margin>
-                        </Button>
-                    </children>
-                </VBox>
-                <VBox spacing="24.0">
-                    <children>
-                        <HBox alignment="CENTER" spacing="16.0">
-                            <children>
-                                <Region HBox.hgrow="ALWAYS" style="-fx-border-color: #CFDFE2; -fx-border-width: 1 0 0 0;" />
-                                <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Atau" textFill="#294957">
-                                    <font>
-                                        <Font size="16.0" />
-                                    </font>
-                                </Label>
-                                <Region HBox.hgrow="ALWAYS" style="-fx-border-color: #CFDFE2; -fx-border-width: 1 0 0 0;" />
-                            </children>
-                            <VBox.margin>
-                                <Insets bottom="10.0" top="10.0" />
-                            </VBox.margin>
-                        </HBox>
-                        <Button fx:id="loginGoogleButton" mnemonicParsing="false" onAction="#handleLoginGoogleButton" prefHeight="52.0" prefWidth="673.0" style="-fx-background-color: #F3F9FA; -fx-background-radius: 12;">
-                            <graphic>
-                                <HBox alignment="CENTER" spacing="16.0">
-                                    <children>
-                                        <ImageView fitHeight="28.0" fitWidth="28.0" pickOnBounds="true" preserveRatio="true">
-                                            <image>
-                                                <Image url="@../images/google_icon.png" />
-                                            </image>
-                                        </ImageView>
-                                        <Label style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Masuk dengan Google" textFill="#313957">
-                                            <font>
-                                                <Font size="16.0" />
-                                            </font>
-                                        </Label>
-                                    </children>
-                                </HBox>
-                            </graphic>
-                        </Button>
-                    </children>
-                </VBox>
-                <Label alignment="CENTER" contentDisplay="CENTER" textAlignment="CENTER">
-                    <font>
-                        <Font name="Poppins" size="18.0" />
-                    </font>
-                    <graphic>
-                        <TextFlow textAlignment="CENTER">
-                            <children>
-                                <Text fill="#313957" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins'; -fx-font-weight: 400;" text="Tidak Punya Akun? ">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Text>
-                                <Text fx:id="registerLink" fill="#1e4ae9" strokeType="OUTSIDE" strokeWidth="0.0" style="-fx-font-family: 'Poppins'; -fx-font-weight: 700;" text="Registrasi" onMouseClicked="#handleRegisterLink" underline="true">
-                                    <font>
-                                        <Font size="18.0" />
-                                    </font>
-                                </Text>
-                            </children>
-                        </TextFlow>
-                    </graphic>
-                </Label>
-            </children>
-            <padding>
-                <Insets bottom="30.0" />
-            </padding>
+            <!-- Title -->
+            <Label text="Masuk ke MediTrack"
+                   style="-fx-font-family: 'Poppins'; -fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #112F82;"/>
+
+            <!-- Form -->
+            <VBox spacing="12.0" prefWidth="500.0"> <!-- VBox untuk form, children defaultnya rata kiri -->
+                <Label text="Email" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                <TextField fx:id="emailField" promptText="contoh@email.com" prefHeight="40.0"/>
+
+                <Label text="Kata Sandi" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                <PasswordField fx:id="passwordField" promptText="Setidaknya 8 Karakter" prefHeight="40.0"/>
+
+                <!-- Tombol Masuk di tengah -->
+                <HBox alignment="CENTER">
+                    <Button text="Masuk" onAction="#handleLoginButton"
+                            style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #173EAD; -fx-background-radius: 8;"
+                            prefHeight="45.0"/>
+                </HBox>
+
+                <Separator/>
+
+                <!-- Label "Atau" di tengah -->
+                <HBox alignment="CENTER">
+                    <Label text="Atau" style="-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #294957;"/>
+                </HBox>
+
+                <!-- Tombol Masuk dengan Google di tengah -->
+                <HBox alignment="CENTER">
+                    <Button text="Masuk dengan Google" onAction="#handleLoginGoogleButton"
+                            style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: #F3F9FA; -fx-background-radius: 8;"
+                            prefHeight="45.0"/>
+                </HBox>
+
+                <!-- TextFlow di tengah -->
+                <HBox alignment="CENTER">
+                    <TextFlow textAlignment="CENTER"> <!-- textAlignment="CENTER" menengahkan Teks di dalam TextFlow -->
+                        <Text text="Belum punya akun? " style="-fx-fill: #313957;"/>
+                        <Text text="Registrasi" style="-fx-fill: #1E4AE9; -fx-font-weight: bold;" onMouseClicked="#handleRegisterLink"/>
+                    </TextFlow>
+                </HBox>
+            </VBox>
         </VBox>
-    </children>
-</AnchorPane>
+    </left>
+
+    <!-- Kanan: Gambar -->
+    <right>
+        <StackPane prefWidth="600.0">
+            <ImageView fitWidth="600.0" fitHeight="700.0" preserveRatio="false">
+                <image>
+                    <Image url="@../images/login.jpg"/>
+                </image>
+            </ImageView>
+        </StackPane>
+    </right>
+
+</BorderPane>
