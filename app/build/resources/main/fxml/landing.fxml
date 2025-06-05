@@ -12,6 +12,7 @@
             style="-fx-font-family: 'Poppins'; -fx-background-color: white;">
 
     <!-- Header -->
+
     <top>
         <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-background-color: white;">
             <padding>
@@ -34,36 +35,46 @@
 
     <!-- Center Section -->
     <center>
-        <HBox spacing="30">
+        <VBox spacing="15">
             <padding>
                 <Insets top="30" right="30" bottom="30" left="30"/>
             </padding>
-            <VBox spacing="15" prefWidth="600">
-                <Label text="Bersama" style="-fx-font-size: 36px; -fx-font-weight: bold;"/>
-                <Label text="MediTrack" style="-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: #10217d;"/>
-                <Label text="Jaga Kesehatan dengan Lebih Mudah!"
-                       style="-fx-font-size: 20px; -fx-font-style: italic;"/>
-                <Label wrapText="true"
-                       text="MediTrack adalah platform kesehatan digital yang dirancang untuk membantu Anda mengelola aktivitas kesehatan sehari-hari secara praktis dan terintegrasi. Dengan fitur canggih seperti pencatatan konsumsi obat, pemantauan kondisi kesehatan melalui wearable device, serta konsultasi online dengan dokter, MediTrack memudahkan Anda dalam menjaga pola hidup sehat secara holistik. Mulai dari mengatur jadwal harian hingga mendapatkan rekomendasi personal, semua dapat dilakukan dalam satu aplikasi yang intuitif dan mudah digunakan."
-                       style="-fx-font-size: 14px;"/>
-                <Label text="Bergabunglah dengan komunitas MediTrack dan mulai perjalanan hidup sehat Anda hari ini!"
-                       style="-fx-text-fill: #10217d; -fx-font-size: 14px; -fx-font-weight: bold;"/>
-                <HBox spacing="15">
-                    <Button fx:id="gabungButton"
-                            text="Gabung untuk Perubahan"
-                            onAction="#handleGabungAction"
-                            style="-fx-background-color: #112f82; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 10;" />
-                    <Button text="Pelajari Lebih Lanjut"
-                            style="-fx-background-color: #eef6ff; -fx-text-fill: #112f82; -fx-border-color: #112f82; -fx-border-width: 1; -fx-border-radius: 10;"/>
-                </HBox>
-            </VBox>
+            <HBox spacing="30">
+                <VBox spacing="15" prefWidth="600">
+                    <Label text="Bersama" style="-fx-font-size: 36px; -fx-font-weight: bold;"/>
+                    <Label text="MediTrack" style="-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: #10217d;"/>
+                    <Label text="Jaga Kesehatan dengan Lebih Mudah!"
+                           style="-fx-font-size: 20px; -fx-font-style: italic;"/>
+                    <Label wrapText="true"
+                           text="MediTrack adalah platform kesehatan digital yang dirancang untuk membantu Anda mengelola aktivitas kesehatan sehari-hari secara praktis dan terintegrasi. Dengan fitur canggih seperti pencatatan konsumsi obat, pemantauan kondisi kesehatan melalui wearable device, serta konsultasi online dengan dokter, MediTrack memudahkan Anda dalam menjaga pola hidup sehat secara holistik. Mulai dari mengatur jadwal harian hingga mendapatkan rekomendasi personal, semua dapat dilakukan dalam satu aplikasi yang intuitif dan mudah digunakan."
+                           style="-fx-font-size: 14px;"/>
+                    <Label text="Bergabunglah dengan komunitas MediTrack dan mulai perjalanan hidup sehat Anda hari ini!"
+                           style="-fx-text-fill: #10217d; -fx-font-size: 14px; -fx-font-weight: bold;"/>
+                    <HBox spacing="15">
+                        <Button fx:id="gabungButton"
+                                text="Gabung untuk Perubahan"
+                                onAction="#handleGabungAction"
+                                style="-fx-background-color: #112f82; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 10;"/>
+                        <Button text="Pelajari Lebih Lanjut"
+                                style="-fx-background-color: #eef6ff; -fx-text-fill: #112f82; -fx-border-color: #112f82; -fx-border-width: 1; -fx-border-radius: 10;"/>
+                    </HBox>
+                </VBox>
 
-            <ImageView fitWidth="500" preserveRatio="true">
-                <image>
-                    <Image url="@/images/doctor.png"/>
-                </image>
-            </ImageView>
-        </HBox>
+                <ImageView fitWidth="500" preserveRatio="true">
+                    <image>
+                        <Image url="@/images/doctor.png"/>
+                    </image>
+                </ImageView>
+            </HBox>
+
+            <!-- Tambahkan tombol Kelola Pengguna di bawah konten utama -->
+            <HBox alignment="CENTER">
+                <Button text="Kelola Pengguna"
+                        onAction="#handlePenggunaAction"
+                        style="-fx-background-color: #2196F3; -fx-text-fill: white;"
+                        prefWidth="200" prefHeight="40"/>
+            </HBox>
+        </VBox>
     </center>
 
     <!-- Footer -->

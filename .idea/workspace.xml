@@ -4,7 +4,7 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="commit landing">
+    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="fix(login,register): perbaiki koneksi database, benahi tampilan GUI agar konsisten">
       <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/PenggunaController.java" afterDir="false" />
       <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/pengguna.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
@@ -24,12 +24,7 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand>
-              <path>
-                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
-                <item name="MediTrack" type="f1a62948:ProjectNode" />
-              </path>
-            </expand>
+            <expand />
             <select />
           </tree_state>
         </projects_view>
@@ -39,45 +34,39 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
-        <option value="JavaFXApplication" />
         <option value="Class" />
       </list>
     </option>
   </component>
   <component name="Git.Settings">
-    <option name="RECENT_BRANCH_BY_REPOSITORY">
-      <map>
-        <entry key="$PROJECT_DIR$" value="develop" />
-      </map>
-    </option>
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 3
 }</component>
-  <component name="ProjectId" id="2y2FYavWMIV3uykEP6jP7S6rnwy" />
+  <component name="ProjectId" id="2y5BysbWGcZYfcye9XzgokTpnj7" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "Gradle.MediTrack-Tugas-Besar-DRPL:app [:app:MainApp.main()].executor": "Run",
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "manajemen-pengguna",
-    "ignore.virus.scanning.warn.message": "true",
-    "kotlin-language-version-configured": "true",
-    "last_opened_file_path": "C:/Users/LENOVO/Documents/SEMESTER 6/RPL/TUBES HAHAHIHI/MediTrack-Tugas-Besar-DRPL",
-    "project.structure.last.edited": "Modules",
-    "project.structure.proportion": "0.0",
-    "project.structure.side.proportion": "0.0"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;manajemen-pengguna&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;,
+    &quot;last_opened_file_path&quot;: &quot;C:/Users/LENOVO/Documents/SEMESTER 6/RPL/TUBES HAHAHIHI/MediTrack-Tugas-Besar-DRPL&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Modules&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.0&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
-    <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+    <configuration name="MainApp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.meditrack.MainApp" />
       <module name="MediTrack.app.main" />
+      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.meditrack.*" />
@@ -100,51 +89,17 @@
   <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="" />
-      <created>1749024809155</created>
+      <changelist id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="feat: add user management feature (dummy data, not connected to DB yet)" />
+      <created>1749114819699</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1749024809155</updated>
+      <updated>1749114819699</updated>
     </task>
-    <task id="LOCAL-00001" summary="Add landing page">
-      <option name="closed" value="true" />
-      <created>1749025365755</created>
-      <option name="number" value="00001" />
-      <option name="presentableId" value="LOCAL-00001" />
-      <option name="project" value="LOCAL" />
-      <updated>1749025365755</updated>
-    </task>
-    <task id="LOCAL-00002" summary="Add landing page">
-      <option name="closed" value="true" />
-      <created>1749025564313</created>
-      <option name="number" value="00002" />
-      <option name="presentableId" value="LOCAL-00002" />
-      <option name="project" value="LOCAL" />
-      <updated>1749025564313</updated>
-    </task>
-    <task id="LOCAL-00003" summary="commit menu">
-      <option name="closed" value="true" />
-      <created>1749026507951</created>
-      <option name="number" value="00003" />
-      <option name="presentableId" value="LOCAL-00003" />
-      <option name="project" value="LOCAL" />
-      <updated>1749026507951</updated>
-    </task>
-    <task id="LOCAL-00004" summary="commit landing">
-      <option name="closed" value="true" />
-      <created>1749027474681</created>
-      <option name="number" value="00004" />
-      <option name="presentableId" value="LOCAL-00004" />
-      <option name="project" value="LOCAL" />
-      <updated>1749027474681</updated>
-    </task>
-    <option name="localTasksCounter" value="5" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
-    <MESSAGE value="Add landing page" />
-    <MESSAGE value="commit menu" />
-    <MESSAGE value="commit landing" />
-    <option name="LAST_COMMIT_MESSAGE" value="commit landing" />
+    <MESSAGE value="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO." />
+    <MESSAGE value="fix(login,register): perbaiki koneksi database, benahi tampilan GUI agar konsisten" />
+    <option name="LAST_COMMIT_MESSAGE" value="fix(login,register): perbaiki koneksi database, benahi tampilan GUI agar konsisten" />
   </component>
 </project>
