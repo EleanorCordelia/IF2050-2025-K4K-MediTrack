@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/20"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.meditrack.controller.NotifikasiController"
+      spacing="10" padding="10">
+
+    <!-- Judul Halaman -->
+    <Label text="Daftar Notifikasi"
+           style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <!-- Tabel Notifikasi -->
+    <TableView fx:id="tableNotifikasi" prefHeight="400">
+        <columns>
+            <TableColumn text="ID Notifikasi"    fx:id="colIdNotifikasi"   prefWidth="80"  />
+            <TableColumn text="ID Pengguna"      fx:id="colIdPengguna"     prefWidth="100" />
+            <TableColumn text="Isi"              fx:id="colIsi"            prefWidth="250" />
+            <TableColumn text="Status Baca"      fx:id="colStatusBaca"     prefWidth="100" />
+            <TableColumn text="Waktu Dikirim"    fx:id="colWaktuDikirim"   prefWidth="180" />
+        </columns>
+    </TableView>
+
+    <!-- Tombol CRUD dan Refresh -->
+    <HBox spacing="10">
+        <Button text="Tambah" onAction="#onAddNotifikasi"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;" />
+        <Button text="Edit"   onAction="#onEditNotifikasi"
+                style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-size: 14px;" />
+        <Button text="Hapus"  onAction="#onDeleteNotifikasi"
+                style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 14px;" />
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Refresh" onAction="#onRefresh"
+                style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px;" />
+    </HBox>
+</VBox>

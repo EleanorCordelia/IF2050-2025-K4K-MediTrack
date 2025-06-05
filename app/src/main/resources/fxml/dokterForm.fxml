@@ -1,0 +1,64 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.DatePicker?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="450.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.meditrack.controller.DokterFormController">
+    <children>
+        <GridPane layoutX="14.0" layoutY="58.0" prefHeight="320.0" prefWidth="570.0" AnchorPane.leftAnchor="15.0" AnchorPane.rightAnchor="15.0" AnchorPane.topAnchor="50.0">
+            <columnConstraints>
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="279.0" minWidth="10.0" prefWidth="150.0" />
+                <ColumnConstraints hgrow="SOMETIMES" maxWidth="420.0" minWidth="10.0" prefWidth="420.0" />
+            </columnConstraints>
+            <rowConstraints>
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+                <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+            </rowConstraints>
+            <children>
+                <Label text="Nama Dokter:" GridPane.rowIndex="0" />
+                <TextField fx:id="namaDokterField" GridPane.columnIndex="1" GridPane.rowIndex="0" />
+                <Label text="Spesialisasi:" GridPane.rowIndex="1" />
+                <TextField fx:id="spesialisasiField" GridPane.columnIndex="1" GridPane.rowIndex="1" />
+                <Label text="Nomor STR:" GridPane.rowIndex="2" />
+                <TextField fx:id="nomorSTRField" GridPane.columnIndex="1" GridPane.rowIndex="2" />
+                <Label text="Jenis Kelamin:" GridPane.rowIndex="3" />
+                <ComboBox fx:id="jenisKelaminComboBox" prefWidth="150.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+                <Label text="Tanggal Lahir:" GridPane.rowIndex="4" />
+                <DatePicker fx:id="tanggalLahirPicker" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                <Label text="Nomor Telepon:" GridPane.rowIndex="5" />
+                <TextField fx:id="nomorTeleponField" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                <Label text="Alamat:" GridPane.rowIndex="6" />
+                <TextField fx:id="alamatField" GridPane.columnIndex="1" GridPane.rowIndex="6" />
+            </children>
+        </GridPane>
+        <Label layoutX="15.0" layoutY="14.0" text="Form Data Dokter">
+            <font>
+                <Font name="System Bold" size="18.0" />
+            </font>
+        </Label>
+        <HBox alignment="CENTER_RIGHT" layoutX="386.0" layoutY="390.0" spacing="10.0" AnchorPane.bottomAnchor="20.0" AnchorPane.rightAnchor="15.0">
+            <children>
+                <Button fx:id="simpanButton" mnemonicParsing="false" text="Simpan" />
+                <Button fx:id="batalButton" mnemonicParsing="false" text="Batal" />
+            </children>
+        </HBox>
+    </children>
+    <padding>
+        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+    </padding>
+</AnchorPane>
