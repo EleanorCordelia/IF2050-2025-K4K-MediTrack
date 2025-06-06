@@ -1,9 +1,8 @@
-# Abaikan konfigurasi IntelliJ IDEA
+# Ignore Gradle project-specific cache directory
+.gradle
+
+# Ignore Gradle build output directory
+build
+# IntelliJ IDEA project files
 .idea/
 *.iml
-
-# Abaikan direktori Gradle cache
-.gradle/
-
-# Abaikan laporan build
-build/

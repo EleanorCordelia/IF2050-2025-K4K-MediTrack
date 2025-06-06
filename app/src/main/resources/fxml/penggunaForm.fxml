@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<DialogPane xmlns="http://javafx.com/javafx/20" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="com.meditrack.controller.PenggunaFormController">
+    <content>
+        <GridPane hgap="10" vgap="10" padding="20">
+            <Label text="Nama:" GridPane.rowIndex="0" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfNama" GridPane.rowIndex="0" GridPane.columnIndex="1" prefWidth="200"/>
+
+            <Label text="Email:" GridPane.rowIndex="1" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfEmail" GridPane.rowIndex="1" GridPane.columnIndex="1"/>
+
+            <Label text="Password:" GridPane.rowIndex="2" GridPane.columnIndex="0"/>
+            <PasswordField fx:id="tfPassword" GridPane.rowIndex="2" GridPane.columnIndex="1"/>
+
+            <Label text="Tanggal Lahir (YYYY-MM-DD):" GridPane.rowIndex="3" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfTanggal" GridPane.rowIndex="3" GridPane.columnIndex="1"/>
+
+            <Label text="Jenis Kelamin:" GridPane.rowIndex="4" GridPane.columnIndex="0"/>
+            <ComboBox fx:id="cbJenisKel" GridPane.rowIndex="4" GridPane.columnIndex="1" prefWidth="200">
+                <items>
+                    <FXCollections fx:factory="observableArrayList">
+                        <String fx:value="Pria"/>
+                        <String fx:value="Wanita"/>
+                        <String fx:value="Lainnya"/>
+                    </FXCollections>
+                </items>
+            </ComboBox>
+
+            <Label text="Tinggi (m):" GridPane.rowIndex="5" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfTinggi" GridPane.rowIndex="5" GridPane.columnIndex="1"/>
+
+            <Label text="Berat (kg):" GridPane.rowIndex="6" GridPane.columnIndex="0"/>
+            <TextField fx:id="tfBerat" GridPane.rowIndex="6" GridPane.columnIndex="1"/>
+        </GridPane>
+    </content>
+    <buttonTypes>
+        <ButtonType text="Simpan" buttonData="OK_DONE"/>
+        <ButtonType text="Batal" buttonData="CANCEL_CLOSE"/>
+    </buttonTypes>
+</DialogPane>
