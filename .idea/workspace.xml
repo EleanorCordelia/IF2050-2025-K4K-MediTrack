@@ -5,8 +5,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="fix(login,register): perbaiki koneksi database, benahi tampilan GUI agar konsisten">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/DatabaseUtil.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/UserSession.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" afterDir="false" />
@@ -16,13 +15,9 @@
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/meditrack.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/PenggunaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/ManajemenPenggunaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/ManajemenPenggunaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/ManajemenPenggunaController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/PenggunaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/PenggunaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Pengguna.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Pengguna.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/SQLiteConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/SQLiteConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/menu.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/menu.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/pengguna.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/manajemenpengguna.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/manajemenpengguna.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/manajemenpengguna.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -111,6 +106,15 @@
       <option name="presentableId" value="Default" />
       <updated>1749114819699</updated>
     </task>
+    <task id="LOCAL-00001" summary="fix(jadwal): fix all bugs, connect to database, and implement CRUD&#10;&#10;- Fixed issues causing schedule module bugs.&#10;- Established database connection.&#10;- Completed Create, Read, Update, and Delete operations.">
+      <option name="closed" value="true" />
+      <created>1749234294389</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749234294389</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">

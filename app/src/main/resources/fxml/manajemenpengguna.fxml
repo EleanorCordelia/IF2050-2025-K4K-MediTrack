@@ -121,7 +121,7 @@
                 text="Keluar">
             <graphic>
                 <ImageView fitHeight="20.0" fitWidth="20.0">
-                    <Image url="@/images/person-icon.jpg"/>
+                    <Image url="@/images/carlos_fernando.jpg"/>
                 </ImageView>
             </graphic>
         </Button>
@@ -151,7 +151,7 @@
                                style="-fx-cursor: hand;"
                                onMouseClicked="#handleChangeProfilePicture">
                         <image>
-                            <Image url="@/images/edit-icon.png"/>
+                            <Image url="@/images/icon.png"/>
                         </image>
                         <StackPane.margin>
                             <Insets left="50.0" top="50.0"/>
@@ -200,7 +200,7 @@
 
                 <HBox spacing="10" alignment="CENTER_LEFT">
                     <Label text="Jenis Kelamin:" prefWidth="120"/>
-                    <ChoiceBox fx:id="jenisKelaminChoiceBox" prefWidth="500"/>
+                    <ChoiceBox fx:id="jenisKelamin" prefWidth="500"/>
                 </HBox>
 
                 <HBox spacing="10" alignment="CENTER_LEFT">
@@ -216,6 +216,9 @@
                 <Button text="Simpan Perubahan"
                         onAction="#handleUpdateUserInfo"
                         style="-fx-background-color: #1D4ED8; -fx-text-fill: white; -fx-background-radius: 8;"/>
+                <Button text="Hapus Akun"
+                        onAction="#handleDeleteAccount"
+                        style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 8;"/>
             </VBox>
         </VBox>
     </ScrollPane>

@@ -67,7 +67,7 @@ public class PenggunaDAO {
     }
 
     public boolean updatePengguna(Pengguna pengguna) {
-        String sql = "UPDATE pengguna SET nama = ?, email = ?, password = ?, tanggal_lahir = ?, jenis_kelamin = ?, tinggi_badan = ?, berat_badan = ?, avatarPath = ? WHERE idPengguna = ?";
+        String sql = "UPDATE pengguna SET nama = ?, email = ?, password = ?, tanggalLahir = ?, jenisKelamin = ?, tinggiBadan = ?, beratBadan = ? WHERE idPengguna = ?";
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setString(1, pengguna.getNama());
@@ -75,10 +75,17 @@ public class PenggunaDAO {
             ps.setString(3, pengguna.getPassword());
             ps.setString(4, pengguna.getTanggalLahir());
             ps.setString(5, pengguna.getJenisKelamin());
-            ps.setDouble(6, pengguna.getTinggiBadan());
-            ps.setDouble(7, pengguna.getBeratBadan());
-            ps.setString(8, pengguna.getAvatarPath());
-            ps.setInt(9, pengguna.getId());
+            if (pengguna.getTinggiBadan() != null) {
+                ps.setDouble(6, pengguna.getTinggiBadan());
+            } else {
+                ps.setNull(6, Types.REAL);
+            }
+            if (pengguna.getBeratBadan() != null) {
+                ps.setDouble(7, pengguna.getBeratBadan());
+            } else {
+                ps.setNull(7, Types.REAL);
+            }
+            ps.setInt(8, pengguna.getIdPengguna());
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {
             e.printStackTrace();
@@ -87,15 +94,35 @@ public class PenggunaDAO {
     }
 
     public boolean deletePengguna(int idPengguna) {
-        String sql = "DELETE FROM pengguna WHERE idPengguna = ?";
+        String selectSql = "SELECT * FROM pengguna WHERE idPengguna = ?";
+        String deleteSql = "DELETE FROM pengguna WHERE idPengguna = ?";
 
         try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+             PreparedStatement selectPs = conn.prepareStatement(selectSql);
+             PreparedStatement deletePs = conn.prepareStatement(deleteSql)) {
 
-            ps.setInt(1, idPengguna);
-            return ps.executeUpdate() > 0;
+            // Pastikan pengguna dengan id tersebut ada
+            selectPs.setInt(1, idPengguna);
+            ResultSet rs = selectPs.executeQuery();
+
+            if (rs.next()) {
+                // Hapus pengguna
+                deletePs.setInt(1, idPengguna);
+                int affectedRows = deletePs.executeUpdate();
+                if (affectedRows > 0) {
+                    System.out.println("Pengguna berhasil dihapus dengan ID: " + idPengguna);
+                    return true;
+                } else {
+                    System.out.println("Gagal menghapus pengguna dengan ID: " + idPengguna);
+                    return false;
+                }
+            } else {
+                System.out.println("Pengguna dengan ID " + idPengguna + " tidak ditemukan.");
+                return false;
+            }
 
         } catch (SQLException e) {
+            System.err.println("Terjadi kesalahan saat menghapus pengguna: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
