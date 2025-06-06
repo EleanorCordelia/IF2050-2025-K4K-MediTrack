@@ -1,0 +1,9 @@
+# Abaikan konfigurasi IntelliJ IDEA
+.idea/
+*.iml
+
+# Abaikan direktori Gradle cache
+.gradle/
+
+# Abaikan laporan build
+build/
