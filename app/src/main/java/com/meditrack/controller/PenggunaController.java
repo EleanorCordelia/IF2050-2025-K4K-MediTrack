@@ -4,28 +4,40 @@ import com.meditrack.dao.PenggunaDAO;
 import com.meditrack.model.Pengguna;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.stage.Stage;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 public class PenggunaController {
 
     @FXML private TableView<Pengguna> tablePengguna;
     @FXML private TableColumn<Pengguna, Integer> colId;
-    @FXML private TableColumn<Pengguna, String>  colNama;
-    @FXML private TableColumn<Pengguna, String>  colEmail;
-    @FXML private TableColumn<Pengguna, String>  colTanggal;
-    @FXML private TableColumn<Pengguna, String>  colJenisKel;
-    @FXML private TableColumn<Pengguna, Double>  colTinggi;
-    @FXML private TableColumn<Pengguna, Double>  colBerat;
+    @FXML private TableColumn<Pengguna, String> colNama;
+    @FXML private TableColumn<Pengguna, String> colEmail;
+    @FXML private TableColumn<Pengguna, String> colTanggal;
+    @FXML private TableColumn<Pengguna, String> colJenisKel;
+    @FXML private TableColumn<Pengguna, Double> colTinggi;
+    @FXML private TableColumn<Pengguna, Double> colBerat;
 
     private final PenggunaDAO penggunaDAO = new PenggunaDAO();
 
     @FXML
     public void initialize() {
+        // Binding kolom ke properti model
         colId.setCellValueFactory(new PropertyValueFactory<>("idPengguna"));
         colNama.setCellValueFactory(new PropertyValueFactory<>("nama"));
         colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
@@ -34,6 +46,7 @@ public class PenggunaController {
         colTinggi.setCellValueFactory(new PropertyValueFactory<>("tinggiBadan"));
         colBerat.setCellValueFactory(new PropertyValueFactory<>("beratBadan"));
 
+        // Load data awal
         loadPenggunaTable();
     }
 
@@ -48,5 +61,100 @@ public class PenggunaController {
         loadPenggunaTable();
     }
 
-    // (Opsional) onAddPengguna(), onEditPengguna(), onDeletePengguna() dapat ditambahkan sesuai kebutuhan.
+    @FXML
+    private void onAddPengguna() {
+        try {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/penggunaForm.fxml"));
+            dialog.setDialogPane(loader.load());
+            PenggunaFormController formController = loader.getController();
+            formController.setPengguna(null); // mode tambah
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get().getButtonData().isDefaultButton()) {
+                Pengguna newP = formController.getPenggunaFromForm();
+                if (newP != null) {
+                    boolean sukses = penggunaDAO.insertPengguna(newP);
+                    if (sukses) {
+                        loadPenggunaTable();
+                        showAlert("Sukses", "Data pengguna berhasil ditambahkan!", Alert.AlertType.INFORMATION);
+                    } else {
+                        showAlert("Error", "Gagal menyimpan data!", Alert.AlertType.ERROR);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onEditPengguna() {
+        Pengguna selected = tablePengguna.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Peringatan", "Pilih baris data terlebih dahulu!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        try {
+            Dialog<ButtonType> dialog = new Dialog<>();
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/penggunaForm.fxml"));
+            dialog.setDialogPane(loader.load());
+            PenggunaFormController formController = loader.getController();
+            formController.setPengguna(selected); // mode edit
+
+            Optional<ButtonType> result = dialog.showAndWait();
+            if (result.isPresent() && result.get().getButtonData().isDefaultButton()) {
+                Pengguna edited = formController.getPenggunaFromForm();
+                if (edited != null) {
+                    boolean sukses = penggunaDAO.updatePengguna(edited);
+                    if (sukses) {
+                        loadPenggunaTable();
+                        showAlert("Sukses", "Data pengguna berhasil diupdate!", Alert.AlertType.INFORMATION);
+                    } else {
+                        showAlert("Error", "Gagal mengupdate data!", Alert.AlertType.ERROR);
+                    }
+                }
+            }
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @FXML
+    private void onDeletePengguna() {
+        Pengguna selected = tablePengguna.getSelectionModel().getSelectedItem();
+        if (selected == null) {
+            showAlert("Peringatan", "Pilih baris data terlebih dahulu!", Alert.AlertType.WARNING);
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
+                "Apakah Anda yakin ingin menghapus pengguna: " + selected.getNama() + "?",
+                ButtonType.YES, ButtonType.NO);
+        Optional<ButtonType> result = confirm.showAndWait();
+
+        if (result.isPresent() && result.get() == ButtonType.YES) {
+            boolean sukses = penggunaDAO.deletePengguna(selected.getIdPengguna());
+            if (sukses) {
+                loadPenggunaTable();
+                showAlert("Sukses", "Data pengguna berhasil dihapus!", Alert.AlertType.INFORMATION);
+            } else {
+                showAlert("Error", "Gagal menghapus data!", Alert.AlertType.ERROR);
+            }
+        }
+    }
+
+    @FXML
+    private void onBack(ActionEvent event) throws IOException {
+        Parent root = FXMLLoader.load(getClass().getResource("/fxml/landing.fxml"));
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        stage.setScene(new Scene(root));
+    }
+
+    private void showAlert(String title, String message, Alert.AlertType type) {
+        Alert alert = new Alert(type, message, ButtonType.OK);
+        alert.setTitle(title);
+        alert.showAndWait();
+    }
 }

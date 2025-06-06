@@ -16,7 +16,6 @@ public class SQLiteConnection {
                 e.printStackTrace();
             }
             conn = DriverManager.getConnection(DB_URL);
-            // Aktifkan foreign key jika schema DB menggunakan FK
             conn.createStatement().execute("PRAGMA foreign_keys = ON");
         }
         return conn;
@@ -26,7 +25,7 @@ public class SQLiteConnection {
         if (conn != null) {
             try {
                 conn.close();
-            } catch (SQLException ignored) { }
+            } catch (SQLException ignored) {}
         }
     }
 }
