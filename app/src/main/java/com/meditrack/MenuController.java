@@ -218,6 +218,27 @@ public class MenuController implements Initializable {
         }
     }
 
+    @FXML
+    private void handleJadwalButton(ActionEvent event) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("jadwalPengguna.fxml"));
+            Parent jadwalRoot = loader.load();
+
+            // (Optional) kalau kamu mau lewatkan data, kamu bisa ambil controllernya:
+            // JadwalPenggunaController controller = loader.getController();
+            // controller.setUser(userData); // misalnya set user
+
+            Scene jadwalScene = new Scene(jadwalRoot);
+            Stage jadwalStage = new Stage();
+            jadwalStage.setTitle("Jadwal Pengguna");
+            jadwalStage.setScene(jadwalScene);
+            jadwalStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorDialog("Gagal Membuka Jadwal", "Tidak dapat memuat halaman Jadwal Pengguna.");
+        }
+    }
+
     private void populateKonsultasiCepat() {
         if (konsultasiCepatPane == null) return;
         konsultasiCepatPane.getChildren().clear();
@@ -439,12 +460,14 @@ public class MenuController implements Initializable {
     private void handleSidebarButton(ActionEvent event) {
         Button clickedButton = (Button) event.getSource();
 
+        // Blok untuk Tombol Logout (sudah benar)
         if (clickedButton == logoutButton) {
             System.out.println("Logout action triggered");
             try {
                 URL landingFxmlUrl = getClass().getResource("/fxml/landing.fxml");
                 if (landingFxmlUrl == null) {
                     System.err.println("Error: Cannot find /fxml/landing.fxml for logout.");
+                    showErrorDialog("Gagal Logout", "Tidak dapat menemukan file landing.fxml.");
                     return;
                 }
                 Parent landingRoot = FXMLLoader.load(landingFxmlUrl);
@@ -458,10 +481,61 @@ public class MenuController implements Initializable {
                 e.printStackTrace();
                 showErrorDialog("Gagal Logout", "Tidak dapat kembali ke halaman landing.");
             }
-            return;
+            return; // Keluar dari method setelah logout
         }
 
-        setActiveButton(clickedButton); // Pindahkan ini setelah pengecekan logout
+        // --- PENAMBAHAN LOGIKA UNTUK TOMBOL JADWAL ---
+        // Jika tombol yang diklik adalah tombol Jadwal
+        if (clickedButton == jadwalButton) {
+            // Pesan ini untuk memastikan kliknya terdeteksi
+            System.out.println("Tombol 'Jadwal' diklik, mencoba memuat FXML...");
+
+            try {
+                // 1. Dapatkan URL dan cek secara eksplisit
+                URL fxmlUrl = getClass().getResource("/fxml/jadwalPengguna.fxml"); // Menggunakan path relatif dari Solusi Cepat
+                // JIKA ANDA MENGIKUTI SOLUSI 2 (STRUKTUR FOLDER BARU), GUNAKAN BARIS DI BAWAH INI:
+                // URL fxmlUrl = getClass().getResource("/fxml/jadwalPengguna.fxml");
+
+                if (fxmlUrl == null) {
+                    // Jika path salah, kita buat error yang jelas SEBELUM FXMLLoader gagal.
+                    System.err.println("Error: fxmlUrl adalah null. File tidak ditemukan pada path yang diberikan.");
+                    showErrorDialog("File FXML Tidak Ditemukan", "Tidak dapat menemukan 'jadwalPengguna.fxml'. Pastikan file berada di lokasi yang benar dan proyek sudah di-rebuild.");
+                    return; // Hentikan eksekusi jika file tidak ada
+                }
+
+                System.out.println("URL FXML ditemukan: " + fxmlUrl.toExternalForm());
+
+                // 2. Lanjutkan proses loading
+                FXMLLoader loader = new FXMLLoader(fxmlUrl);
+                Parent jadwalRoot = loader.load();
+
+                System.out.println("FXML berhasil di-load. Menyiapkan Stage...");
+
+                Scene jadwalScene = new Scene(jadwalRoot);
+                Stage jadwalStage = new Stage();
+                jadwalStage.setTitle("MediTrack - Jadwal Pengguna");
+                // (Opsional) Coba nonaktifkan baris ikon ini untuk sementara jika menyebabkan error
+                // jadwalStage.getIcons().add(new Image(getClass().getResourceAsStream("/images/logo.png")));
+                jadwalStage.setScene(jadwalScene);
+
+                jadwalStage.show();
+                System.out.println("Jendela Jadwal berhasil ditampilkan.");
+
+            } catch (Exception e) {
+                // 3. TANGKAP SEMUA JENIS EXCEPTION
+                // Ini akan menangkap IOException, IllegalStateException, dll.
+                System.err.println("Terjadi error saat mencoba membuka jendela jadwal!");
+                e.printStackTrace(); // Cetak error lengkap di console
+                showErrorDialog("Error Tak Terduga", "Gagal memuat jendela Jadwal. \n\nError: " + e.getClass().getSimpleName() + "\nMessage: " + e.getMessage());
+            }
+
+            // Jangan lanjutkan ke logika di bawah
+            return;
+        }
+        // --- AKHIR DARI LOGIKA TOMBOL JADWAL ---
+
+        // Logika untuk tombol sidebar lainnya (tidak berubah)
+        setActiveButton(clickedButton);
 
         if (clickedButton == menuButton) {
             showView(dashboardViewPane);
@@ -473,12 +547,13 @@ public class MenuController implements Initializable {
             showView(laporanViewPane);
         } else if (clickedButton == konsultasiButton) {
             showView(konsultasiViewPane);
-        } else if (clickedButton == jadwalButton) {
-            showView(jadwalViewPane);
         } else if (clickedButton == pengaturanButton) {
             showView(pengaturanViewPane);
         }
+        // Perhatikan: kita tidak perlu lagi `else if (clickedButton == jadwalButton)` di sini
+        // karena sudah ditangani di atas.
     }
+
 
     private void setActiveButton(Button activeButton) {
         List<Button> sidebarButtons = Arrays.asList(menuButton, rekomendasiButton, obatButton, laporanButton, konsultasiButton, jadwalButton, pengaturanButton);

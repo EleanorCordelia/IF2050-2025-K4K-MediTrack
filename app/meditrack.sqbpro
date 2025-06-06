@@ -1,261 +1,499 @@
-<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Thalita Zahra/Documents/ThalitaAll/STI - Semester 6/Tugas Besar-Smt6/IF2050-2025-K4K-MediTrack/meditrack.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3205"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="0"/><expanded_item id="2" parent="0"/><expanded_item id="3" parent="0"/><expanded_item id="4" parent="0"/><expanded_item id="5" parent="0"/><expanded_item id="6" parent="0"/><expanded_item id="7" parent="0"/><expanded_item id="8" parent="0"/><expanded_item id="9" parent="0"/><expanded_item id="10" parent="0"/><expanded_item id="11" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="daftarobat" custom_title="0" dock_id="12" table="4,10:maindaftarobat"/><dock_state state="000000ff00000000fd000000010000000200000339000004c4fc010000000cfb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500330100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500350100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500360100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500370100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500380100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500390100000000ffffffff0000000000000000fb000000180064006f0063006b00420072006f007700730065003100300100000000ffffffff0000000000000000fb000000180064006f0063006b00420072006f007700730065003100310100000000ffffffff0000000000000000fb000000180064006f0063006b00420072006f007700730065003100320100000000ffffffff0000015a00ffffff000002f00000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">-- 1. Buat tabel pengguna (jika belum ada)
-CREATE TABLE IF NOT EXISTS pengguna (
-    idPengguna    INTEGER PRIMARY KEY AUTOINCREMENT,
-    nama          TEXT    NOT NULL,
-    email         TEXT    NOT NULL UNIQUE,
-    password      TEXT    NOT NULL,
-    tanggalLahir  TEXT,  
-    jenisKelamin  TEXT    NOT NULL CHECK(jenisKelamin IN ('Pria','Wanita','Lainnya')),
-    tinggiBadan   REAL,
-    beratBadan    REAL
-);
-
--- 2. Masukkan data dummy tanpa NULL, termasuk entri untuk Thalita Zahra Sutejo
-INSERT INTO pengguna (nama, email, password, tanggalLahir, jenisKelamin, tinggiBadan, beratBadan)
-VALUES
-  ('Thalita Zahra Sutejo',    'thalita.zahra@example.com',    'passThalita123', '2002-07-21', 'Wanita', 1.65, 55.0),
-  ('Budi Santoso',            'budi.santoso@example.com',      'passBudi456',    '1985-03-20', 'Pria',   1.70, 70.0),
-  ('Ani Muhamad',             'ani.muhamad@example.com',       'passAni789',     '1992-11-05', 'Wanita', 1.65, 60.0),
-  ('John Doe',                'john.doe@example.com',          'passJohn000',    '1999-12-01', 'Lainnya', 1.75, 68.0),
-  ('Siti Fatimah',            'siti.fatimah@example.com',      'passSiti321',    '1990-01-15', 'Wanita', 1.60, 55.0),
-  ('Rina Pratiwi',            'rina.pratiwi@example.com',      'passRina987',    '1995-09-10', 'Wanita', 1.58, 52.0);
-
--- 3. Tampilkan isi tabel pengguna untuk verifikasi
-SELECT * FROM pengguna;</sql><sql name="SQL 2">PRAGMA foreign_keys = ON;
-
--- 1. Buat tabel dokter (jika belum ada), dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS dokter (
-    idDokter     INTEGER PRIMARY KEY AUTOINCREMENT,
-    nama         TEXT    NOT NULL,
-    email        TEXT    NOT NULL UNIQUE,
-    spesialisasi TEXT    NOT NULL,
-    nomorSTR     TEXT    NOT NULL
-);
-
--- 2. Masukkan data dummy untuk tabel dokter
-INSERT INTO dokter (nama, email, spesialisasi, nomorSTR)
-VALUES
-  ('Dr. Andi Wijaya',       'andi.wijaya@meditrack.com',       'Kardiologi',      'STR-2024-1001'),
-  ('Dr. Maya Sari',         'maya.sari@meditrack.com',         'Pediatri',        'STR-2024-1002'),
-  ('Dr. Rizky Pratama',     'rizky.pratama@meditrack.com',     'Neurologi',       'STR-2024-1003'),
-  ('Dr. Clara Dewi',        'clara.dewi@meditrack.com',        'Dokter Umum',     'STR-2024-1004'),
-  ('Dr. Teguh Santoso',     'teguh.santoso@meditrack.com',     'Dermatologi',     'STR-2024-1005');
-
--- 3. Verifikasi isi tabel dokter
-SELECT * FROM dokter;</sql><sql name="SQL 3">PRAGMA foreign_keys = ON;
-
--- 1. Buat tabel wearables dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS wearables (
-    idWearable    INTEGER PRIMARY KEY AUTOINCREMENT,
-    tipe          TEXT    NOT NULL,
-    versiFirmware TEXT    NOT NULL,
-    idPengguna    INTEGER NOT NULL,
-    statusSinkron BOOLEAN NOT NULL DEFAULT 0,
-    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel wearables
-INSERT INTO wearables (tipe, versiFirmware, idPengguna, statusSinkron)
-VALUES
-  ('Fitbit Charge 5',       '5.1.0',  1, 1),
-  ('Samsung Galaxy Watch4', '4.3.2',  2, 0),
-  ('Garmin Venu 2',         '3.0.5',  3, 1),
-  ('Xiaomi Mi Band 6',      '2.2.1',  4, 0),
-  ('Apple Watch SE',        '7.2.4',  5, 1);
-
--- 3. Verifikasi isi tabel wearables
-SELECT * FROM wearables;
-</sql><sql name="SQL 4">PRAGMA foreign_keys = ON;
-
--- 1. Buat tabel jadwal dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS jadwal (
-    idJadwal     INTEGER PRIMARY KEY AUTOINCREMENT,
-    idPengguna   INTEGER NOT NULL,
-    tanggal      TEXT    NOT NULL,  -- simpan sebagai 'YYYY-MM-DD'
-    prioritas    TEXT    NOT NULL CHECK(prioritas IN ('Tinggi','Sedang','Rendah')),
-    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel jadwal
-INSERT INTO jadwal (idPengguna, tanggal, prioritas)
-VALUES
-  (1, '2025-06-10', 'Tinggi'),
-  (2, '2025-06-11', 'Sedang'),
-  (3, '2025-06-12', 'Rendah'),
-  (4, '2025-06-13', 'Tinggi'),
-  (5, '2025-06-14', 'Sedang'),
-  (6, '2025-06-15', 'Rendah');
-
--- 3. Verifikasi isi tabel jadwal
-SELECT * FROM jadwal;
-</sql><sql name="SQL 5">-- 1. Buat tabel detailjadwal dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS detailjadwal (
-    idDetailJadwal  INTEGER PRIMARY KEY AUTOINCREMENT,
-    idJadwal        INTEGER NOT NULL,
-    waktuMulai      TEXT    NOT NULL,  -- format 'HH:MM:SS'
-    waktuSelesai    TEXT    NOT NULL,  -- format 'HH:MM:SS'
-    deskripsi       TEXT    NOT NULL,
-    kategori        TEXT    NOT NULL CHECK(kategori IN ('Medis','Konsultasi','Teknis','Kesehatan','Rapat')),
-    FOREIGN KEY (idJadwal) REFERENCES jadwal(idJadwal)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel detailjadwal
-INSERT INTO detailjadwal (idJadwal, waktuMulai, waktuSelesai, deskripsi, kategori)
-VALUES
-  (1, '08:00:00', '09:00:00', 'Cek tekanan darah pasien A',         'Medis'),
-  (1, '09:30:00', '10:00:00', 'Konsultasi nutrisi pasien B',          'Konsultasi'),
-  (2, '11:00:00', '12:00:00', 'Sinkronisasi data wearable harian',     'Teknis'),
-  (3, '07:00:00', '07:30:00', 'Senam pagi bersama komunitas',          'Kesehatan'),
-  (4, '14:00:00', '15:00:00', 'Rapat koordinasi tim medis',            'Rapat'),
-  (5, '10:00:00', '11:00:00', 'Cek hasil laboratorium pasien C',       'Medis'),
-  (5, '11:30:00', '12:00:00', 'Konsultasi perkembangan pasien anak',    'Konsultasi'),
-  (6, '16:00:00', '17:00:00', 'Pemeliharaan server aplikasi',           'Teknis');
-
--- 3. Verifikasi isi tabel detailjadwal
-SELECT * FROM detailjadwal;</sql><sql name="SQL 6">-- 1. Buat tabel daftarobat dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS daftarobat (
-    idObat          INTEGER PRIMARY KEY AUTOINCREMENT,
-    namaObat        TEXT    NOT NULL,
-    dosis           TEXT    NOT NULL,
-    waktuKonsumsi   TEXT    NOT NULL,  -- format 'HH:MM:SS'
-    efekSamping     TEXT    NOT NULL,
-    statusKonsumsi  TEXT    NOT NULL CHECK(statusKonsumsi IN ('Dikonsumsi','Belum dikonsumsi','Terlewat'))
-);
-
--- 2. Masukkan data dummy ke tabel daftarobat
-INSERT INTO daftarobat (namaObat, dosis, waktuKonsumsi, efekSamping, statusKonsumsi)
-VALUES
-  ('Paracetamol 500mg',    '500mg setiap 6 jam',  '08:00:00', 'Mual ringan',         'Dikonsumsi'),
-  ('Amoxicillin 500mg',    '500mg setiap 8 jam',  '09:00:00', 'Diare ringan',        'Belum dikonsumsi'),
-  ('Vitamin C 1000mg',     '1000mg sekali sehari','12:00:00', 'Insomnia ringan',     'Dikonsumsi'),
-  ('Cough Syrup 100ml',    '10ml setiap 8 jam',   '20:00:00', 'Mengantuk',           'Belum dikonsumsi'),
-  ('Ibuprofen 200mg',      '200mg setiap 4 jam',  '06:00:00', 'Sakit perut ringan',  'Dikonsumsi');
-
--- 3. Verifikasi isi tabel daftarobat
-SELECT * FROM daftarobat;</sql><sql name="SQL 7">-- 1. Buat tabel konsultasi dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS konsultasi (
-    idKonsultasi  INTEGER PRIMARY KEY AUTOINCREMENT,
-    idPengguna    INTEGER NOT NULL,
-    idDokter      INTEGER NOT NULL,
-    waktu         TEXT    NOT NULL,  -- simpan sebagai 'YYYY-MM-DD HH:MM:SS'
-    topik         TEXT    NOT NULL,
-    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE,
-    FOREIGN KEY (idDokter) REFERENCES dokter(idDokter)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel konsultasi
-INSERT INTO konsultasi (idPengguna, idDokter, waktu, topik)
-VALUES
-  (1, 4, '2025-06-10 09:00:00', 'Pemantauan tekanan darah'),
-  (2, 1, '2025-06-11 10:30:00', 'Konsultasi jantung pasca operasi'),
-  (3, 2, '2025-06-12 14:00:00', 'Klinik anak – imunisasi'),
-  (4, 3, '2025-06-13 15:45:00', 'Evaluasi saraf pasca cedera kepala'),
-  (5, 5, '2025-06-14 08:15:00', 'Masalah kulit dan perawatan');
-
--- 3. Verifikasi isi tabel konsultasi
-SELECT * FROM konsultasi;</sql><sql name="SQL 8">-- 1. Buat tabel kondisiaktual dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS kondisiaktual (
-    idKondisi       INTEGER PRIMARY KEY AUTOINCREMENT,
-    idPengguna      INTEGER NOT NULL,
-    tekananDarah    TEXT    NOT NULL,  -- format 'SYS/DIA', misalnya '120/80'
-    detakJantung    INTEGER NOT NULL,  -- dalam bpm (beats per minute)
-    suhuTubuh       REAL    NOT NULL,  -- dalam derajat Celsius, misalnya 36.7
-    waktuPencatatan TEXT    NOT NULL,  -- simpan sebagai 'YYYY-MM-DD HH:MM:SS'
-    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel kondisiaktual
-INSERT INTO kondisiaktual (idPengguna, tekananDarah, detakJantung, suhuTubuh, waktuPencatatan)
-VALUES
-  (1, '120/80',  72, 36.5, '2025-06-10 08:00:00'),
-  (2, '130/85',  80, 37.0, '2025-06-10 08:15:00'),
-  (3, '115/75',  68, 36.6, '2025-06-10 08:30:00'),
-  (4, '140/90',  85, 37.2, '2025-06-10 08:45:00'),
-  (5, '125/82',  76, 36.8, '2025-06-10 09:00:00'),
-  (6, '118/78',  70, 36.4, '2025-06-10 09:15:00');
-
--- 3. Verifikasi isi tabel kondisiaktual
-SELECT * FROM kondisiaktual;</sql><sql name="SQL 9">-- 1. Buat tabel kondisihistoris dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS kondisihistoris (
-    idHistori     INTEGER PRIMARY KEY AUTOINCREMENT,
-    idPengguna    INTEGER NOT NULL,
-    tanggalAwal   TEXT    NOT NULL,  -- format 'YYYY-MM-DD'
-    tanggalAkhir  TEXT    NOT NULL,  -- format 'YYYY-MM-DD'
-    ringkasan     TEXT    NOT NULL,
-    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel kondisihistoris
-INSERT INTO kondisihistoris (idPengguna, tanggalAwal, tanggalAkhir, ringkasan)
-VALUES
-  (1, '2025-05-01', '2025-05-07', 'Tekanan darah stabil, detak jantung normal.'),
-  (2, '2025-04-15', '2025-04-22', 'Suhu tubuh sempat demam rendah, pulih pada 2025-04-20.'),
-  (3, '2025-03-10', '2025-03-17', 'Detak jantung cenderung tinggi saat istirahat, disarankan evaluasi.'),
-  (4, '2025-02-01', '2025-02-08', 'Suhu tubuh fluktuatif, tidak ada gejala berat.'),
-  (5, '2025-01-20', '2025-01-27', 'Tekanan darah sempat naik, butuh kontrol ulang minggu depan.');
-
--- 3. Verifikasi isi tabel kondisihistoris
-SELECT * FROM kondisihistoris;</sql><sql name="SQL 10">-- 1. Buat tabel notifikasi dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS notifikasi (
-    idNotifikasi   INTEGER PRIMARY KEY AUTOINCREMENT,
-    idPengguna     INTEGER NOT NULL,
-    isi            TEXT    NOT NULL,
-    statusBaca     BOOLEAN NOT NULL DEFAULT 0,  -- 0 = belum dibaca, 1 = sudah dibaca
-    waktuDikirim   TEXT    NOT NULL,            -- format 'YYYY-MM-DD HH:MM:SS'
-    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel notifikasi
-INSERT INTO notifikasi (idPengguna, isi, statusBaca, waktuDikirim)
-VALUES
-  (1, 'Waktu konsulasi Anda dengan Dr. Andi Wijaya akan dimulai pukul 09:00.',          0, '2025-06-09 18:00:00'),
-  (2, 'Hasil laboratorium sudah tersedia, silakan cek di menu &quot;Hasil Lab&quot;.',            0, '2025-06-10 08:30:00'),
-  (3, 'Jadwal pemeriksaan ulang terjadwal pada 2025-06-15 10:00:00.',                   1, '2025-06-11 12:45:00'),
-  (4, 'Obat Paracetamol 500mg sudah hampir habis. Silakan lakukan pemesanan ulang.',     0, '2025-06-12 09:15:00'),
-  (5, 'Dokter Maya Sari mengubah waktu pertemuan Anda menjadi pukul 14:00.',              0, '2025-06-13 11:20:00'),
-  (6, 'Suhu tubuh Anda tercatat di atas normal pada pemeriksaan terakhir.',              1, '2025-06-14 07:50:00');
-
--- 3. Verifikasi isi tabel notifikasi
-SELECT * FROM notifikasi;</sql><sql name="SQL 11">-- 1. Buat tabel rekomendasi dengan tipe dan constraint yang sesuai
-CREATE TABLE IF NOT EXISTS rekomendasi (
-    idRekomendasi       INTEGER PRIMARY KEY AUTOINCREMENT,
-    idPengguna          INTEGER NOT NULL,
-    idObat              INTEGER NOT NULL,
-    alasan              TEXT    NOT NULL,
-    tanggalRekomendasi  TEXT    NOT NULL,  -- simpan sebagai 'YYYY-MM-DD'
-    statusRekomendasi   TEXT    NOT NULL CHECK(statusRekomendasi IN ('Diajukan','Disetujui','Ditolak')),
-    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE,
-    FOREIGN KEY (idObat) REFERENCES daftarobat(idObat)
-       ON UPDATE CASCADE
-       ON DELETE CASCADE
-);
-
--- 2. Masukkan data dummy ke tabel rekomendasi
-INSERT INTO rekomendasi (idPengguna, idObat, alasan, tanggalRekomendasi, statusRekomendasi)
-VALUES
-  (1,  1, 'Perlu menambah stok Paracetamol karena riwayat demam berulang.', '2025-06-10', 'Diajukan'),
-  (2,  3, 'Vitamin C untuk meningkatkan daya tahan tubuh selama pemeriksaan.',   '2025-06-11', 'Disetujui'),
-  (3,  2, 'Antibiotik Amoxicillin untuk infeksi saluran pernapasan.',             '2025-06-12', 'Ditolak'),
-  (4,  5, 'Pengguna merasa nyeri, membutuhkan Ibuprofen sebagai pereda nyeri.',     '2025-06-13', 'Diajukan'),
-  (5,  4, 'Cough Syrup untuk pereda batuk berkepanjangan pada pasien.',             '2025-06-14', 'Disetujui');
-
--- 3. Verifikasi isi tabel rekomendasi
+<?xml version="1.0" encoding="UTF-8"?><sqlb_project><db path="C:/Users/Thalita Zahra/Documents/ThalitaAll/STI - Semester 6/Tugas Besar-Smt6/IF2050-2025-K4K-MediTrack/meditrack.db" readonly="0" foreign_keys="1" case_sensitive_like="0" temp_store="0" wal_autocheckpoint="1000" synchronous="2"/><attached/><window><main_tabs open="structure browser pragmas query" current="0"/></window><tab_structure><column_width id="0" width="300"/><column_width id="1" width="0"/><column_width id="2" width="100"/><column_width id="3" width="3205"/><column_width id="4" width="0"/><expanded_item id="0" parent="1"/><expanded_item id="0" parent="0"/><expanded_item id="1" parent="0"/><expanded_item id="2" parent="0"/><expanded_item id="3" parent="0"/><expanded_item id="4" parent="0"/><expanded_item id="5" parent="0"/><expanded_item id="6" parent="0"/><expanded_item id="7" parent="0"/><expanded_item id="8" parent="0"/><expanded_item id="9" parent="0"/><expanded_item id="10" parent="0"/><expanded_item id="11" parent="0"/><expanded_item id="1" parent="1"/><expanded_item id="2" parent="1"/><expanded_item id="3" parent="1"/></tab_structure><tab_browse><table title="daftarobat" custom_title="0" dock_id="12" table="4,10:maindaftarobat"/><dock_state state="000000ff00000000fd000000010000000200000339000004c4fc010000000cfb000000160064006f0063006b00420072006f00770073006500310100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500320100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500330100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500340100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500350100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500360100000000ffffffff0000000000000000fb000000160064006f0063006b00420072006f00770073006500370100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500380100000000000003390000000000000000fb000000160064006f0063006b00420072006f00770073006500390100000000ffffffff0000000000000000fb000000180064006f0063006b00420072006f007700730065003100300100000000ffffffff0000000000000000fb000000180064006f0063006b00420072006f007700730065003100310100000000ffffffff0000000000000000fb000000180064006f0063006b00420072006f007700730065003100320100000000ffffffff0000015a00ffffff000002f00000000000000004000000040000000800000008fc00000000"/><default_encoding codec=""/><browse_table_settings/></tab_browse><tab_sql><sql name="SQL 1">-- 1. Buat tabel pengguna (jika belum ada)
+
+CREATE TABLE IF NOT EXISTS pengguna (
+
+    idPengguna    INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    nama          TEXT    NOT NULL,
+
+    email         TEXT    NOT NULL UNIQUE,
+
+    password      TEXT    NOT NULL,
+
+    tanggalLahir  TEXT,  
+
+    jenisKelamin  TEXT    NOT NULL CHECK(jenisKelamin IN ('Pria','Wanita','Lainnya')),
+
+    tinggiBadan   REAL,
+
+    beratBadan    REAL
+
+);
+
+
+
+
+
+-- 2. Masukkan data dummy tanpa NULL, termasuk entri untuk Thalita Zahra Sutejo
+
+INSERT INTO pengguna (nama, email, password, tanggalLahir, jenisKelamin, tinggiBadan, beratBadan)
+
+VALUES
+
+  ('Thalita Zahra Sutejo',    'thalita.zahra@example.com',    'passThalita123', '2002-07-21', 'Wanita', 1.65, 55.0),
+
+  ('Budi Santoso',            'budi.santoso@example.com',      'passBudi456',    '1985-03-20', 'Pria',   1.70, 70.0),
+
+  ('Ani Muhamad',             'ani.muhamad@example.com',       'passAni789',     '1992-11-05', 'Wanita', 1.65, 60.0),
+
+  ('John Doe',                'john.doe@example.com',          'passJohn000',    '1999-12-01', 'Lainnya', 1.75, 68.0),
+
+  ('Siti Fatimah',            'siti.fatimah@example.com',      'passSiti321',    '1990-01-15', 'Wanita', 1.60, 55.0),
+
+  ('Rina Pratiwi',            'rina.pratiwi@example.com',      'passRina987',    '1995-09-10', 'Wanita', 1.58, 52.0);
+
+
+
+-- 3. Tampilkan isi tabel pengguna untuk verifikasi
+
+SELECT * FROM pengguna;</sql><sql name="SQL 2">PRAGMA foreign_keys = ON;
+
+
+
+-- 1. Buat tabel dokter (jika belum ada), dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS dokter (
+
+    idDokter     INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    nama         TEXT    NOT NULL,
+
+    email        TEXT    NOT NULL UNIQUE,
+
+    spesialisasi TEXT    NOT NULL,
+
+    nomorSTR     TEXT    NOT NULL
+
+);
+
+
+
+-- 2. Masukkan data dummy untuk tabel dokter
+
+INSERT INTO dokter (nama, email, spesialisasi, nomorSTR)
+
+VALUES
+
+  ('Dr. Andi Wijaya',       'andi.wijaya@meditrack.com',       'Kardiologi',      'STR-2024-1001'),
+
+  ('Dr. Maya Sari',         'maya.sari@meditrack.com',         'Pediatri',        'STR-2024-1002'),
+
+  ('Dr. Rizky Pratama',     'rizky.pratama@meditrack.com',     'Neurologi',       'STR-2024-1003'),
+
+  ('Dr. Clara Dewi',        'clara.dewi@meditrack.com',        'Dokter Umum',     'STR-2024-1004'),
+
+  ('Dr. Teguh Santoso',     'teguh.santoso@meditrack.com',     'Dermatologi',     'STR-2024-1005');
+
+
+
+-- 3. Verifikasi isi tabel dokter
+
+SELECT * FROM dokter;</sql><sql name="SQL 3">PRAGMA foreign_keys = ON;
+
+
+
+-- 1. Buat tabel wearables dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS wearables (
+
+    idWearable    INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    tipe          TEXT    NOT NULL,
+
+    versiFirmware TEXT    NOT NULL,
+
+    idPengguna    INTEGER NOT NULL,
+
+    statusSinkron BOOLEAN NOT NULL DEFAULT 0,
+
+    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel wearables
+
+INSERT INTO wearables (tipe, versiFirmware, idPengguna, statusSinkron)
+
+VALUES
+
+  ('Fitbit Charge 5',       '5.1.0',  1, 1),
+
+  ('Samsung Galaxy Watch4', '4.3.2',  2, 0),
+
+  ('Garmin Venu 2',         '3.0.5',  3, 1),
+
+  ('Xiaomi Mi Band 6',      '2.2.1',  4, 0),
+
+  ('Apple Watch SE',        '7.2.4',  5, 1);
+
+
+
+-- 3. Verifikasi isi tabel wearables
+
+SELECT * FROM wearables;
+
+</sql><sql name="SQL 4">-- 1. Hapus tabel 'jadwal' yang lama jika ada, untuk memastikan struktur yang bersih.
+DROP TABLE IF EXISTS jadwal;
+
+-- 2. Buat kembali tabel 'jadwal' dengan struktur yang BENAR dan sesuai dengan kode Java.
+-- Tipe data DATE dan TIME diubah menjadi TEXT agar kompatibel dan aman untuk SQLite.
+CREATE TABLE jadwal (
+    id_jadwal         INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_pengguna       INTEGER NOT NULL,
+    nama_aktivitas    TEXT NOT NULL,
+    tanggal_mulai     TEXT NOT NULL,
+    waktu_mulai       TEXT NOT NULL,
+    tanggal_selesai   TEXT NOT NULL,
+    waktu_selesai     TEXT NOT NULL,
+    tingkat_aktivitas TEXT,
+    catatan           TEXT,
+    FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
+);
+
+-- 3. Masukkan kembali data dummy ke tabel yang baru (typo 'IINSERT' diperbaiki).
+INSERT INTO jadwal (id_pengguna, nama_aktivitas, tanggal_mulai, waktu_mulai, tanggal_selesai, waktu_selesai, tingkat_aktivitas, catatan) VALUES
+ (1, 'Meeting Proyek Akhir', '2025-06-07', '10:00:00', '2025-06-07', '11:30:00', 'Aktivitas Sedang', 'Membahas progres bab 4 dan 5.'),
+ (1, 'Olahraga Lari Pagi', '2025-06-08', '06:30:00', '2025-06-08', '07:30:00', 'Aktivitas Tinggi', 'Target 5km.'),
+ (2, 'Konsultasi dengan Dr. Maya', '2025-06-09', '14:00:00', '2025-06-09', '14:30:00', 'Aktivitas Rendah', 'Check-up rutin tahunan.');
+
+-- 4. Verifikasi isi tabel jadwal yang baru.
+SELECT * FROM jadwal;
+</sql><sql name="SQL 5">-- 1. Buat tabel detailjadwal dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS detailjadwal (
+
+    idDetailJadwal  INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    idJadwal        INTEGER NOT NULL,
+
+    waktuMulai      TEXT    NOT NULL,  -- format 'HH:MM:SS'
+
+    waktuSelesai    TEXT    NOT NULL,  -- format 'HH:MM:SS'
+
+    deskripsi       TEXT    NOT NULL,
+
+    kategori        TEXT    NOT NULL CHECK(kategori IN ('Medis','Konsultasi','Teknis','Kesehatan','Rapat')),
+
+    FOREIGN KEY (idJadwal) REFERENCES jadwal(idJadwal)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel detailjadwal
+
+INSERT INTO detailjadwal (idJadwal, waktuMulai, waktuSelesai, deskripsi, kategori)
+
+VALUES
+
+  (1, '08:00:00', '09:00:00', 'Cek tekanan darah pasien A',         'Medis'),
+
+  (1, '09:30:00', '10:00:00', 'Konsultasi nutrisi pasien B',          'Konsultasi'),
+
+  (2, '11:00:00', '12:00:00', 'Sinkronisasi data wearable harian',     'Teknis'),
+
+  (3, '07:00:00', '07:30:00', 'Senam pagi bersama komunitas',          'Kesehatan'),
+
+  (4, '14:00:00', '15:00:00', 'Rapat koordinasi tim medis',            'Rapat'),
+
+  (5, '10:00:00', '11:00:00', 'Cek hasil laboratorium pasien C',       'Medis'),
+
+  (5, '11:30:00', '12:00:00', 'Konsultasi perkembangan pasien anak',    'Konsultasi'),
+
+  (6, '16:00:00', '17:00:00', 'Pemeliharaan server aplikasi',           'Teknis');
+
+
+
+-- 3. Verifikasi isi tabel detailjadwal
+
+SELECT * FROM detailjadwal;</sql><sql name="SQL 6">-- 1. Buat tabel daftarobat dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS daftarobat (
+
+    idObat          INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    namaObat        TEXT    NOT NULL,
+
+    dosis           TEXT    NOT NULL,
+
+    waktuKonsumsi   TEXT    NOT NULL,  -- format 'HH:MM:SS'
+
+    efekSamping     TEXT    NOT NULL,
+
+    statusKonsumsi  TEXT    NOT NULL CHECK(statusKonsumsi IN ('Dikonsumsi','Belum dikonsumsi','Terlewat'))
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel daftarobat
+
+INSERT INTO daftarobat (namaObat, dosis, waktuKonsumsi, efekSamping, statusKonsumsi)
+
+VALUES
+
+  ('Paracetamol 500mg',    '500mg setiap 6 jam',  '08:00:00', 'Mual ringan',         'Dikonsumsi'),
+
+  ('Amoxicillin 500mg',    '500mg setiap 8 jam',  '09:00:00', 'Diare ringan',        'Belum dikonsumsi'),
+
+  ('Vitamin C 1000mg',     '1000mg sekali sehari','12:00:00', 'Insomnia ringan',     'Dikonsumsi'),
+
+  ('Cough Syrup 100ml',    '10ml setiap 8 jam',   '20:00:00', 'Mengantuk',           'Belum dikonsumsi'),
+
+  ('Ibuprofen 200mg',      '200mg setiap 4 jam',  '06:00:00', 'Sakit perut ringan',  'Dikonsumsi');
+
+
+
+-- 3. Verifikasi isi tabel daftarobat
+
+SELECT * FROM daftarobat;</sql><sql name="SQL 7">-- 1. Buat tabel konsultasi dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS konsultasi (
+
+    idKonsultasi  INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    idPengguna    INTEGER NOT NULL,
+
+    idDokter      INTEGER NOT NULL,
+
+    waktu         TEXT    NOT NULL,  -- simpan sebagai 'YYYY-MM-DD HH:MM:SS'
+
+    topik         TEXT    NOT NULL,
+
+    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE,
+
+    FOREIGN KEY (idDokter) REFERENCES dokter(idDokter)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel konsultasi
+
+INSERT INTO konsultasi (idPengguna, idDokter, waktu, topik)
+
+VALUES
+
+  (1, 4, '2025-06-10 09:00:00', 'Pemantauan tekanan darah'),
+
+  (2, 1, '2025-06-11 10:30:00', 'Konsultasi jantung pasca operasi'),
+
+  (3, 2, '2025-06-12 14:00:00', 'Klinik anak – imunisasi'),
+
+  (4, 3, '2025-06-13 15:45:00', 'Evaluasi saraf pasca cedera kepala'),
+
+  (5, 5, '2025-06-14 08:15:00', 'Masalah kulit dan perawatan');
+
+
+
+-- 3. Verifikasi isi tabel konsultasi
+
+SELECT * FROM konsultasi;</sql><sql name="SQL 8">-- 1. Buat tabel kondisiaktual dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS kondisiaktual (
+
+    idKondisi       INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    idPengguna      INTEGER NOT NULL,
+
+    tekananDarah    TEXT    NOT NULL,  -- format 'SYS/DIA', misalnya '120/80'
+
+    detakJantung    INTEGER NOT NULL,  -- dalam bpm (beats per minute)
+
+    suhuTubuh       REAL    NOT NULL,  -- dalam derajat Celsius, misalnya 36.7
+
+    waktuPencatatan TEXT    NOT NULL,  -- simpan sebagai 'YYYY-MM-DD HH:MM:SS'
+
+    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel kondisiaktual
+
+INSERT INTO kondisiaktual (idPengguna, tekananDarah, detakJantung, suhuTubuh, waktuPencatatan)
+
+VALUES
+
+  (1, '120/80',  72, 36.5, '2025-06-10 08:00:00'),
+
+  (2, '130/85',  80, 37.0, '2025-06-10 08:15:00'),
+
+  (3, '115/75',  68, 36.6, '2025-06-10 08:30:00'),
+
+  (4, '140/90',  85, 37.2, '2025-06-10 08:45:00'),
+
+  (5, '125/82',  76, 36.8, '2025-06-10 09:00:00'),
+
+  (6, '118/78',  70, 36.4, '2025-06-10 09:15:00');
+
+
+
+-- 3. Verifikasi isi tabel kondisiaktual
+
+SELECT * FROM kondisiaktual;</sql><sql name="SQL 9">-- 1. Buat tabel kondisihistoris dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS kondisihistoris (
+
+    idHistori     INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    idPengguna    INTEGER NOT NULL,
+
+    tanggalAwal   TEXT    NOT NULL,  -- format 'YYYY-MM-DD'
+
+    tanggalAkhir  TEXT    NOT NULL,  -- format 'YYYY-MM-DD'
+
+    ringkasan     TEXT    NOT NULL,
+
+    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel kondisihistoris
+
+INSERT INTO kondisihistoris (idPengguna, tanggalAwal, tanggalAkhir, ringkasan)
+
+VALUES
+
+  (1, '2025-05-01', '2025-05-07', 'Tekanan darah stabil, detak jantung normal.'),
+
+  (2, '2025-04-15', '2025-04-22', 'Suhu tubuh sempat demam rendah, pulih pada 2025-04-20.'),
+
+  (3, '2025-03-10', '2025-03-17', 'Detak jantung cenderung tinggi saat istirahat, disarankan evaluasi.'),
+
+  (4, '2025-02-01', '2025-02-08', 'Suhu tubuh fluktuatif, tidak ada gejala berat.'),
+
+  (5, '2025-01-20', '2025-01-27', 'Tekanan darah sempat naik, butuh kontrol ulang minggu depan.');
+
+
+
+-- 3. Verifikasi isi tabel kondisihistoris
+
+SELECT * FROM kondisihistoris;</sql><sql name="SQL 10">-- 1. Buat tabel notifikasi dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS notifikasi (
+
+    idNotifikasi   INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    idPengguna     INTEGER NOT NULL,
+
+    isi            TEXT    NOT NULL,
+
+    statusBaca     BOOLEAN NOT NULL DEFAULT 0,  -- 0 = belum dibaca, 1 = sudah dibaca
+
+    waktuDikirim   TEXT    NOT NULL,            -- format 'YYYY-MM-DD HH:MM:SS'
+
+    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel notifikasi
+
+INSERT INTO notifikasi (idPengguna, isi, statusBaca, waktuDikirim)
+
+VALUES
+
+  (1, 'Waktu konsulasi Anda dengan Dr. Andi Wijaya akan dimulai pukul 09:00.',          0, '2025-06-09 18:00:00'),
+
+  (2, 'Hasil laboratorium sudah tersedia, silakan cek di menu &quot;Hasil Lab&quot;.',            0, '2025-06-10 08:30:00'),
+
+  (3, 'Jadwal pemeriksaan ulang terjadwal pada 2025-06-15 10:00:00.',                   1, '2025-06-11 12:45:00'),
+
+  (4, 'Obat Paracetamol 500mg sudah hampir habis. Silakan lakukan pemesanan ulang.',     0, '2025-06-12 09:15:00'),
+
+  (5, 'Dokter Maya Sari mengubah waktu pertemuan Anda menjadi pukul 14:00.',              0, '2025-06-13 11:20:00'),
+
+  (6, 'Suhu tubuh Anda tercatat di atas normal pada pemeriksaan terakhir.',              1, '2025-06-14 07:50:00');
+
+
+
+-- 3. Verifikasi isi tabel notifikasi
+
+SELECT * FROM notifikasi;</sql><sql name="SQL 11">-- 1. Buat tabel rekomendasi dengan tipe dan constraint yang sesuai
+
+CREATE TABLE IF NOT EXISTS rekomendasi (
+
+    idRekomendasi       INTEGER PRIMARY KEY AUTOINCREMENT,
+
+    idPengguna          INTEGER NOT NULL,
+
+    idObat              INTEGER NOT NULL,
+
+    alasan              TEXT    NOT NULL,
+
+    tanggalRekomendasi  TEXT    NOT NULL,  -- simpan sebagai 'YYYY-MM-DD'
+
+    statusRekomendasi   TEXT    NOT NULL CHECK(statusRekomendasi IN ('Diajukan','Disetujui','Ditolak')),
+
+    FOREIGN KEY (idPengguna) REFERENCES pengguna(idPengguna)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE,
+
+    FOREIGN KEY (idObat) REFERENCES daftarobat(idObat)
+
+       ON UPDATE CASCADE
+
+       ON DELETE CASCADE
+
+);
+
+
+
+-- 2. Masukkan data dummy ke tabel rekomendasi
+
+INSERT INTO rekomendasi (idPengguna, idObat, alasan, tanggalRekomendasi, statusRekomendasi)
+
+VALUES
+
+  (1,  1, 'Perlu menambah stok Paracetamol karena riwayat demam berulang.', '2025-06-10', 'Diajukan'),
+
+  (2,  3, 'Vitamin C untuk meningkatkan daya tahan tubuh selama pemeriksaan.',   '2025-06-11', 'Disetujui'),
+
+  (3,  2, 'Antibiotik Amoxicillin untuk infeksi saluran pernapasan.',             '2025-06-12', 'Ditolak'),
+
+  (4,  5, 'Pengguna merasa nyeri, membutuhkan Ibuprofen sebagai pereda nyeri.',     '2025-06-13', 'Diajukan'),
+
+  (5,  4, 'Cough Syrup untuk pereda batuk berkepanjangan pada pasien.',             '2025-06-14', 'Disetujui');
+
+
+
+-- 3. Verifikasi isi tabel rekomendasi
+
 SELECT * FROM rekomendasi;</sql><current_tab id="10"/></tab_sql></sqlb_project>

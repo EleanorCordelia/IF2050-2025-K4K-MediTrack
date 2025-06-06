@@ -5,10 +5,10 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO.">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/DokterFormController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/PenggunaFormController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/dokterForm.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/penggunaForm.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/JadwalPenggunaController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/TambahJadwalController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/jadwalPengguna.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/tambahJadwal.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/md5-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/sha1-checksums.bin" afterDir="false" />
@@ -18,19 +18,15 @@
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_15_40__Changes_.xml" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_16_19__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_16_19__Changes_.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/meditrack.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/PenggunaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/PenggunaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/PenggunaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/PenggunaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Dokter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Dokter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/SQLiteConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/SQLiteConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/penggunaView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/penggunaView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/meditrack.sqbpro" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.sqbpro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/JadwalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/JadwalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/JadwalDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/JadwalDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Jadwal.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Jadwal.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -48,7 +44,12 @@
       <state>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MediTrack" type="f1a62948:ProjectNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -58,6 +59,7 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="JavaFXApplication" />
         <option value="Class" />
       </list>
     </option>
@@ -65,22 +67,23 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
+  <component name="ProjectColorInfo">{
+  &quot;customColor&quot;: &quot;&quot;,
+  &quot;associatedIndex&quot;: 3
+}</component>
   <component name="ProjectId" id="2y5BysbWGcZYfcye9XzgokTpnj7" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;jadwal&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
     <configuration name="MainApp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.meditrack.MainApp" />

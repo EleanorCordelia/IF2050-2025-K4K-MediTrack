@@ -37,7 +37,7 @@ dependencies {
     implementation 'org.openjfx:javafx-graphics:20'
 
     // Dependency SQLite JDBC untuk mengakses meditrack.db
-    implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
+    implementation 'org.xerial:sqlite-jdbc:3.46.0.0'
 
     // Jika ingin menambahkan unit test (JUnit 5), bisa pakai baris ini:
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
