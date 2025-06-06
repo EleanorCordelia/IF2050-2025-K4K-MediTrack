@@ -4,19 +4,18 @@ import com.meditrack.model.Jadwal;
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * JadwalDAO yang bersih untuk operasi CRUD pada tabel 'jadwal'.
  * Semua metode menggunakan satu koneksi yang di-inject melalui konstruktor.
+ * Sudah disesuaikan dengan model Jadwal dan controller yang ada.
  */
 public class JadwalDAO {
 
     private final Connection connection;
-    // Formatter untuk memastikan format waktu konsisten 'HH:mm:ss'
-    private static final DateTimeFormatter TIME_FORMATTER = DateTimeFormatter.ofPattern("HH:mm:ss");
 
     public JadwalDAO(Connection connection) {
         this.connection = connection;
@@ -24,29 +23,23 @@ public class JadwalDAO {
 
     /**
      * Menyimpan objek Jadwal baru ke database.
-     * Menggunakan nama kolom yang benar dan format data yang sesuai untuk SQLite.
      * @param jadwal Objek Jadwal yang akan disimpan.
      */
     public void addJadwal(Jadwal jadwal) throws SQLException {
-        // Nama kolom disesuaikan dengan skema database (menggunakan underscore)
-        String sql = "INSERT INTO jadwal (id_pengguna, nama_aktivitas, tanggal_mulai, waktu_mulai, tanggal_selesai, waktu_selesai, tingkat_aktivitas, catatan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
-
+        String sql = "INSERT INTO jadwal (id_pengguna, nama_aktivitas, tanggal_mulai, jam_mulai, tanggal_selesai, jam_selesai, kategori, catatan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
         try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            // Mengatur parameter PreparedStatement
-            // Untuk id_pengguna, idealnya didapat dari sesi login pengguna
-            pstmt.setInt(1, 1); // Contoh: Hardcode id_pengguna = 1
+            pstmt.setInt(1, 1);  // user ID sementara (kalau ada login ganti sesuai session)
             pstmt.setString(2, jadwal.getNamaAktivitas());
-            // Menyimpan LocalDate dan LocalTime sebagai TEXT (String)
             pstmt.setString(3, jadwal.getTanggalMulai().toString());
-            pstmt.setString(4, jadwal.getWaktuMulai().format(TIME_FORMATTER));
+            pstmt.setString(4, jadwal.getWaktuMulai().toString());
             pstmt.setString(5, jadwal.getTanggalSelesai().toString());
-            pstmt.setString(6, jadwal.getWaktuSelesai().format(TIME_FORMATTER));
-            pstmt.setString(7, jadwal.getTingkatAktivitas());
+            pstmt.setString(6, jadwal.getWaktuSelesai().toString());
+            pstmt.setString(7, jadwal.getKategori());
             pstmt.setString(8, jadwal.getCatatan());
-
             pstmt.executeUpdate();
         }
     }
+
 
     /**
      * Mengambil semua jadwal dari database.
@@ -66,29 +59,113 @@ public class JadwalDAO {
         return jadwalList;
     }
 
-    // Anda juga bisa menambahkan getById, update, dan delete dengan pola yang sama.
-    // ...
+    /**
+     * Mengambil semua jadwal pada tanggal tertentu.
+     * @param date Tanggal yang dicari.
+     * @return List dari objek Jadwal pada tanggal tersebut.
+     */
+    public List<Jadwal> getJadwalByDate(LocalDate date) throws SQLException {
+        List<Jadwal> jadwalList = new ArrayList<>();
+        String sql = "SELECT * FROM jadwal WHERE tanggal_mulai = ?";
+
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, date.toString());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    jadwalList.add(mapResultSetToJadwal(rs));
+                }
+            }
+        }
+        return jadwalList;
+    }
+
+    // ✅ DITAMBAHKAN: Method yang dibutuhkan oleh JadwalPenggunaController
+    /**
+     * Mengambil satu jadwal berdasarkan ID uniknya.
+     * @param id ID dari jadwal yang akan dicari.
+     * @return Optional berisi objek Jadwal jika ditemukan, atau Optional kosong jika tidak.
+     */
+    public Optional<Jadwal> getJadwalById(int id) throws SQLException {
+        String sql = "SELECT * FROM jadwal WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapResultSetToJadwal(rs));
+                }
+            }
+        }
+        return Optional.empty();
+    }
+
+    // ✅ DITAMBAHKAN: Method yang dibutuhkan oleh JadwalPenggunaController
+    /**
+     * Memeriksa apakah ada jadwal pada tanggal tertentu.
+     * @param date Tanggal yang akan diperiksa.
+     * @return true jika ada jadwal, false jika tidak.
+     */
+    public boolean hasJadwalOnDate(LocalDate date) throws SQLException {
+        String sql = "SELECT 1 FROM jadwal WHERE tanggal_mulai = ? LIMIT 1";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, date.toString());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
+        }
+    }
 
     /**
+     * Mengupdate data jadwal yang ada di database.
+     * @param jadwal Objek Jadwal yang berisi data baru dan ID yang akan diupdate.
+     */
+    public void updateJadwal(Jadwal jadwal) throws SQLException {
+        String sql = "UPDATE jadwal SET nama_aktivitas = ?, tanggal_mulai = ?, jam_mulai = ?, " +
+                "tanggal_selesai = ?, jam_selesai = ?, kategori = ?, catatan = ? " +
+                "WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, jadwal.getNamaAktivitas());
+            pstmt.setString(2, jadwal.getTanggalMulai().toString());
+            pstmt.setString(3, jadwal.getWaktuMulai().toString());
+            pstmt.setString(4, jadwal.getTanggalSelesai().toString());
+            pstmt.setString(5, jadwal.getWaktuSelesai().toString());
+            pstmt.setString(6, jadwal.getKategori());
+            pstmt.setString(7, jadwal.getCatatan());
+            pstmt.setInt(8, jadwal.getId());
+            pstmt.executeUpdate();
+        }
+    }
+
+
+    /**
+     * Menghapus jadwal dari database berdasarkan ID-nya.
+     * @param id ID dari jadwal yang akan dihapus.
+     */
+    public void deleteJadwal(int id) throws SQLException {
+        String sql = "DELETE FROM jadwal WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
+        }
+    }
+
+    // ✅ DIPERBAIKI: Helper method ini disesuaikan dengan constructor Jadwal.java yang benar.
+    /**
      * Helper method untuk memetakan satu baris ResultSet ke objek Jadwal.
-     * @param rs ResultSet yang sedang diiterasi.
+     * @param rs ResultSet yang sedang di-iterasi.
      * @return Objek Jadwal yang sudah terisi data.
-     * @throws SQLException jika ada error saat membaca ResultSet.
      */
     private Jadwal mapResultSetToJadwal(ResultSet rs) throws SQLException {
-        int idJadwal = rs.getInt("id_jadwal");
-        int idPengguna = rs.getInt("id_pengguna");
+        // Nama kolom harus sama persis dengan yang ada di tabel database Anda
+        int id = rs.getInt("id");
         String namaAktivitas = rs.getString("nama_aktivitas");
-
-        // Membaca TEXT dari DB dan mengubahnya kembali menjadi LocalDate/LocalTime
         LocalDate tanggalMulai = LocalDate.parse(rs.getString("tanggal_mulai"));
-        LocalTime waktuMulai = LocalTime.parse(rs.getString("waktu_mulai"), TIME_FORMATTER);
+        LocalTime waktuMulai = LocalTime.parse(rs.getString("jam_mulai"));
+        LocalTime waktuSelesai = LocalTime.parse(rs.getString("jam_selesai"));
         LocalDate tanggalSelesai = LocalDate.parse(rs.getString("tanggal_selesai"));
-        LocalTime waktuSelesai = LocalTime.parse(rs.getString("waktu_selesai"), TIME_FORMATTER);
-
-        String tingkatAktivitas = rs.getString("tingkat_aktivitas");
+        String kategori = rs.getString("kategori");
         String catatan = rs.getString("catatan");
 
-        return new Jadwal(idJadwal, idPengguna, namaAktivitas, tanggalMulai, waktuMulai, tanggalSelesai, waktuSelesai, tingkatAktivitas, catatan);
+        // Menggunakan constructor yang sesuai (tanpa id_pengguna)
+        return new Jadwal(id, namaAktivitas, tanggalMulai, waktuMulai, tanggalSelesai, waktuSelesai, kategori, catatan);
     }
 }

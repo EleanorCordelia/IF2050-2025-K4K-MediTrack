@@ -138,22 +138,22 @@ VALUES
 
 SELECT * FROM wearables;
 
-</sql><sql name="SQL 4">-- 1. Hapus tabel 'jadwal' yang lama jika ada, untuk memastikan struktur yang bersih.
+</sql><sql name="SQL 4">
+
+-- 1. Hapus tabel 'jadwal' lama jika ada
 DROP TABLE IF EXISTS jadwal;
 
--- 2. Buat kembali tabel 'jadwal' dengan struktur yang BENAR dan sesuai dengan kode Java.
--- Tipe data DATE dan TIME diubah menjadi TEXT agar kompatibel dan aman untuk SQLite.
+-- 2. Buat ulang tabel 'jadwal' dengan struktur baru
 CREATE TABLE jadwal (
-    id_jadwal         INTEGER PRIMARY KEY AUTOINCREMENT,
-    id_pengguna       INTEGER NOT NULL,
-    nama_aktivitas    TEXT NOT NULL,
-    tanggal_mulai     TEXT NOT NULL,
-    waktu_mulai       TEXT NOT NULL,
-    tanggal_selesai   TEXT NOT NULL,
-    waktu_selesai     TEXT NOT NULL,
-    tingkat_aktivitas TEXT,
-    catatan           TEXT,
-    FOREIGN KEY (id_pengguna) REFERENCES pengguna(id_pengguna) ON DELETE CASCADE
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
+    id_pengguna INTEGER,
+    nama_aktivitas TEXT NOT NULL,
+    tanggal_mulai DATE NOT NULL,
+    jam_mulai TIME NOT NULL,
+    tanggal_selesai DATE NOT NULL,
+    jam_selesai TIME NOT NULL,
+    kategori TEXT NOT NULL,
+    catatan TEXT
 );
 
 -- 3. Masukkan kembali data dummy ke tabel yang baru (typo 'IINSERT' diperbaiki).

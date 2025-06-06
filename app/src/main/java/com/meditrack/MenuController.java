@@ -221,7 +221,7 @@ public class MenuController implements Initializable {
     @FXML
     private void handleJadwalButton(ActionEvent event) {
         try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("jadwalPengguna.fxml"));
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/jadwalPengguna.fxml"));
             Parent jadwalRoot = loader.load();
 
             // (Optional) kalau kamu mau lewatkan data, kamu bisa ambil controllernya:

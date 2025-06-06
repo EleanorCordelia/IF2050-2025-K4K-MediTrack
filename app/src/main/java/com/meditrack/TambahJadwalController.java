@@ -122,7 +122,7 @@ public class TambahJadwalController implements Initializable {
     }
 
     private void setupControls() {
-        activityCategoryChoiceBox.getItems().addAll("Aktivitas Tinggi", "Aktivitas Sedang", "Aktivitas Rendah");
+        activityCategoryChoiceBox.getItems().addAll("Tinggi", "Sedang", "Rendah");
         configureTimeSpinner(startHourSpinner, 0, 23);
         configureTimeSpinner(startMinuteSpinner, 0, 59);
         configureTimeSpinner(endHourSpinner, 0, 23);
@@ -155,6 +155,20 @@ public class TambahJadwalController implements Initializable {
         }
     }
 
+    public void setInitialData(JadwalPenggunaController.Activity activity) {
+        // Set date picker value
+        startDatePicker.setValue(activity.getStartDate());
+
+        // Set hour and minute spinners
+        startHourSpinner.getValueFactory().setValue(activity.getStartTime().getHour());
+        startMinuteSpinner.getValueFactory().setValue(activity.getStartTime().getMinute());
+
+        // Set other fields if needed (like nama aktivitas, kategori, catatan, dll.)
+        activityNameField.setText(activity.getName());
+        // ... tambahkan field lain sesuai kebutuhan
+    }
+
+
     private void setInitialValues() {
         LocalDate today = LocalDate.now();
         LocalTime now = LocalTime.now();
@@ -184,7 +198,9 @@ public class TambahJadwalController implements Initializable {
             return;
         }
 
+        // Siapkan objek Jadwal
         Jadwal jadwal = new Jadwal(
+                editingActivityId,  // Tambahkan ID di sini (penting untuk UPDATE)
                 activityNameField.getText().trim(),
                 startDatePicker.getValue(),
                 LocalTime.of(startHourSpinner.getValue(), startMinuteSpinner.getValue()),
@@ -194,16 +210,23 @@ public class TambahJadwalController implements Initializable {
                 notesTextArea.getText().isEmpty() ? null : notesTextArea.getText()
         );
 
-        // --- Logika Koneksi dan Penyimpanan Database ---
-        // Koneksi ditempatkan di sini sesuai permintaan
-        String dbURL = "jdbc:sqlite:meditrack.db";
+        String dbURL = "jdbc:sqlite:" + System.getProperty("user.dir") + "/meditrack.db";
 
-// Koneksi ke SQLite tidak memerlukan username atau password
         try (Connection connection = DriverManager.getConnection(dbURL)) {
             JadwalDAO jadwalDAO = new JadwalDAO(connection);
-            jadwalDAO.addJadwal(jadwal);
-            showAlert(Alert.AlertType.INFORMATION, "Sukses", "Jadwal '" + jadwal.getNamaAktivitas() + "' berhasil disimpan.");
+
+            if (editingActivityId != -1) {
+                // Mode edit: update data
+                jadwalDAO.updateJadwal(jadwal);
+                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Jadwal berhasil diperbarui.");
+            } else {
+                // Mode tambah: insert data baru
+                jadwalDAO.addJadwal(jadwal);
+                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Jadwal berhasil disimpan.");
+            }
+
             closeWindow();
+
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Database Error", "Gagal terhubung atau menyimpan ke file database SQLite.\n\nError: " + e.getMessage());
@@ -250,5 +273,27 @@ public class TambahJadwalController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(content);
         alert.showAndWait();
+    }
+    private int editingActivityId = -1;  // Tambahkan field ini di atas, biar bisa dipakai
+
+    public void setEditMode(Jadwal jadwal) {
+        if (jadwal != null) {
+            activityNameField.setText(jadwal.getNamaAktivitas());
+            startDatePicker.setValue(jadwal.getTanggalMulai());
+            startHourSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getHour());
+            startMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getMinute());
+            endDatePicker.setValue(jadwal.getTanggalSelesai());
+            endHourSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getHour());
+            endMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getMinute());
+            activityCategoryChoiceBox.setValue(jadwal.getKategori());
+            notesTextArea.setText(jadwal.getCatatan());
+            this.editingActivityId = jadwal.getId();
+        }
+    }
+
+    private Jadwal editedJadwal;  // untuk getEditedJadwal()
+
+    public Jadwal getEditedJadwal() {
+        return editedJadwal;
     }
 }
