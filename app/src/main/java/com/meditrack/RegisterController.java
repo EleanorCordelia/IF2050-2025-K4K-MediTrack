@@ -90,7 +90,7 @@ public class RegisterController {
         // Misalnya, membuka browser untuk autentikasi OAuth, dll.
     }
 
-    private boolean isEmailDomainValid(String email) {
+    public boolean isEmailDomainValid(String email) {
         String[] allowedDomains = {"@gmail.com", "@outlook.com", "@yahoo.com", "@student.itb.ac.id"};
         for (String domain : allowedDomains) {
             if (email.toLowerCase().endsWith(domain)) {
@@ -100,7 +100,7 @@ public class RegisterController {
         return false;
     }
 
-    private boolean isPasswordStrong(String password) {
+    public boolean isPasswordStrong(String password) {
         boolean hasUppercase = password.matches(".*[A-Z].*");
         boolean hasLowercase = password.matches(".*[a-z].*");
         boolean hasDigit = password.matches(".*\\d.*");

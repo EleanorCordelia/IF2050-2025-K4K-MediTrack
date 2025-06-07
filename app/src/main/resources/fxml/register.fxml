@@ -95,7 +95,7 @@
         <StackPane prefWidth="600.0" style="-fx-background-color: lightgray;">
             <ImageView fitWidth="600.0" fitHeight="700.0" preserveRatio="false">
                 <image>
-                    <Image url="@../images/login.jpg"/>
+                    <Image url="@../images/login.png"/>
                 </image>
             </ImageView>
         </StackPane>
