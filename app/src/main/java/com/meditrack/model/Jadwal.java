@@ -17,6 +17,7 @@ public class Jadwal {
         this.prioritas = prioritas;
     }
 
+
     // Getter & Setter
 
     public int getIdJadwal() {

@@ -839,5 +839,24 @@ public class MenuController implements Initializable {
             imageView.setClip(clip);
         }
     }
+
+    @FXML
+    private void handleRekomendasiButton(ActionEvent event) {
+        try {
+            // Memuat FXML rekomendasiObat.fxml
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/rekomendasiObat.fxml"));
+            Parent rekomendasiObatRoot = loader.load();
+
+            // Mendapatkan stage saat ini
+            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            currentStage.setScene(new Scene(rekomendasiObatRoot));
+            currentStage.setTitle("MediTrack - Rekomendasi Obat");
+            currentStage.show();
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorDialog("Gagal Membuka Rekomendasi Obat", "Terjadi kesalahan saat membuka halaman rekomendasi obat.");
+        }
+    }
+
     //</editor-fold>
 }
