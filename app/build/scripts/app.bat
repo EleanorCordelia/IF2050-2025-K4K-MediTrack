@@ -70,7 +70,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\guava-33.4.5-jre.jar;%APP_HOME%\lib\javafx-fxml-20-win.jar;%APP_HOME%\lib\javafx-controls-20-win.jar;%APP_HOME%\lib\javafx-controls-20.jar;%APP_HOME%\lib\javafx-graphics-20-win.jar;%APP_HOME%\lib\javafx-graphics-20.jar;%APP_HOME%\lib\javafx-base-20-win.jar;%APP_HOME%\lib\javafx-base-20.jar;%APP_HOME%\lib\failureaccess-1.0.3.jar;%APP_HOME%\lib\listenablefuture-9999.0-empty-to-avoid-conflict-with-guava.jar;%APP_HOME%\lib\jspecify-1.0.0.jar;%APP_HOME%\lib\error_prone_annotations-2.36.0.jar;%APP_HOME%\lib\j2objc-annotations-3.0.0.jar
+set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\javafx-fxml-20-win.jar;%APP_HOME%\lib\javafx-fxml-20.jar;%APP_HOME%\lib\javafx-controls-20-win.jar;%APP_HOME%\lib\javafx-controls-20.jar;%APP_HOME%\lib\javafx-graphics-20-win.jar;%APP_HOME%\lib\javafx-graphics-20.jar;%APP_HOME%\lib\javafx-base-20-win.jar;%APP_HOME%\lib\javafx-base-20.jar;%APP_HOME%\lib\sqlite-jdbc-3.41.2.1.jar
 
 
 @rem Execute app

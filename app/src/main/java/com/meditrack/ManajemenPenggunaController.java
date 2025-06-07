@@ -108,8 +108,7 @@ public class ManajemenPenggunaController implements Initializable {
         }
     }
 
-    // 🔥 Tambahkan method ini
-    private void loadLoggedInUser() {
+    public void loadLoggedInUser() {
         int loggedInUserId = UserSession.getUserId();  // Ambil ID user yang login
 
         // 🔥 Tambahkan validasi di sini
@@ -283,6 +282,12 @@ public class ManajemenPenggunaController implements Initializable {
     }
 
     public boolean updateUsername(int idPengguna, String newUsername) {
+        // 🔥 Validasi: Username tidak boleh null atau kosong
+        if (newUsername == null || newUsername.trim().isEmpty()) {
+            System.err.println("Username tidak boleh kosong.");
+            return false;
+        }
+
         String sql = "UPDATE pengguna SET nama = ? WHERE idPengguna = ?";
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -295,7 +300,6 @@ public class ManajemenPenggunaController implements Initializable {
         }
     }
 
-    // Tambahkan field untuk TextField dan PasswordField
     @FXML private TextField usernameField;
     @FXML private PasswordField passwordField;
 
