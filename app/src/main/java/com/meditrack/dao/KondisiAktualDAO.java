@@ -24,6 +24,9 @@ public class KondisiAktualDAO {
                         rs.getString("tekananDarah"),
                         rs.getInt("detakJantung"),
                         rs.getDouble("suhuTubuh"),
+                        rs.getString("tingkatStres"),
+                        rs.getDouble("durasiOlahraga"),
+                        rs.getDouble("jumlahLangkah"),
                         rs.getString("waktuPencatatan")
                 );
                 list.add(ka);
@@ -34,34 +37,38 @@ public class KondisiAktualDAO {
         return list;
     }
 
-    /** 2. Cari data kondisiaktual berdasarkan ID */
-    public KondisiAktual getKondisiAktualById(int id) {
-        String sql = "SELECT * FROM kondisiaktual WHERE idKondisi = ?";
+    /** 2. Cari data kondisiaktual berdasarkan ID pengguna */
+    public List<KondisiAktual> getKondisiAktualByUserId(int userId) {
+        List<KondisiAktual> list = new ArrayList<>();
+        String sql = "SELECT * FROM kondisiaktual WHERE idPengguna = ?";
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, id);
+            ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new KondisiAktual(
+            while (rs.next()) {
+                KondisiAktual ka = new KondisiAktual(
                         rs.getInt("idKondisi"),
                         rs.getInt("idPengguna"),
                         rs.getString("tekananDarah"),
                         rs.getInt("detakJantung"),
                         rs.getDouble("suhuTubuh"),
+                        rs.getString("tingkatStres"),
+                        rs.getDouble("durasiOlahraga"),
+                        rs.getDouble("jumlahLangkah"),
                         rs.getString("waktuPencatatan")
                 );
+                list.add(ka);
             }
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        return null;
+        return list;
     }
 
     /** 3. Masukkan data kondisiaktual baru (INSERT) */
     public boolean insertKondisiAktual(KondisiAktual ka) {
-        String sql = "INSERT INTO kondisiaktual(idPengguna, tekananDarah, detakJantung, suhuTubuh, waktuPencatatan) " +
-                "VALUES(?, ?, ?, ?, ?)";
+        String sql = "INSERT INTO kondisiaktual(idPengguna, tekananDarah, detakJantung, suhuTubuh, tingkatStres, durasiOlahraga, jumlahLangkah, waktuPencatatan) " +
+                "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
 
@@ -69,7 +76,10 @@ public class KondisiAktualDAO {
             ps.setString(2, ka.getTekananDarah());
             ps.setInt(3, ka.getDetakJantung());
             ps.setDouble(4, ka.getSuhuTubuh());
-            ps.setString(5, ka.getWaktuPencatatan());
+            ps.setString(5, ka.getTingkatStres());
+            ps.setDouble(6, ka.getDurasiOlahraga());
+            ps.setDouble(7, ka.getJumlahLangkah());
+            ps.setString(8, ka.getWaktuPencatatan());
 
             int affectedRows = ps.executeUpdate();
             if (affectedRows == 0) return false;
@@ -86,7 +96,8 @@ public class KondisiAktualDAO {
 
     /** 4. Perbarui data kondisiaktual (UPDATE) */
     public boolean updateKondisiAktual(KondisiAktual ka) {
-        String sql = "UPDATE kondisiaktual SET idPengguna = ?, tekananDarah = ?, detakJantung = ?, suhuTubuh = ?, waktuPencatatan = ? " +
+        String sql = "UPDATE kondisiaktual SET idPengguna = ?, tekananDarah = ?, detakJantung = ?, suhuTubuh = ?, " +
+                "tingkatStres = ?, durasiOlahraga = ?, jumlahLangkah = ?, waktuPencatatan = ? " +
                 "WHERE idKondisi = ?";
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
@@ -95,8 +106,11 @@ public class KondisiAktualDAO {
             ps.setString(2, ka.getTekananDarah());
             ps.setInt(3, ka.getDetakJantung());
             ps.setDouble(4, ka.getSuhuTubuh());
-            ps.setString(5, ka.getWaktuPencatatan());
-            ps.setInt(6, ka.getIdKondisi());
+            ps.setString(5, ka.getTingkatStres());
+            ps.setDouble(6, ka.getDurasiOlahraga());
+            ps.setDouble(7, ka.getJumlahLangkah());
+            ps.setString(8, ka.getWaktuPencatatan());
+            ps.setInt(9, ka.getIdKondisi());
 
             return ps.executeUpdate() > 0;
         } catch (SQLException e) {

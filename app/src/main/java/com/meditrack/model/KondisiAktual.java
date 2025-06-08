@@ -6,19 +6,26 @@ public class KondisiAktual {
     private String tekananDarah;   // format 'SYS/DIA', misalnya '120/80'
     private int detakJantung;      // dalam bpm (beats per minute)
     private double suhuTubuh;      // dalam derajat Celsius, misalnya 36.7
+    private String tingkatStres;   // Rendah, Sedang, Tinggi
+    private double durasiOlahraga; // dalam menit
+    private double jumlahLangkah;  // dalam langkah
     private String waktuPencatatan; // format 'YYYY-MM-DD HH:MM:SS'
 
-    // Konstruktor kosong (dibutuhkan misalnya untuk inisialisasi manual atau framework)
+    // Konstruktor kosong
     public KondisiAktual() { }
 
-    // Konstruktor lengkap (digunakan misalnya pada pemetaan ResultSet ke objek)
+    // Konstruktor lengkap
     public KondisiAktual(int idKondisi, int idPengguna, String tekananDarah, int detakJantung,
-                         double suhuTubuh, String waktuPencatatan) {
+                         double suhuTubuh, String tingkatStres, double durasiOlahraga,
+                         double jumlahLangkah, String waktuPencatatan) {
         this.idKondisi = idKondisi;
         this.idPengguna = idPengguna;
         this.tekananDarah = tekananDarah;
         this.detakJantung = detakJantung;
         this.suhuTubuh = suhuTubuh;
+        this.tingkatStres = tingkatStres;
+        this.durasiOlahraga = durasiOlahraga;
+        this.jumlahLangkah = jumlahLangkah;
         this.waktuPencatatan = waktuPencatatan;
     }
 
@@ -62,6 +69,30 @@ public class KondisiAktual {
 
     public void setSuhuTubuh(double suhuTubuh) {
         this.suhuTubuh = suhuTubuh;
+    }
+
+    public String getTingkatStres() {
+        return tingkatStres;
+    }
+
+    public void setTingkatStres(String tingkatStres) {
+        this.tingkatStres = tingkatStres;
+    }
+
+    public double getDurasiOlahraga() {
+        return durasiOlahraga;
+    }
+
+    public void setDurasiOlahraga(double durasiOlahraga) {
+        this.durasiOlahraga = durasiOlahraga;
+    }
+
+    public double getJumlahLangkah() {
+        return jumlahLangkah;
+    }
+
+    public void setJumlahLangkah(double jumlahLangkah) {
+        this.jumlahLangkah = jumlahLangkah;
     }
 
     public String getWaktuPencatatan() {

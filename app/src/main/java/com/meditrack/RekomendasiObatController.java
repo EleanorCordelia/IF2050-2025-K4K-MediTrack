@@ -2,11 +2,11 @@ package com.meditrack;
 
 import com.meditrack.dao.DaftarObatDAO;
 import com.meditrack.dao.PenggunaDAO;
+import com.meditrack.model.DaftarObat;
 import com.meditrack.dao.RekomendasiDAO;
 import com.meditrack.model.DaftarObat;
 import com.meditrack.model.Pengguna;
 import com.meditrack.model.Rekomendasi;
-import com.meditrack.util.SQLiteConnection;
 import javafx.fxml.FXML;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
@@ -22,11 +22,9 @@ import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+import com.meditrack.model.KondisiAktual;
+import com.meditrack.dao.KondisiAktualDAO;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.ArrayList;
@@ -45,6 +43,7 @@ public class RekomendasiObatController {
     public final DaftarObatDAO daftarObatDAO = new DaftarObatDAO();
     public final PenggunaDAO penggunaDAO = new PenggunaDAO();
     public final List<Rekomendasi> allRekomendasi = new ArrayList<>();
+    private final KondisiAktualDAO kondisiAktualDAO = new KondisiAktualDAO();
 
     @FXML
     public void initialize() {
@@ -153,9 +152,9 @@ public class RekomendasiObatController {
     }
 
     public void showDetailPopup(Rekomendasi rekom) {
-        Stage popupStage = new Stage();
-        popupStage.initModality(Modality.APPLICATION_MODAL);
-        popupStage.setTitle("Detail Rekomendasi");
+        Stage popup = new Stage();
+        popup.initModality(Modality.APPLICATION_MODAL);
+        popup.setTitle("Detail Rekomendasi");
 
         VBox root = new VBox(20);
         root.setAlignment(Pos.TOP_LEFT);
@@ -163,37 +162,84 @@ public class RekomendasiObatController {
         root.setStyle("-fx-background-color: #f9fdf7; -fx-border-radius: 20; -fx-background-radius: 20;");
 
         DaftarObat obat = daftarObatDAO.getObatById(rekom.getIdObat());
+        String nama = obat != null ? obat.getNamaObat() : "Obat Tidak Ditemukan";
 
-        Label namaObatLabel = new Label(obat.getNamaObat() + ": Multivitamin & Suplemen Penambah Stamina");
-        namaObatLabel.setFont(Font.font("Poppins", FontWeight.BOLD, 20));
-        namaObatLabel.setTextFill(Color.BLACK);
+        Label title = new Label(nama);
+        title.setFont(Font.font("Poppins", FontWeight.BOLD, 24));
+        title.setTextFill(Color.web("#111112"));
 
-        Label deskripsiObatLabel = new Label("Suplemen multivitamin yang membantu menjaga daya tahan dan energi tubuh, mengandung Vitamin A, B1, B2, B6, B12, C, D, E, nicotinamide, kalsium pantotenat, asam folat, lysin, kalsium, magnesium, zinc, dan lecithin (tergantung varian).");
-        deskripsiObatLabel.setFont(Font.font("Poppins", 14));
-        deskripsiObatLabel.setWrapText(true);
+        // Tampilkan detail lengkap dari kolom database
+        Label dosisLabel = new Label("Dosis: " + (obat != null ? obat.getDosis() : "N/A"));
+        dosisLabel.setFont(Font.font("Poppins", 14));
+        dosisLabel.setWrapText(true);
 
-        Label caraKonsumsiLabel = new Label("Cara Konsumsi:");
-        caraKonsumsiLabel.setFont(Font.font("Poppins", FontWeight.BOLD, 16));
-        caraKonsumsiLabel.setTextFill(Color.BLACK);
+        Label waktuKonsumsiLabel = new Label("Waktu Konsumsi: " + (obat != null ? obat.getWaktuKonsumsi() : "N/A"));
+        waktuKonsumsiLabel.setFont(Font.font("Poppins", 14));
+        waktuKonsumsiLabel.setWrapText(true);
 
-        Label langkahLabel = new Label(
-                "1. Selesaikan sarapan lebih dulu: Pastikan makanan sudah cukup masuk untuk meminimalkan risiko mual.\n" +
-                        "2. Tunggu 10–15 menit setelah makan: Beri waktu pencernaan bekerja agar penyerapan vitamin optimal.\n" +
-                        "3. Minum Caviplex dengan air putih: 1 kaplet, tidak perlu dikunyah, langsung ditelan.\n" +
-                        "4. Hindari kopi atau teh saat minum vitamin: Karena bisa mengganggu penyerapan nutrisi tertentu.\n" +
-                        "5. Lanjutkan aktivitas seperti biasa: Vitamin akan bekerja mendukung energi dan daya tahanmu sepanjang hari.");
-        langkahLabel.setFont(Font.font("Poppins", 14));
-        langkahLabel.setWrapText(true);
+        Label efekSampingLabel = new Label("Efek Samping: " + (obat != null ? obat.getEfekSamping() : "N/A"));
+        efekSampingLabel.setFont(Font.font("Poppins", 14));
+        efekSampingLabel.setWrapText(true);
 
-        Button closeButton = new Button("Tutup");
-        closeButton.setStyle("-fx-background-color: #1d4ed8; -fx-text-fill: white; -fx-font-size: 14px;");
-        closeButton.setOnAction(e -> popupStage.close());
+        Label statusKonsumsiLabel = new Label("Status Konsumsi: " + (obat != null ? obat.getStatusKonsumsi() : "N/A"));
+        statusKonsumsiLabel.setFont(Font.font("Poppins", 14));
+        statusKonsumsiLabel.setWrapText(true);
 
-        root.getChildren().addAll(namaObatLabel, deskripsiObatLabel, caraKonsumsiLabel, langkahLabel, closeButton);
+        Label deskripsiLabel = new Label("Deskripsi: " + (obat != null ? obat.getDeskripsi() : "N/A"));
+        deskripsiLabel.setFont(Font.font("Poppins", 14));
+        deskripsiLabel.setWrapText(true);
 
-        Scene scene = new Scene(root, 600, 500);
-        popupStage.setScene(scene);
-        popupStage.showAndWait();
+        Label caraKonsumsiLabel = new Label("Cara Konsumsi: " + (obat != null ? obat.getCaraKonsumsi() : "N/A"));
+        caraKonsumsiLabel.setFont(Font.font("Poppins", 14));
+        caraKonsumsiLabel.setWrapText(true);
+
+        Label urutanKonsumsiLabel = new Label("Urutan Konsumsi: " + (obat != null ? obat.getUrutanKonsumsi() : "N/A"));
+        urutanKonsumsiLabel.setFont(Font.font("Poppins", 14));
+        urutanKonsumsiLabel.setWrapText(true);
+
+        // Tombol Tutup
+        Button close = new Button("Tutup");
+        close.setStyle("-fx-background-color: #1d4ed8; -fx-text-fill: white; -fx-font-size: 14px;");
+        close.setOnAction(e -> popup.close());
+
+        root.getChildren().addAll(
+                title,
+                dosisLabel,
+                waktuKonsumsiLabel,
+                efekSampingLabel,
+                statusKonsumsiLabel,
+                deskripsiLabel,
+                caraKonsumsiLabel,
+                urutanKonsumsiLabel,
+                close
+        );
+
+        Scene scene = new Scene(root, 600, 600);
+        popup.setScene(scene);
+        popup.showAndWait();
+    }
+
+    private String getDescription(String namaObat) {
+        if (namaObat.toLowerCase().contains("multivitamin")) {
+            return "Multivitamin & mineral paling umum; mendukung energi, imun, dan kesehatan tubuh.";
+        }
+        return "Deskripsi tidak tersedia.";
+    }
+
+    private String getUsageInstructions(String namaObat) {
+        if (namaObat.toLowerCase().contains("multivitamin")) {
+            return "- Minum satu kapsul setelah makan pagi.\n- Ikuti petunjuk dokter jika sedang hamil.";
+        }
+        return "- Gunakan sesuai anjuran pada kemasan.";
+    }
+
+    private String getPrecautions(String namaObat) {
+        if (namaObat.toLowerCase().contains("multivitamin")) {
+            return "• Dapat menyebabkan mual, konstipasi, atau diare ringan.\n" +
+                    "• Jangan konsumsi bersamaan dengan herbal atau multivitamin lain untuk menghindari overdosis.\n" +
+                    "• Simpan jauh dari jangkauan anak-anak.";
+        }
+        return "• Konsultasikan dengan dokter jika Anda sedang hamil atau menyusui.";
     }
 
     @FXML
@@ -207,6 +253,7 @@ public class RekomendasiObatController {
             Label statusLabel = (Label) ((HBox) card.getChildren().get(0)).getChildren().get(1);
             updateCardStyle(card, statusLabel, "Selesai");
         }
+        showGreenConfirmationDialog();
     }
 
     @FXML
@@ -245,10 +292,7 @@ public class RekomendasiObatController {
         Random random = new Random();
         String kondisi = kondisiAktualList.get(random.nextInt(kondisiAktualList.size()));
         String jadwal = jadwalList.get(random.nextInt(jadwalList.size()));
-        DaftarObat selectedObat = allObat.stream()
-                .filter(obat -> obat.getNamaObat().toLowerCase().contains(kondisi.split(" ")[0]))
-                .findFirst()
-                .orElse(allObat.get(random.nextInt(allObat.size())));
+        DaftarObat selectedObat = allObat.get(random.nextInt(allObat.size()));
 
         Rekomendasi newRekomendasi = new Rekomendasi();
         newRekomendasi.setIdPengguna(userId);
@@ -273,7 +317,6 @@ public class RekomendasiObatController {
     }
 
     public void showPopup(int userId) {
-        // Fallback jika user klik "Tolak Semua"
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Tidak cocok dengan rekomendasi sebelumnya?");
@@ -308,4 +351,90 @@ public class RekomendasiObatController {
         popupStage.showAndWait();
     }
 
+    public void showGreenConfirmationDialog() {
+        Stage popupStage = new Stage();
+        popupStage.initModality(Modality.APPLICATION_MODAL);
+        popupStage.setTitle("Konfirmasi Rekomendasi");
+
+        VBox root = new VBox(20);
+        root.setAlignment(Pos.CENTER);
+        root.setPadding(new Insets(50));
+        root.setStyle("-fx-background-color: #edf7e6; -fx-background-radius: 20;");
+
+        ImageView logoView = new ImageView(new Image("/images/logo.png"));
+        logoView.setFitWidth(48);
+        logoView.setPreserveRatio(true);
+        logoView.setStyle("-fx-background-color: white; -fx-border-radius: 16; -fx-padding: 8;");
+
+        Label titleLabel = new Label("Terima kasih telah menyetujui rekomendasi kami!");
+        titleLabel.setFont(Font.font("Poppins", FontWeight.SEMI_BOLD, 24));
+        titleLabel.setTextFill(Color.web("#535651"));
+        titleLabel.setWrapText(true);
+        titleLabel.setAlignment(Pos.CENTER);
+
+        Label messageLabel = new Label("Sekarang, yuk mulai jalani langkah-langkah konsumsi suplemen dan obat secara bertahap.\n" +
+                "Semoga tubuhmu tetap fit, penuh energi, dan siap menghadapi hari!");
+        messageLabel.setFont(Font.font("Poppins", 16));
+        messageLabel.setTextFill(Color.web("#6b6f67"));
+        messageLabel.setWrapText(true);
+        messageLabel.setAlignment(Pos.CENTER);
+
+        Button closeButton = new Button("Tutup");
+        closeButton.setStyle("-fx-background-color: #1d4ed8; -fx-text-fill: white; -fx-font-size: 14px; -fx-background-radius: 8;");
+        closeButton.setOnAction(e -> popupStage.close());
+
+        root.getChildren().addAll(logoView, titleLabel, messageLabel, closeButton);
+
+        Scene scene = new Scene(root, 600, 400);
+        popupStage.setScene(scene);
+        popupStage.showAndWait();
+    }
+
+    private String dummyAIRekomendasi(int heartRate, String tingkatStres, double durasiOlahraga, double jumlahLangkah) {
+        // Dummy logic untuk memilih obat/suplemen berdasarkan parameter sederhana
+        if (heartRate > 85 && "Tinggi".equalsIgnoreCase(tingkatStres) && durasiOlahraga > 40) {
+            return "Vitamin C + Zinc"; // mendukung daya tahan tubuh tinggi
+        } else if (heartRate < 75 && "Rendah".equalsIgnoreCase(tingkatStres) && durasiOlahraga < 20) {
+            return "Multivitamin"; // untuk menjaga kebugaran harian
+        } else if (jumlahLangkah > 7000) {
+            return "Vitamin D3"; // cocok untuk yang banyak aktivitas
+        } else {
+            return "Omega 3 Fish Oil"; // suplemen default
+        }
+    }
+
+    @FXML
+    private void onGenerateDummyRecommendation() {
+        int userId = 1; // Sesuaikan dengan user aktif di session
+        List<KondisiAktual> kondisiList = kondisiAktualDAO.getKondisiAktualByUserId(userId);
+
+        for (KondisiAktual kondisi : kondisiList) {
+            String namaObat = dummyAIRekomendasi(
+                    kondisi.getDetakJantung(),
+                    kondisi.getTingkatStres(),
+                    kondisi.getDurasiOlahraga(),
+                    kondisi.getJumlahLangkah()
+            );
+
+            // Cari obat yang cocok
+            List<DaftarObat> matchedObat = daftarObatDAO.cariObatByKeyword(namaObat);
+            DaftarObat selectedObat;
+            if (!matchedObat.isEmpty()) {
+                selectedObat = matchedObat.get(0);
+            } else {
+                selectedObat = daftarObatDAO.getRandomObat();
+            }
+
+            // Insert rekomendasi baru
+            Rekomendasi newRekom = new Rekomendasi();
+            newRekom.setIdPengguna(userId);
+            newRekom.setIdObat(selectedObat.getIdObat());
+            newRekom.setAlasan("Berdasarkan kondisi aktual kamu, kami merekomendasikan: " + selectedObat.getNamaObat());
+            newRekom.setTanggalRekomendasi(LocalDate.now() + " " + LocalTime.now());
+            newRekom.setStatusRekomendasi("Diajukan");
+            rekomendasiDAO.insertRekomendasi(newRekom);
+        }
+
+        loadRekomendasi(); // Refresh tampilan rekomendasi
+    }
 }
