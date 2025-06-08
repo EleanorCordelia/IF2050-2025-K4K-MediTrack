@@ -36,15 +36,15 @@ import java.util.Random;
 public class RekomendasiObatController {
 
     @FXML
-    private VBox rekomendasiContainer;
+    public VBox rekomendasiContainer;
 
     @FXML
-    private Label userNameLabel;
+    public Label userNameLabel;
 
-    private final RekomendasiDAO rekomendasiDAO = new RekomendasiDAO();
-    private final DaftarObatDAO daftarObatDAO = new DaftarObatDAO();
-    private final PenggunaDAO penggunaDAO = new PenggunaDAO();
-    private final List<Rekomendasi> allRekomendasi = new ArrayList<>();
+    public final RekomendasiDAO rekomendasiDAO = new RekomendasiDAO();
+    public final DaftarObatDAO daftarObatDAO = new DaftarObatDAO();
+    public final PenggunaDAO penggunaDAO = new PenggunaDAO();
+    public final List<Rekomendasi> allRekomendasi = new ArrayList<>();
 
     @FXML
     public void initialize() {
@@ -52,13 +52,13 @@ public class RekomendasiObatController {
         loadRekomendasi();
     }
 
-    private void loadRekomendasi() {
+    public void loadRekomendasi() {
         allRekomendasi.clear();
         allRekomendasi.addAll(rekomendasiDAO.getAllRekomendasi());
         renderCards();
     }
 
-    private void renderCards() {
+    public void renderCards() {
         rekomendasiContainer.getChildren().clear();
         for (Rekomendasi rekom : allRekomendasi) {
             VBox card = createRekomendasiCard(rekom);
@@ -66,7 +66,7 @@ public class RekomendasiObatController {
         }
     }
 
-    private VBox createRekomendasiCard(Rekomendasi rekom) {
+    public VBox createRekomendasiCard(Rekomendasi rekom) {
         VBox card = new VBox();
         card.setSpacing(8);
         card.setPadding(new Insets(16));
@@ -106,7 +106,7 @@ public class RekomendasiObatController {
         return card;
     }
 
-    private void updateCardStyle(VBox card, Label statusLabel, String status) {
+    public void updateCardStyle(VBox card, Label statusLabel, String status) {
         String backgroundColor;
         String borderColor;
         String textColor;
@@ -152,7 +152,7 @@ public class RekomendasiObatController {
         );
     }
 
-    private void showDetailPopup(Rekomendasi rekom) {
+    public void showDetailPopup(Rekomendasi rekom) {
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);
         popupStage.setTitle("Detail Rekomendasi");
@@ -197,7 +197,7 @@ public class RekomendasiObatController {
     }
 
     @FXML
-    private void onTerimaAll() {
+    public void onTerimaAll() {
         for (int i = 0; i < allRekomendasi.size(); i++) {
             Rekomendasi rekom = allRekomendasi.get(i);
             rekom.setStatusRekomendasi("Selesai");
@@ -210,7 +210,7 @@ public class RekomendasiObatController {
     }
 
     @FXML
-    private void onTolakAll() {
+    public void onTolakAll() {
         for (int i = 0; i < allRekomendasi.size(); i++) {
             Rekomendasi rekom = allRekomendasi.get(i);
             rekom.setStatusRekomendasi("Ditolak");
@@ -230,7 +230,7 @@ public class RekomendasiObatController {
         }
     }
 
-    private void generateNewRecommendation(int userId) {
+    public void generateNewRecommendation(int userId) {
         for (Rekomendasi r : rekomendasiDAO.getAllRekomendasi()) {
             if (r.getIdPengguna() == userId && r.getStatusRekomendasi().equals("Ditolak")) {
                 rekomendasiDAO.deleteRekomendasi(r.getIdRekomendasi());
@@ -263,16 +263,16 @@ public class RekomendasiObatController {
     }
 
     @FXML
-    private void onPrevPage() {
+    public void onPrevPage() {
         System.out.println("Prev Page clicked");
     }
 
     @FXML
-    private void onNextPage() {
+    public void onNextPage() {
         System.out.println("Next Page clicked");
     }
 
-    private void showPopup(int userId) {
+    public void showPopup(int userId) {
         // Fallback jika user klik "Tolak Semua"
         Stage popupStage = new Stage();
         popupStage.initModality(Modality.APPLICATION_MODAL);

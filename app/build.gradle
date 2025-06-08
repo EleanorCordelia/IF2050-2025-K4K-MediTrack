@@ -1,54 +1,63 @@
-/*
- * build.gradle (modul app)
- * Disusun ulang agar hanya ada satu blok dependencies.
- */
-
 plugins {
-    // Plugin untuk membuat dan menjalankan aplikasi Java (CLI/GUI).
     id 'application'
-
-    // Plugin JavaFX agar Gradle otomatis menambahkan modul‐modul JavaFX ke classpath.
     id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 repositories {
-    // Mengambil dependency dari Maven Central
     mavenCentral()
 }
 
 java {
-    // Gunakan Java toolchain (versi 21) agar lingkungan build konsisten di mana pun.
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
 javafx {
-    // Versi JavaFX yang akan digunakan
     version = "20"
-    // Modul JavaFX yang dibutuhkan (controls + fxml)
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ] // DITAMBAHIN javafx.swing
 }
 
 dependencies {
-    // Dependency JavaFX (sesuai modul di atas)
-    implementation 'org.openjfx:javafx-controls:20'
-    implementation 'org.openjfx:javafx-fxml:20'
-    implementation 'org.openjfx:javafx-graphics:20'
+    // Unit Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 
-    // Dependency SQLite JDBC untuk mengakses meditrack.db
-    implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
+    // Mocking framework
+    testImplementation 'org.mockito:mockito-core:5.3.1'
 
-    // Jika ingin menambahkan unit test (JUnit 5), bisa pakai baris ini:
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
+    // SQLite JDBC
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+
+    // JavaFX
+    implementation 'org.openjfx:javafx-controls:21.0.3'
+    implementation 'org.openjfx:javafx-fxml:21.0.3'
+    testImplementation 'org.openjfx:javafx-controls:21.0.3'
+    testImplementation 'org.openjfx:javafx-fxml:21.0.3'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test/java'] // letak test di luar src
+        }
+    }
+}
+
+
 application {
-    // Kelas utama (MainClass) aplikasi JavaFX
     mainClass = 'com.meditrack.MainApp'
 }
 
 test {
-    // Aktifkan JUnit platform untuk testing
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
