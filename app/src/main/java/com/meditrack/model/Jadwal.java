@@ -18,21 +18,29 @@ public class Jadwal {
     private LocalTime waktuSelesai;
     private String kategori; // Diubah dari tingkatAktivitas
     private String catatan;
+    private int idPengguna;  // Tambahkan di bagian field
+
+    // Tambahkan getter dan setter:
+    public int getIdPengguna() {
+        return idPengguna;
+    }
     // Field idPengguna untuk sementara tidak digunakan di form ini, jadi bisa diabaikan di constructor
 
     /**
      * Konstruktor untuk membuat objek Jadwal baru dari UI (sebelum disimpan ke DB).
      * Cocok dengan logika 'Tambah Baru' di TambahJadwalController.
      */
-    public Jadwal(String namaAktivitas, LocalDate tanggalMulai, LocalTime waktuMulai, LocalDate tanggalSelesai, LocalTime waktuSelesai, String kategori, String catatan) {
+    public Jadwal(String namaAktivitas, LocalDate tanggalMulai, LocalTime waktuMulai,
+                  LocalDate tanggalSelesai, LocalTime waktuSelesai, String catatan, int idPengguna) {
         this.namaAktivitas = namaAktivitas;
         this.tanggalMulai = tanggalMulai;
         this.waktuMulai = waktuMulai;
         this.tanggalSelesai = tanggalSelesai;
         this.waktuSelesai = waktuSelesai;
-        this.kategori = kategori;
         this.catatan = catatan;
+        this.idPengguna = idPengguna;
     }
+
 
     /**
      * Konstruktor lengkap untuk membuat objek Jadwal dari data yang ada di DB.

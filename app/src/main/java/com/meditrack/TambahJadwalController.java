@@ -35,20 +35,20 @@ public class TambahJadwalController implements Initializable {
     //</editor-fold>
 
     //<editor-fold desc="FXML Declarations">
-    @FXML private VBox mainContainer;
-    @FXML private HBox headerBox;
-    @FXML private TextField activityNameField;
-    @FXML private DatePicker startDatePicker;
-    @FXML private Spinner<Integer> startHourSpinner;
-    @FXML private Spinner<Integer> startMinuteSpinner;
-    @FXML private DatePicker endDatePicker;
-    @FXML private Spinner<Integer> endHourSpinner;
-    @FXML private Spinner<Integer> endMinuteSpinner;
-    @FXML private ChoiceBox<String> activityCategoryChoiceBox;
-    @FXML private TextArea notesTextArea;
-    @FXML private Button saveButton;
-    @FXML private Button cancelButton;
-    @FXML private Label labelWaktuMulai, labelWaktuSelesai, labelKategori, labelCatatan;
+    @FXML public VBox mainContainer;
+    @FXML public HBox headerBox;
+    @FXML public TextField activityNameField;
+    @FXML public DatePicker startDatePicker;
+    @FXML public Spinner<Integer> startHourSpinner;
+    @FXML public Spinner<Integer> startMinuteSpinner;
+    @FXML public DatePicker endDatePicker;
+    @FXML public Spinner<Integer> endHourSpinner;
+    @FXML public Spinner<Integer> endMinuteSpinner;
+    @FXML public ChoiceBox<String> activityCategoryChoiceBox;
+    @FXML public TextArea notesTextArea;
+    @FXML public Button saveButton;
+    @FXML public Button cancelButton;
+    @FXML public Label labelWaktuMulai, labelWaktuSelesai, labelKategori, labelCatatan;
     //</editor-fold>
 
     @Override
@@ -109,6 +109,52 @@ public class TambahJadwalController implements Initializable {
         cancelButton.setOnMouseExited(e -> cancelButton.setStyle(cancelButtonStyle));
     }
 
+    public void setInitialDateTime(LocalDate date) {
+        if (date != null) {
+            if (startDatePicker == null) startDatePicker = new DatePicker();
+            if (endDatePicker == null) endDatePicker = new DatePicker();
+            if (startHourSpinner == null) startHourSpinner = new Spinner<>(0, 23, 0);
+            if (startMinuteSpinner == null) startMinuteSpinner = new Spinner<>(0, 59, 0);
+            if (endHourSpinner == null) endHourSpinner = new Spinner<>(0, 23, 0);
+            if (endMinuteSpinner == null) endMinuteSpinner = new Spinner<>(0, 59, 0);
+
+            startDatePicker.setValue(date);
+            endDatePicker.setValue(date);
+
+            LocalTime now = LocalTime.now();
+            LocalTime nextHour = now.plusHours(1).withMinute(0);
+            startHourSpinner.getValueFactory().setValue(now.getHour());
+            startMinuteSpinner.getValueFactory().setValue(now.getMinute());
+            endHourSpinner.getValueFactory().setValue(nextHour.getHour());
+            endMinuteSpinner.getValueFactory().setValue(nextHour.getMinute());
+        }
+    }
+
+    public void setEditMode(Jadwal jadwal) {
+        if (jadwal != null) {
+            if (activityNameField == null) activityNameField = new TextField();
+            if (startDatePicker == null) startDatePicker = new DatePicker();
+            if (startHourSpinner == null) startHourSpinner = new Spinner<>(0, 23, 0);
+            if (startMinuteSpinner == null) startMinuteSpinner = new Spinner<>(0, 59, 0);
+            if (endDatePicker == null) endDatePicker = new DatePicker();
+            if (endHourSpinner == null) endHourSpinner = new Spinner<>(0, 23, 0);
+            if (endMinuteSpinner == null) endMinuteSpinner = new Spinner<>(0, 59, 0);
+            if (activityCategoryChoiceBox == null) activityCategoryChoiceBox = new ChoiceBox<>();
+            if (notesTextArea == null) notesTextArea = new TextArea();
+
+            activityNameField.setText(jadwal.getNamaAktivitas());
+            startDatePicker.setValue(jadwal.getTanggalMulai());
+            startHourSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getHour());
+            startMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getMinute());
+            endDatePicker.setValue(jadwal.getTanggalSelesai());
+            endHourSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getHour());
+            endMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getMinute());
+            activityCategoryChoiceBox.setValue(jadwal.getKategori());
+            notesTextArea.setText(jadwal.getCatatan());
+            this.editingActivityId = jadwal.getId();
+        }
+    }
+
     // Helper untuk menerapkan style fokus pada elemen
     private void applyFocusableNodeStyle(Control control, String baseStyle, String focusStyle) {
         control.setStyle(baseStyle);
@@ -137,22 +183,6 @@ public class TambahJadwalController implements Initializable {
             @Override public Integer fromString(String string) { return Integer.parseInt(string); }
         };
         spinner.getValueFactory().setConverter(twoDigitConverter);
-    }
-
-    public void setInitialDateTime(LocalDate date) {
-        if (date != null) {
-            // Mengatur nilai DatePicker sesuai tanggal yang dikirim
-            startDatePicker.setValue(date);
-            endDatePicker.setValue(date);
-
-            // Biarkan waktu tetap diatur ke nilai default (jam saat ini)
-            LocalTime now = LocalTime.now();
-            LocalTime nextHour = now.plusHours(1).withMinute(0);
-            startHourSpinner.getValueFactory().setValue(now.getHour());
-            startMinuteSpinner.getValueFactory().setValue(now.getMinute());
-            endHourSpinner.getValueFactory().setValue(nextHour.getHour());
-            endMinuteSpinner.getValueFactory().setValue(nextHour.getMinute());
-        }
     }
 
     public void setInitialData(JadwalPenggunaController.Activity activity) {
@@ -193,7 +223,7 @@ public class TambahJadwalController implements Initializable {
     }
 
     @FXML
-    private void handleSave() {
+    public void handleSave() {
         if (!isInputValid()) {
             return;
         }
@@ -236,7 +266,7 @@ public class TambahJadwalController implements Initializable {
         }
     }
 
-    private boolean isInputValid() {
+    public boolean isInputValid() {
         String activityName = activityNameField.getText().trim();
         if (activityName.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Nama aktivitas tidak boleh kosong.");
@@ -267,7 +297,7 @@ public class TambahJadwalController implements Initializable {
         }
     }
 
-    private void showAlert(Alert.AlertType type, String title, String content) {
+    protected void showAlert(Alert.AlertType type, String title, String content) {
         Alert alert = new Alert(type);
         alert.setTitle(title);
         alert.setHeaderText(null);
@@ -276,24 +306,15 @@ public class TambahJadwalController implements Initializable {
     }
     private int editingActivityId = -1;  // Tambahkan field ini di atas, biar bisa dipakai
 
-    public void setEditMode(Jadwal jadwal) {
-        if (jadwal != null) {
-            activityNameField.setText(jadwal.getNamaAktivitas());
-            startDatePicker.setValue(jadwal.getTanggalMulai());
-            startHourSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getHour());
-            startMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getMinute());
-            endDatePicker.setValue(jadwal.getTanggalSelesai());
-            endHourSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getHour());
-            endMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getMinute());
-            activityCategoryChoiceBox.setValue(jadwal.getKategori());
-            notesTextArea.setText(jadwal.getCatatan());
-            this.editingActivityId = jadwal.getId();
-        }
-    }
-
     private Jadwal editedJadwal;  // untuk getEditedJadwal()
 
     public Jadwal getEditedJadwal() {
         return editedJadwal;
     }
+
+    @FXML
+    private void handleEditAktivitas() {
+        showAlert(Alert.AlertType.INFORMATION, "Edit Aktivitas", "Silakan pilih aktivitas yang ingin diedit.");
+    }
+
 }

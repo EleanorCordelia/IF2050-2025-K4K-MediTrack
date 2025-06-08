@@ -51,7 +51,7 @@ public class JadwalPenggunaController implements Initializable {
     private YearMonth currentYearMonth;
     private LocalDate selectedDate;
     private List<Button> dayButtons = new ArrayList<>();
-    private JadwalDAO jadwalDAO;
+    public JadwalDAO jadwalDAO;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -399,7 +399,35 @@ public class JadwalPenggunaController implements Initializable {
     private void handleEditAktivitas() {
         showAlert(Alert.AlertType.INFORMATION, "Edit Aktivitas", "Silakan pilih aktivitas yang ingin diedit.");
     }
+    public VBox jadwalContainer;
 
+    public JadwalDAO getJadwalDAO() { return jadwalDAO; }
+    public VBox getJadwalContainer() { return jadwalContainer; }
 
+    public void loadJadwal() {
+        try {
+            List<Jadwal> listJadwal = jadwalDAO.getAllJadwal();
+            jadwalContainer.getChildren().clear();  // Clear old data
+            for (Jadwal jadwal : listJadwal) {
+                Label label = new Label(jadwal.getNamaAktivitas());
+                jadwalContainer.getChildren().add(label);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void showTambahJadwalDialog() {
+        // Dummy implementasi untuk testing
+        System.out.println("showTambahJadwalDialog() called");
+    }
+
+    @FXML
+    public void onTambahJadwal() {
+        showTambahJadwalDialog();
+    }
+
+    private JadwalPenggunaController controller;
+    private JadwalDAO mockJadwalDAO;
 
 }

@@ -5,14 +5,48 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO.">
+      <change afterPath="$PROJECT_DIR$/app/test/java/com/meditrack/DokterTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/test/java/com/meditrack/JadwalPenggunaControllerTest.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/test/java/com/meditrack/TambahJadwalControllerTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/md5-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/sha1-checksums.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1cez31nugpz4zvydkzklvmb36/candidates.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/1cez31nugpz4zvydkzklvmb36/candidates.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/build.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/buildfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/entry.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/projectfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/23323efd-45a7-491c-b94f-fd0e30c80eb7/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/3of9n73feny0744dfzmrhxm4d/candidates.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/configuration-cache/3of9n73feny0744dfzmrhxm4d/candidates.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/589947fd-16f2-4256-bb39-0cad9dc582a2/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/589947fd-16f2-4256-bb39-0cad9dc582a2/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/589947fd-16f2-4256-bb39-0cad9dc582a2/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/589947fd-16f2-4256-bb39-0cad9dc582a2/buildfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/589947fd-16f2-4256-bb39-0cad9dc582a2/entry.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/589947fd-16f2-4256-bb39-0cad9dc582a2/projectfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/589947fd-16f2-4256-bb39-0cad9dc582a2/work.bin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/meditrack.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/meditrack.sqbpro" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.sqbpro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/distributions/app.tar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/distributions/app.tar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/distributions/app.zip" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/distributions/app.zip" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/libs/app.jar" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/libs/app.jar" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/scripts/app" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/scripts/app" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/scripts/app.bat" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/scripts/app.bat" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/JadwalPenggunaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/JadwalPenggunaController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/TambahJadwalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/TambahJadwalController.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/JadwalDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/JadwalDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Jadwal.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Jadwal.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -69,6 +103,11 @@
     &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
   }
 }</component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="C:\Users\LENOVO\Documents\SEMESTER 6\RPL\TUBES HAHAHIHI\MediTrack-Tugas-Besar-DRPL\app" />
+    </key>
+  </component>
   <component name="RunManager">
     <configuration name="MainApp" type="Application" factoryName="Application" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.meditrack.MainApp" />
@@ -107,10 +146,20 @@
       <option name="presentableId" value="Default" />
       <updated>1749114819699</updated>
     </task>
+    <task id="LOCAL-00001" summary="feat(rekomendasi): update feature with DB connection and add new recommendation on rejection&#10;&#10;- Connect recommendation feature to the database&#10;- When rejected, automatically generate a new recommendation&#10;- Save this update before switching branches">
+      <option name="closed" value="true" />
+      <created>1749380922051</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1749380922051</updated>
+    </task>
+    <option name="localTasksCounter" value="2" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO." />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO." />
+    <MESSAGE value="feat(rekomendasi): update feature with DB connection and add new recommendation on rejection&#10;&#10;- Connect recommendation feature to the database&#10;- When rejected, automatically generate a new recommendation&#10;- Save this update before switching branches" />
+    <option name="LAST_COMMIT_MESSAGE" value="feat(rekomendasi): update feature with DB connection and add new recommendation on rejection&#10;&#10;- Connect recommendation feature to the database&#10;- When rejected, automatically generate a new recommendation&#10;- Save this update before switching branches" />
   </component>
 </project>
