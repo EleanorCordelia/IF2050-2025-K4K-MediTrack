@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.text.*?>
+<?import javafx.scene.image.*?>
+<?import javafx.geometry.Insets?>
+
+<BorderPane xmlns:fx="http://javafx.com/fxml"
+            xmlns="http://javafx.com/javafx"
+            fx:controller="com.meditrack.LoginController"
+            prefWidth="1200.0" prefHeight="700.0"
+            style="-fx-background-color: white;">
+
+    <!-- Kiri: Form Login -->
+    <left>
+        <VBox spacing="20.0" alignment="TOP_CENTER" prefWidth="600.0">
+            <padding>
+                <Insets top="50.0" left="30.0" right="30.0" bottom="50.0"/>
+            </padding>
+
+            <!-- Header -->
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <StackPane prefWidth="50.0" prefHeight="50.0" style="-fx-background-color: #112F82; -fx-background-radius: 8;">
+                    <ImageView fitWidth="30.0" fitHeight="30.0">
+                        <image>
+                            <Image url="@../images/logo.png"/>
+                        </image>
+                    </ImageView>
+                </StackPane>
+                <Label text="MediTrack"
+                       style="-fx-font-family: 'Poppins'; -fx-font-size: 24; -fx-font-weight: 600; -fx-text-fill: #151D48;"/>
+            </HBox>
+
+            <!-- Title -->
+            <Label text="Masuk ke MediTrack"
+                   style="-fx-font-family: 'Poppins'; -fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #112F82;"/>
+
+            <!-- Form -->
+            <VBox spacing="12.0" prefWidth="500.0"> <!-- VBox untuk form, children defaultnya rata kiri -->
+                <Label text="Email" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                <TextField fx:id="emailField" promptText="contoh@email.com" prefHeight="40.0"/>
+
+                <Label text="Kata Sandi" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
+                <PasswordField fx:id="passwordField" promptText="Setidaknya 8 Karakter" prefHeight="40.0"/>
+
+                <!-- Tombol Masuk di tengah -->
+                <HBox alignment="CENTER">
+                    <Button text="Masuk" onAction="#handleLoginButton"
+                            style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #173EAD; -fx-background-radius: 8;"
+                            prefHeight="45.0"/>
+                </HBox>
+
+                <Separator/>
+
+                <!-- Label "Atau" di tengah -->
+                <HBox alignment="CENTER">
+                    <Label text="Atau" style="-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #294957;"/>
+                </HBox>
+
+                <!-- Tombol Masuk dengan Google di tengah -->
+                <HBox alignment="CENTER">
+                    <Button text="Masuk dengan Google" onAction="#handleLoginGoogleButton"
+                            style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: #F3F9FA; -fx-background-radius: 8;"
+                            prefHeight="45.0"/>
+                </HBox>
+
+                <!-- TextFlow di tengah -->
+                <HBox alignment="CENTER">
+                    <TextFlow textAlignment="CENTER"> <!-- textAlignment="CENTER" menengahkan Teks di dalam TextFlow -->
+                        <Text text="Belum punya akun? " style="-fx-fill: #313957;"/>
+                        <Text text="Registrasi" style="-fx-fill: #1E4AE9; -fx-font-weight: bold;" onMouseClicked="#handleRegisterLink"/>
+                    </TextFlow>
+                </HBox>
+            </VBox>
+        </VBox>
+    </left>
+
+    <!-- Kanan: Gambar -->
+    <right>
+        <StackPane prefWidth="600.0">
+            <ImageView fitWidth="600.0" fitHeight="700.0" preserveRatio="false">
+                <image>
+                    <Image url="@../images/login.png"/>
+                </image>
+            </ImageView>
+        </StackPane>
+    </right>
+
+</BorderPane>

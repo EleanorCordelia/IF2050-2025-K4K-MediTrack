@@ -10,33 +10,48 @@ public class Pengguna {
     private Double tinggiBadan;    // nullable
     private Double beratBadan;     // nullable
 
+    // **FIELD BARU** untuk menyimpan lokasi/URL avatar
+    private String avatarPath;
+
     public Pengguna() { }
 
-    public Pengguna(int idPengguna, String nama, String email, String password,
-                    String tanggalLahir, String jenisKelamin,
-                    Double tinggiBadan, Double beratBadan) {
-        this.idPengguna = idPengguna;
-        this.nama = nama;
-        this.email = email;
-        this.password = password;
+    // Constructor lengkap (ikutkan avatarPath di parameter)
+    public Pengguna(int idPengguna,
+                    String nama,
+                    String email,
+                    String password,
+                    String tanggalLahir,
+                    String jenisKelamin,
+                    Double tinggiBadan,
+                    Double beratBadan,
+                    String avatarPath) {
+        this.idPengguna   = idPengguna;
+        this.nama         = nama;
+        this.email        = email;
+        this.password     = password;
         this.tanggalLahir = tanggalLahir;
         this.jenisKelamin = jenisKelamin;
-        this.tinggiBadan = tinggiBadan;
-        this.beratBadan = beratBadan;
+        this.tinggiBadan  = tinggiBadan;
+        this.beratBadan   = beratBadan;
+        this.avatarPath   = avatarPath;
     }
 
-    public int getIdPengguna() {
-        return idPengguna;
-    }
-    public void setIdPengguna(int idPengguna) {
-        this.idPengguna = idPengguna;
-    }
+    // --- getter & setter yang sudah ada ---
 
-    public String getNama() {
-        return nama;
+    public int getIdPengguna() { return idPengguna; }
+    public void setIdPengguna(int idPengguna) { this.idPengguna = idPengguna; }
+
+    public String getNama() { return nama; }
+    public void setNama(String nama) { this.nama = nama; }
+
+    /* … getter/setter untuk email, password, tanggalLahir, jenisKelamin, tinggiBadan, beratBadan … */
+
+    // **getter & setter untuk avatarPath**
+    public String getAvatarPath() {
+        return avatarPath;
     }
-    public void setNama(String nama) {
-        this.nama = nama;
+    public void setAvatarPath(String avatarPath) {
+        this.avatarPath = avatarPath;
     }
 
     public String getEmail() {

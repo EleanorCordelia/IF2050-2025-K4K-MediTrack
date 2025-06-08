@@ -4,33 +4,47 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO.">
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/DokterFormController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/PenggunaFormController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/dokterForm.fxml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/penggunaForm.fxml" afterDir="false" />
+    <list default="true" id="0bf73166-0020-4a84-aa50-0b59fbd9aaca" name="Changes" comment="">
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/DashboardController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LoginController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/RegisterController.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/UserStore.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/AlertUtils.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/Session.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/bundles/lang.properties" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/kondisiAktual.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/login.fxml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/register.fxml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/md5-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/md5-checksums.bin" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/sha1-checksums.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/sha1-checksums.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/gradle.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/gradle.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_15_40__Changes_.xml" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_16_19__Changes_.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_04_06_2025_16_19__Changes_.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/outputFiles.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/app/build.gradle" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/com/meditrack/MainApp.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/com/meditrack/MainApp.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/distributions/app.tar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/distributions/app.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/libs/app.jar" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/resources/main/images/dummy.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/resources/main/images/dummy.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/resources/main/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/resources/main/images/logo.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/scripts/app" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/scripts/app.bat" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/tmp/jar/MANIFEST.MF" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/app/meditrack.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.db" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/KondisiAktualController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/KondisiAktualController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/PenggunaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/controller/PenggunaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/KondisiAktualDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/KondisiAktualDAO.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/PenggunaDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/PenggunaDAO.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Dokter.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Dokter.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/SQLiteConnection.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/util/SQLiteConnection.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/penggunaView.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/penggunaView.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/KondisiAktual.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/KondisiAktual.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Pengguna.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Pengguna.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/images/dummy.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/images/dummy.png" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/resources/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/images/logo.png" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
@@ -46,9 +60,22 @@
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
+        <task path="$PROJECT_DIR$/app">
+          <activation />
+        </task>
         <projects_view>
           <tree_state>
-            <expand />
+            <expand>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MediTrack" type="f1a62948:ProjectNode" />
+              </path>
+              <path>
+                <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
+                <item name="MediTrack" type="f1a62948:ProjectNode" />
+                <item name="app" type="2d1252cf:ModuleNode" />
+              </path>
+            </expand>
             <select />
           </tree_state>
         </projects_view>
@@ -58,6 +85,8 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+        <option value="HTML File" />
+        <option value="FxmlFile" />
         <option value="Class" />
       </list>
     </option>
@@ -65,27 +94,32 @@
   <component name="Git.Settings">
     <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
   </component>
-  <component name="ProjectColorInfo"><![CDATA[{
-  "customColor": "",
-  "associatedIndex": 3
-}]]></component>
-  <component name="ProjectId" id="2y5BysbWGcZYfcye9XzgokTpnj7" />
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 5
+}</component>
+  <component name="ProjectId" id="2y94ay0mt8pBxJTzeXOzOLM8sEn" />
   <component name="ProjectViewState">
     <option name="hideEmptyMiddlePackages" value="true" />
     <option name="showLibraryContents" value="true" />
   </component>
-  <component name="PropertiesComponent"><![CDATA[{
-  "keyToString": {
-    "RunOnceActivity.ShowReadmeOnStart": "true",
-    "git-widget-placeholder": "develop",
-    "kotlin-language-version-configured": "true"
+  <component name="PropertiesComponent">{
+  &quot;keyToString&quot;: {
+    &quot;Application.MainApp.executor&quot;: &quot;Coverage&quot;,
+    &quot;DefaultHtmlFileTemplate&quot;: &quot;HTML File&quot;,
+    &quot;Gradle.Build IF2050-2025-K4K-MediTrack.executor&quot;: &quot;Run&quot;,
+    &quot;Gradle.IF2050-2025-K4K-MediTrack:app [:app:com.meditrack.MainApp.main()].executor&quot;: &quot;Run&quot;,
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;RunOnceActivity.git.unshallow&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;kondisi-aktual&quot;,
+    &quot;project.structure.last.edited&quot;: &quot;Project&quot;,
+    &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
+    &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
   }
-}]]></component>
+}</component>
   <component name="RunManager">
-    <configuration name="MainApp" type="Application" factoryName="Application" nameIsGenerated="true">
+    <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
       <option name="MAIN_CLASS_NAME" value="com.meditrack.MainApp" />
       <module name="MediTrack.app.main" />
-      <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$/app" />
       <extension name="coverage">
         <pattern>
           <option name="PATTERN" value="com.meditrack.*" />
@@ -96,33 +130,25 @@
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="MediTrack-Tugas-Besar-DRPL" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="MediTrack-Tugas-Besar-DRPL" />
-      <option name="filePath" />
-      <method v="2">
-        <option name="Make" enabled="true" />
-      </method>
-    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainApp" />
+      </list>
+    </recent_temporary>
   </component>
-  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
   <component name="TaskManager">
     <task active="true" id="Default" summary="Default task">
-      <changelist id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="feat: add user management feature (dummy data, not connected to DB yet)" />
-      <created>1749114819699</created>
+      <changelist id="0bf73166-0020-4a84-aa50-0b59fbd9aaca" name="Changes" comment="" />
+      <created>1749233524871</created>
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
-      <updated>1749114819699</updated>
+      <updated>1749233524871</updated>
     </task>
     <servers />
   </component>
-  <component name="VcsManagerConfiguration">
-    <MESSAGE value="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO." />
-    <option name="LAST_COMMIT_MESSAGE" value="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO." />
+  <component name="com.intellij.coverage.CoverageDataManagerImpl">
+    <SUITE FILE_PATH="coverage/MediTrack$MainApp.ic" NAME="MainApp Coverage Results" MODIFIED="1749218584121" SOURCE_PROVIDER="com.intellij.coverage.DefaultCoverageFileProvider" RUNNER="idea" COVERAGE_BY_TEST_ENABLED="false" COVERAGE_TRACING_ENABLED="true">
+      <FILTER>com.meditrack.*</FILTER>
+    </SUITE>
   </component>
 </project>

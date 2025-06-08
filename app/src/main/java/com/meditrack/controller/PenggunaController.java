@@ -2,6 +2,7 @@ package com.meditrack.controller;
 
 import com.meditrack.dao.PenggunaDAO;
 import com.meditrack.model.Pengguna;
+import javafx.beans.property.ReadOnlyObjectWrapper;    // ← import ini
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,12 +11,10 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
-import javafx.scene.control.Dialog;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;                   // ← dan ini
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -32,21 +31,41 @@ public class PenggunaController {
     @FXML private TableColumn<Pengguna, String> colJenisKel;
     @FXML private TableColumn<Pengguna, Double> colTinggi;
     @FXML private TableColumn<Pengguna, Double> colBerat;
+    /** Tambahan: kolom avatarPath (string) */
+    @FXML private TableColumn<Pengguna, String> colAvatarPath;
+    /** Kalau mau langsung show gambarnya, gunakan ini: */
+    @FXML private TableColumn<Pengguna, ImageView> colAvatarImg;
 
     private final PenggunaDAO penggunaDAO = new PenggunaDAO();
 
     @FXML
     public void initialize() {
         // Binding kolom ke properti model
-        colId.setCellValueFactory(new PropertyValueFactory<>("idPengguna"));
-        colNama.setCellValueFactory(new PropertyValueFactory<>("nama"));
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colTanggal.setCellValueFactory(new PropertyValueFactory<>("tanggalLahir"));
-        colJenisKel.setCellValueFactory(new PropertyValueFactory<>("jenisKelamin"));
-        colTinggi.setCellValueFactory(new PropertyValueFactory<>("tinggiBadan"));
-        colBerat.setCellValueFactory(new PropertyValueFactory<>("beratBadan"));
+        colId        .setCellValueFactory(new PropertyValueFactory<>("idPengguna"));
+        colNama      .setCellValueFactory(new PropertyValueFactory<>("nama"));
+        colEmail     .setCellValueFactory(new PropertyValueFactory<>("email"));
+        colTanggal   .setCellValueFactory(new PropertyValueFactory<>("tanggalLahir"));
+        colJenisKel  .setCellValueFactory(new PropertyValueFactory<>("jenisKelamin"));
+        colTinggi    .setCellValueFactory(new PropertyValueFactory<>("tinggiBadan"));
+        colBerat     .setCellValueFactory(new PropertyValueFactory<>("beratBadan"));
+        colAvatarPath.setCellValueFactory(new PropertyValueFactory<>("avatarPath"));
 
-        // Load data awal
+        // Jika ingin menampilkan preview gambar di tabel:
+        colAvatarImg.setCellValueFactory(cellData -> {
+            String path = cellData.getValue().getAvatarPath();
+            ImageView iv = new ImageView();
+            iv.setFitWidth(32);
+            iv.setFitHeight(32);
+            if (path != null && !path.isBlank()) {
+                iv.setImage(new Image(path, true));
+            } else {
+                iv.setImage(new Image(
+                        getClass().getResource("/images/avatar.png")
+                                .toExternalForm()));
+            }
+            return new ReadOnlyObjectWrapper<>(iv);
+        });
+
         loadPenggunaTable();
     }
 
@@ -56,13 +75,11 @@ public class PenggunaController {
         tablePengguna.setItems(obsList);
     }
 
-    @FXML
-    private void onRefresh() {
+    @FXML private void onRefresh() {
         loadPenggunaTable();
     }
 
-    @FXML
-    private void onAddPengguna() {
+    @FXML private void onAddPengguna() {
         try {
             Dialog<ButtonType> dialog = new Dialog<>();
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/penggunaForm.fxml"));
@@ -88,8 +105,7 @@ public class PenggunaController {
         }
     }
 
-    @FXML
-    private void onEditPengguna() {
+    @FXML private void onEditPengguna() {
         Pengguna selected = tablePengguna.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Peringatan", "Pilih baris data terlebih dahulu!", Alert.AlertType.WARNING);
@@ -121,8 +137,7 @@ public class PenggunaController {
         }
     }
 
-    @FXML
-    private void onDeletePengguna() {
+    @FXML private void onDeletePengguna() {
         Pengguna selected = tablePengguna.getSelectionModel().getSelectedItem();
         if (selected == null) {
             showAlert("Peringatan", "Pilih baris data terlebih dahulu!", Alert.AlertType.WARNING);
@@ -130,8 +145,7 @@ public class PenggunaController {
         }
 
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION,
-                "Apakah Anda yakin ingin menghapus pengguna: " + selected.getNama() + "?",
-                ButtonType.YES, ButtonType.NO);
+                "Hapus pengguna: " + selected.getNama() + "?", ButtonType.YES, ButtonType.NO);
         Optional<ButtonType> result = confirm.showAndWait();
 
         if (result.isPresent() && result.get() == ButtonType.YES) {
@@ -145,8 +159,7 @@ public class PenggunaController {
         }
     }
 
-    @FXML
-    private void onBack(ActionEvent event) throws IOException {
+    @FXML private void onBack(ActionEvent event) throws IOException {
         Parent root = FXMLLoader.load(getClass().getResource("/fxml/landing.fxml"));
         Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
         stage.setScene(new Scene(root));
@@ -155,6 +168,7 @@ public class PenggunaController {
     private void showAlert(String title, String message, Alert.AlertType type) {
         Alert alert = new Alert(type, message, ButtonType.OK);
         alert.setTitle(title);
+        alert.setHeaderText(null);
         alert.showAndWait();
     }
 }
