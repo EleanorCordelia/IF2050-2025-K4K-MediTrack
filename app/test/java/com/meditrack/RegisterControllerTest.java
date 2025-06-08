@@ -1,15 +1,15 @@
 package com.meditrack;
 
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
-import org.junit.jupiter.api.MethodOrderer;
 
 import static org.junit.jupiter.api.Assertions.*;
 
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
-class RegisterControllerTest {
+public class RegisterControllerTest {
 
     private RegisterController registerController;
 
@@ -21,27 +21,31 @@ class RegisterControllerTest {
     @Test
     @Order(1)
     void testValidEmailDomain() {
-        assertTrue(registerController.isEmailDomainValid("test@gmail.com"));
-        assertTrue(registerController.isEmailDomainValid("test@outlook.com"));
+        assertTrue(registerController.isEmailDomainValid("test@gmail.com"),
+                "Gmail should be a valid domain.");
+        assertTrue(registerController.isEmailDomainValid("test@outlook.com"),
+                "Outlook should be a valid domain.");
     }
 
     @Test
     @Order(2)
     void testInvalidEmailDomain() {
-        assertFalse(registerController.isEmailDomainValid("test@invalid.com"));
+        assertFalse(registerController.isEmailDomainValid("test@invalid.com"),
+                "Invalid domain should fail validation.");
     }
 
     @Test
     @Order(3)
     void testPasswordStrength() {
-        assertTrue(registerController.isPasswordStrong("StrongP@ss1"));
-        assertFalse(registerController.isPasswordStrong("weakpass"));
+        assertTrue(registerController.isPasswordStrong("StrongP@ss1"),
+                "Password meets strength requirements.");
+        assertFalse(registerController.isPasswordStrong("weakpass"),
+                "Weak password should fail strength check.");
     }
 
     @Test
     @Order(4)
     void testRegisterWithValidData() {
-        // Simulasi data registrasi valid
         String fullName = "John Doe";
         String email = "john.doe@gmail.com";
         String password = "StrongP@ss1";
@@ -49,13 +53,13 @@ class RegisterControllerTest {
         String dob = "2000-01-01";
         String gender = "Male";
 
-        assertTrue(!fullName.isEmpty() && !email.isEmpty() && password.equals(confirmPassword));
+        assertTrue(!fullName.isEmpty() && !email.isEmpty() && password.equals(confirmPassword),
+                "Valid data should pass the validation checks.");
     }
 
     @Test
     @Order(5)
     void testRegisterWithMissingData() {
-        // Simulasi data tidak lengkap
         String fullName = "";
         String email = "";
         String password = "";
@@ -63,6 +67,7 @@ class RegisterControllerTest {
         String dob = "";
         String gender = null;
 
-        assertTrue(fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || dob.isEmpty() || gender == null);
+        assertTrue(fullName.isEmpty() || email.isEmpty() || password.isEmpty() || confirmPassword.isEmpty() || dob.isEmpty() || gender == null,
+                "Missing data should fail the validation checks.");
     }
 }

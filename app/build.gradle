@@ -1,7 +1,6 @@
 plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
-    id 'java'
 }
 
 repositories {
@@ -16,17 +15,41 @@ java {
 
 javafx {
     version = "20"
-    modules = ['javafx.controls', 'javafx.fxml']
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ] // DITAMBAHIN javafx.swing
 }
 
 dependencies {
-    implementation 'org.openjfx:javafx-controls:20'
-    implementation 'org.openjfx:javafx-fxml:20'
-    implementation 'org.openjfx:javafx-graphics:20'
-    implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
+    // Unit Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
 
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.3'
+    // Mocking framework
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+
+    // SQLite JDBC
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+
+    // JavaFX
+    implementation 'org.openjfx:javafx-controls:21.0.3'
+    implementation 'org.openjfx:javafx-fxml:21.0.3'
+    testImplementation 'org.openjfx:javafx-controls:21.0.3'
+    testImplementation 'org.openjfx:javafx-fxml:21.0.3'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test/java'] // letak test di luar src
+        }
+    }
+}
+
 
 application {
     mainClass = 'com.meditrack.MainApp'
@@ -34,5 +57,7 @@ application {
 
 test {
     useJUnitPlatform()
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 }
-
