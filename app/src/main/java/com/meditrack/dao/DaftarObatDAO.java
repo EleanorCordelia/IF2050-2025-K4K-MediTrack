@@ -118,4 +118,69 @@ public class DaftarObatDAO {
             return false;
         }
     }
+
+    public DaftarObat getObatById(int idObat) {
+        String sql = "SELECT * FROM daftarObat WHERE idObat = ?";
+        try (Connection conn = SQLiteConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setInt(1, idObat);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new DaftarObat(
+                        rs.getInt("idObat"),
+                        rs.getString("namaObat"),
+                        rs.getString("dosis"),
+                        rs.getString("waktuKonsumsi"),
+                        rs.getString("efekSamping"),
+                        rs.getString("statusKonsumsi")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    public DaftarObat getRandomObat() {
+        String sql = "SELECT * FROM daftarObat ORDER BY RANDOM() LIMIT 1";
+        try (Connection conn = SQLiteConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new DaftarObat(
+                        rs.getInt("idObat"),
+                        rs.getString("namaObat"),
+                        rs.getString("dosis"),
+                        rs.getString("waktuKonsumsi"),
+                        rs.getString("efekSamping"),
+                        rs.getString("statusKonsumsi")
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+    public List<DaftarObat> getAllObat() {
+        List<DaftarObat> listObat = new ArrayList<>();
+        String query = "SELECT * FROM daftarobat";
+        try (Connection conn = SQLiteConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(query);
+             ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                DaftarObat obat = new DaftarObat();
+                obat.setIdObat(rs.getInt("idObat"));
+                obat.setNamaObat(rs.getString("namaObat"));
+                obat.setDosis(rs.getString("dosis"));
+                obat.setWaktuKonsumsi(rs.getString("waktuKonsumsi"));
+                obat.setEfekSamping(rs.getString("efekSamping"));
+                obat.setStatusKonsumsi(rs.getString("statusKonsumsi"));
+                listObat.add(obat);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return listObat;
+    }
+
 }

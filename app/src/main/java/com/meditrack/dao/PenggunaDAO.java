@@ -107,4 +107,29 @@ public class PenggunaDAO {
             return false;
         }
     }
+
+    public Pengguna getPenggunaAktif() {
+        String sql = "SELECT * FROM pengguna LIMIT 1"; // sementara ambil 1 pengguna
+        try (Connection conn = SQLiteConnection.getConnection();
+             Statement stmt = conn.createStatement();
+             ResultSet rs = stmt.executeQuery(sql)) {
+
+            if (rs.next()) {
+                return new Pengguna(
+                        rs.getInt("idPengguna"),
+                        rs.getString("nama"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("tanggalLahir"),
+                        rs.getString("jenisKelamin"),
+                        rs.getObject("tinggiBadan") != null ? rs.getDouble("tinggiBadan") : null,
+                        rs.getObject("beratBadan") != null ? rs.getDouble("beratBadan") : null
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
 }
