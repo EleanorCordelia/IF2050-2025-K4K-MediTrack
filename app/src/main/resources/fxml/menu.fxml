@@ -26,7 +26,7 @@
 <BorderPane xmlns="http://javafx.com/javafx/21"
             xmlns:fx="http://javafx.com/fxml/1"
             fx:controller="com.meditrack.controller.MenuController"
-            prefWidth="1920" prefHeight="1080">
+            prefWidth="1080" prefHeight="800">
 
     <!-- =======================
          SIDEBAR

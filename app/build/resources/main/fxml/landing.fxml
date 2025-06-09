@@ -59,21 +59,12 @@
                                 style="-fx-background-color: #eef6ff; -fx-text-fill: #112f82; -fx-border-color: #112f82; -fx-border-width: 1; -fx-border-radius: 10;"/>
                     </HBox>
                 </VBox>
-
+            </HBox>
                 <ImageView fitWidth="500" preserveRatio="true">
                     <image>
                         <Image url="@/images/doctor.png"/>
                     </image>
                 </ImageView>
-            </HBox>
-
-            <!-- Tambahkan tombol Kelola Pengguna di bawah konten utama -->
-            <HBox alignment="CENTER">
-                <Button text="Kelola Pengguna"
-                        onAction="#handlePenggunaAction"
-                        style="-fx-background-color: #2196F3; -fx-text-fill: white;"
-                        prefWidth="200" prefHeight="40"/>
-            </HBox>
         </VBox>
     </center>
 
