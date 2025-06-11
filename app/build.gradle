@@ -76,6 +76,7 @@ application {
 
 test {
     useJUnitPlatform()
+    systemProperty "java.awt.headless", "true" // untuk CI headless
     testLogging {
         events "passed", "skipped", "failed"
     }
