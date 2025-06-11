@@ -390,7 +390,7 @@ public class RekomendasiObatController {
         popupStage.showAndWait();
     }
 
-    private String dummyAIRekomendasi(int heartRate, String tingkatStres, double durasiOlahraga, double jumlahLangkah) {
+    public String dummyAIRekomendasi(int heartRate, String tingkatStres, double durasiOlahraga, double jumlahLangkah) {
         // Dummy logic untuk memilih obat/suplemen berdasarkan parameter sederhana
         if (heartRate > 85 && "Tinggi".equalsIgnoreCase(tingkatStres) && durasiOlahraga > 40) {
             return "Vitamin C + Zinc"; // mendukung daya tahan tubuh tinggi
