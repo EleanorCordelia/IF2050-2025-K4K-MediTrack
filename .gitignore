@@ -1,7 +1,15 @@
-# Abaikan konfigurasi IntelliJ IDEA
-.idea/
-*.iml
-# Abaikan direktori Gradle cache
+# Add this to .gitignore
+echo "# Build files
 .gradle/
-# Abaikan laporan build
 build/
+app/build/
+
+# IDE files
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+
+# OS files
+.DS_Store
+Thumbs.db" >> .gitignore
