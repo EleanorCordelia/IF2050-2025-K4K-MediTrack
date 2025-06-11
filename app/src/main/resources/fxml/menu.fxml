@@ -152,24 +152,25 @@
             <ImageView fitHeight="20.0" fitWidth="20.0" pickOnBounds="true" preserveRatio="true">
                 <Image url="@/images/dummy.png" />
             </ImageView>
-            <ImageView fitHeight="32.0" fitWidth="32.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/images/dummy.png" />
-            </ImageView>
-            <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true">
-                <Image url="@/images/dummy.png" />
-            </ImageView>
-            <VBox>
-                <Label text="Carlos" textFill="#151D48">
-                    <font>
-                        <Font name="Poppins Medium" size="15.0" />
-                    </font>
-                </Label>
-                <Label text="Pengguna" textFill="#737791">
-                    <font>
-                        <Font name="Poppins Regular" size="12.0" />
-                    </font>
-                </Label>
-            </VBox>
+
+            <!-- Avatar container -->
+            <HBox spacing="10.0" alignment="CENTER_LEFT" style="-fx-background-color: white; -fx-padding: 5 10; -fx-background-radius: 25; -fx-border-color: #E0E0E0; -fx-border-radius: 25;">
+                <ImageView fitHeight="48.0" fitWidth="48.0" pickOnBounds="true" preserveRatio="true" style="-fx-border-radius: 50%; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 3, 0, 0, 1);">
+                    <Image url="@/images/dummy.png" />
+                </ImageView>
+                <VBox spacing="2.0">
+                    <Label fx:id="userNameLabel" text="Rebbeca" textFill="#151D48" onMouseClicked="#handleUserProfileClicked">
+                        <font>
+                            <Font name="Poppins SemiBold" size="15.0" />
+                        </font>
+                    </Label>
+                    <Label text="thalita.zahra@example.com" textFill="#737791">
+                        <font>
+                            <Font name="Poppins Regular" size="12.0" />
+                        </font>
+                    </Label>
+                </VBox>
+            </HBox>
         </HBox>
     </HBox>
 

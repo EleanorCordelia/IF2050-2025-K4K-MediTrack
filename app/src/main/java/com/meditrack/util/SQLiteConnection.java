@@ -16,6 +16,7 @@ public class SQLiteConnection {
                 e.printStackTrace();
             }
             conn = DriverManager.getConnection(DB_URL);
+            // Tambahkan PRAGMA foreign_keys agar constraint FK di SQLite aktif
             conn.createStatement().execute("PRAGMA foreign_keys = ON");
         }
         return conn;

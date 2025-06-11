@@ -1,8 +1,11 @@
+<<<<<<< HEAD
 /*
  * build.gradle (modul app)
  * Konfigurasi clean merge, sudah stabil dengan testing dan dependensi lengkap.
  */
 
+=======
+>>>>>>> manajemen-pengguna
 plugins {
     id 'application'
     id 'org.openjfx.javafxplugin' version '0.0.13'
@@ -36,6 +39,7 @@ sourceSets {
 
 javafx {
     version = "20"
+<<<<<<< HEAD
     modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
 }
 
@@ -49,8 +53,43 @@ dependencies {
     // Testing Dependencies
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
     testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+=======
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ] // DITAMBAHIN javafx.swing
+}
+
+dependencies {
+    // Unit Testing
+    testImplementation 'org.junit.jupiter:junit-jupiter-api:5.10.2'
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.10.2'
+
+    // Mocking framework
+    testImplementation 'org.mockito:mockito-core:5.3.1'
+
+    // SQLite JDBC
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
+
+    // JavaFX
+    implementation 'org.openjfx:javafx-controls:21.0.3'
+    implementation 'org.openjfx:javafx-fxml:21.0.3'
+    testImplementation 'org.openjfx:javafx-controls:21.0.3'
+    testImplementation 'org.openjfx:javafx-fxml:21.0.3'
+>>>>>>> manajemen-pengguna
     testImplementation 'org.mockito:mockito-core:5.3.1'
 }
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test/java'] // letak test di luar src
+        }
+    }
+}
+
 
 application {
     mainClass = 'com.meditrack.MainApp'
@@ -61,6 +100,7 @@ test {
     testLogging {
         events "passed", "skipped", "failed"
     }
+<<<<<<< HEAD
 
     // Optional JavaFX testing support (headless)
     systemProperty 'java.awt.headless', 'false'
@@ -85,3 +125,6 @@ tasks.register('unitTest', Test) {
     group = 'verification'
     description = 'Runs unit tests only'
 }
+=======
+}
+>>>>>>> manajemen-pengguna
