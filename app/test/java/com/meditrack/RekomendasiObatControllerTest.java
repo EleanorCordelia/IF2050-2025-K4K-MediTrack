@@ -17,7 +17,7 @@ public class RekomendasiObatControllerTest {
         try {
             Platform.startup(() -> {});
         } catch (IllegalStateException e) {
-            // JavaFX platform already started, ignore
+            // JavaFX already initialized
         }
     }
 
@@ -28,45 +28,45 @@ public class RekomendasiObatControllerTest {
 
     @Test
     @Order(1)
-    void testUpdateCardStyleSelesai() {
+    void testUpdateCardStyle_Selesai() {
         VBox card = new VBox();
         Label statusLabel = new Label();
         controller.updateCardStyle(card, statusLabel, "Selesai");
 
-        assertTrue(card.getStyle().contains("#f0fdf4"));
-        assertTrue(statusLabel.getStyle().contains("#b7eb8f"));
+        assertTrue(card.getStyle().contains("#f0fdf4"), "Card should have green background for 'Selesai'");
+        assertTrue(statusLabel.getStyle().contains("#b7eb8f"), "Status label should have green border/text for 'Selesai'");
     }
 
     @Test
     @Order(2)
-    void testUpdateCardStyleBelum() {
+    void testUpdateCardStyle_Belum() {
         VBox card = new VBox();
         Label statusLabel = new Label();
         controller.updateCardStyle(card, statusLabel, "Belum");
 
-        assertTrue(card.getStyle().contains("#ffe2e5"));
-        assertTrue(statusLabel.getStyle().contains("#ff8995"));
+        assertTrue(card.getStyle().contains("#ffe2e5"), "Card should have red-pink background for 'Belum'");
+        assertTrue(statusLabel.getStyle().contains("#ff8995"), "Status label should have pink border/text for 'Belum'");
     }
 
     @Test
     @Order(3)
-    void testUpdateCardStyleDitolak() {
+    void testUpdateCardStyle_Ditolak() {
         VBox card = new VBox();
         Label statusLabel = new Label();
         controller.updateCardStyle(card, statusLabel, "Ditolak");
 
-        assertTrue(card.getStyle().contains("#ffe2e5"));
-        assertTrue(statusLabel.getStyle().contains("#ff4d4f"));
+        assertTrue(card.getStyle().contains("#ffe2e5"), "Card should have red-pink background for 'Ditolak'");
+        assertTrue(statusLabel.getStyle().contains("#ff4d4f"), "Status label should have red border/text for 'Ditolak'");
     }
 
     @Test
     @Order(4)
-    void testUpdateCardStyleDefault() {
+    void testUpdateCardStyle_UnknownStatus() {
         VBox card = new VBox();
         Label statusLabel = new Label();
-        controller.updateCardStyle(card, statusLabel, "Unknown");
+        controller.updateCardStyle(card, statusLabel, "RandomStatus");
 
-        assertTrue(card.getStyle().contains("#ffffff"));
-        assertTrue(statusLabel.getStyle().contains("#8c9299"));
+        assertTrue(card.getStyle().contains("#ffffff"), "Card should have white background for unknown status");
+        assertTrue(statusLabel.getStyle().contains("#8c9299"), "Status label should have gray border/text for unknown status");
     }
 }
