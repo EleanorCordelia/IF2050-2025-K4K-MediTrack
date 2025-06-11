@@ -15,29 +15,30 @@
             style="-fx-background-color: white;">
 
     <left>
-        <ScrollPane fitToWidth="true" fitToHeight="true" hbarPolicy="NEVER" vbarPolicy="AS_NEEDED">
-            <content>
-                <VBox spacing="15.0" alignment="TOP_CENTER" prefWidth="580.0">
-                    <padding>
-                        <Insets top="30.0" left="40.0" right="40.0" bottom="30.0"/>
-                    </padding>
+        <VBox spacing="20.0" alignment="TOP_CENTER" prefWidth="600.0">
+            <padding>
+                <Insets top="50.0" left="30.0" right="30.0" bottom="50.0"/>
+            </padding>
 
-                    <HBox spacing="10.0" alignment="CENTER_LEFT" maxWidth="500.0">
-                        <StackPane prefWidth="50.0" prefHeight="50.0" style="-fx-background-color: #112F82; -fx-background-radius: 8;">
-                            <ImageView fitWidth="30.0" fitHeight="30.0">
-                                <image>
-                                    <Image url="@../images/logo.png"/>
-                                </image>
-                            </ImageView>
-                        </StackPane>
-                        <Label text="MediTrack"
-                               style="-fx-font-family: 'Poppins'; -fx-font-size: 24; -fx-font-weight: 600; -fx-text-fill: #151D48;"/>
-                    </HBox>
+            <!-- Header -->
+            <HBox spacing="10.0" alignment="CENTER_LEFT">
+                <StackPane prefWidth="50.0" prefHeight="50.0" style="-fx-background-color: #112F82; -fx-background-radius: 8;">
+                    <ImageView fitWidth="30.0" fitHeight="30.0">
+                        <image>
+                            <Image url="@../images/logo.png"/>
+                        </image>
+                    </ImageView>
+                </StackPane>
+                <Label text="MediTrack"
+                       style="-fx-font-family: 'Poppins'; -fx-font-size: 24; -fx-font-weight: 600; -fx-text-fill: #151D48;"/>
+            </HBox>
 
-                    <Label text="Gabung dengan MediTrack"
-                           style="-fx-font-family: 'Poppins'; -fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #112F82;"/>
+            <!-- Title -->
+            <Label text="Gabung dengan MediTrack"
+                   style="-fx-font-family: 'Poppins'; -fx-font-size: 28; -fx-font-weight: bold; -fx-text-fill: #112F82;"/>
 
-                    <VBox spacing="10.0" maxWidth="500.0">
+            <!-- Form -->
+            <VBox spacing="12.0" prefWidth="500.0">
                         <Label text="Nama Lengkap" style="-fx-font-family: 'Poppins'; -fx-font-size: 14;"/>
                         <TextField fx:id="fullNameField" promptText="Nama Pengguna" prefHeight="40.0"/>
 
@@ -63,39 +64,44 @@
                             </items>
                         </ComboBox>
 
-                        <HBox alignment="CENTER" style="-fx-padding: 5 0 0 0;">
-                            <Button text="Registrasi" onAction="#handleRegister"
-                                    style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #173EAD; -fx-background-radius: 8;"
-                                    prefHeight="45.0"/> </HBox>
+                <!-- Tombol Registrasi di tengah -->
+                <HBox alignment="CENTER">
+                    <Button text="Registrasi" onAction="#handleRegister"
+                            style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-text-fill: white; -fx-background-color: #173EAD; -fx-background-radius: 8;"
+                            prefHeight="45.0"/>
+                </HBox>
 
-                        <Separator/>
+                <Separator/>
 
-                        <HBox alignment="CENTER">
-                            <Label text="Atau" style="-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #294957;"/>
-                        </HBox>
+                <!-- Label "Atau" di tengah -->
+                <HBox alignment="CENTER">
+                    <Label text="Atau" style="-fx-font-family: 'Poppins'; -fx-font-size: 14; -fx-text-fill: #294957;"/>
+                </HBox>
 
-                        <HBox alignment="CENTER">
-                            <Button text="Registrasi dengan Google" onAction="#handleRegisterGoogle"
-                                    style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: #F3F9FA; -fx-background-radius: 8;"
-                                    prefHeight="45.0"/> </HBox>
+                <!-- Tombol Registrasi dengan Google di tengah -->
+                <HBox alignment="CENTER">
+                    <Button text="Registrasi dengan Google" onAction="#handleRegisterGoogle"
+                            style="-fx-font-family: 'Poppins'; -fx-font-size: 16; -fx-font-weight: bold; -fx-background-color: #F3F9FA; -fx-background-radius: 8;"
+                            prefHeight="45.0"/>
+                </HBox>
 
-                        <HBox alignment="CENTER" style="-fx-padding: 5 0 0 0;">
-                            <TextFlow textAlignment="CENTER">
-                                <Text text="Sudah Punya Akun? " style="-fx-fill: #313957; -fx-font-family: 'Poppins';"/>
-                                <Text text="Masuk" style="-fx-fill: #1E4AE9; -fx-font-weight: bold; -fx-font-family: 'Poppins';" onMouseClicked="#handleBackToLogin"/>
-                            </TextFlow>
-                        </HBox>
-                    </VBox>
-                </VBox>
-            </content>
-        </ScrollPane>
+                <!-- TextFlow di tengah -->
+                <HBox alignment="CENTER">
+                    <TextFlow textAlignment="CENTER">
+                        <Text text="Sudah Punya Akun? " style="-fx-fill: #313957;"/>
+                        <Text text="Masuk" style="-fx-fill: #1E4AE9; -fx-font-weight: bold;" onMouseClicked="#handleBackToLogin"/>
+                    </TextFlow>
+                </HBox>
+            </VBox>
+        </VBox>
     </left>
 
+    <!-- Kanan: Gambar -->
     <right>
-        <StackPane prefWidth="600.0" style="-fx-background-color: lightgray;">
+        <StackPane prefWidth="600.0">
             <ImageView fitWidth="600.0" fitHeight="700.0" preserveRatio="false">
                 <image>
-                    <Image url="@../images/login.png"/>
+                    <Image url="@../images/login.jpg"/>
                 </image>
             </ImageView>
         </StackPane>

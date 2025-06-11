@@ -1,5 +1,6 @@
 package com.meditrack;
 
+import com.meditrack.util.UserSession;
 import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,7 +18,6 @@ import javafx.scene.layout.VBox;
 import javafx.scene.paint.Color;
 import javafx.stage.Stage;
 import javafx.util.Duration;
-import java.io.IOException;
 
 public class LandingController {
 
@@ -174,36 +174,45 @@ public class LandingController {
         stage.setY(event.getScreenY() + yOffset);
     }
 
-    @FXML
-    private void handleLoginAction(ActionEvent event) {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/login.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Login - MediTrack");
-            stage.show();
-        } catch (IOException e) {
-            e.printStackTrace();
-            System.err.println("Gagal membuka halaman login.");
-        }
+    @FXML private void handleRegisterAction(ActionEvent event) { 
+        navigateToPage("/fxml/register.fxml", "MediTrack - Registrasi", event); 
+    }
+    
+    @FXML private void handleLoginAction(ActionEvent event) { 
+        navigateToPage("/fxml/login.fxml", "MediTrack - Login", event); 
+    }
+    
+    @FXML private void handleGabungAction(ActionEvent event) { 
+        System.out.println("Handle Gabung Action called - navigating to login");
+        navigateToPage("/fxml/login.fxml", "MediTrack - Login", event); 
+    }
+    
+    @FXML private void handleLearnMoreAction(ActionEvent event) { 
+        showInfoAlert("Pelajari Lebih Lanjut", "Halaman detail fitur akan segera hadir!"); 
     }
 
-    @FXML
-    private void handleRegisterAction(ActionEvent event) {
+    private void navigateToPage(String fxmlPath, String title, ActionEvent event) {
         try {
-            Parent root = FXMLLoader.load(getClass().getResource("/fxml/register.fxml"));
-            Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Registrasi - MediTrack");
+            System.out.println("Attempting to navigate to: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            
+            // Get the stage from the event source
+            Node source = (Node) event.getSource();
+            Stage stage = (Stage) source.getScene().getWindow();
+            
+            stage.setScene(scene);
+            stage.setTitle(title);
             stage.show();
-        } catch (IOException e) {
+            
+            System.out.println("Navigation successful to: " + title);
+        } catch (Exception e) {
             e.printStackTrace();
-            System.err.println("Gagal membuka halaman registrasi.");
+            System.err.println("Navigation failed: " + e.getMessage());
+            showInfoAlert("Error", "Gagal memuat halaman: " + e.getMessage());
         }
     }
-
-    @FXML private void handleGabungAction(ActionEvent event) { showInfoAlert("Gabung untuk Perubahan", "Anda akan diarahkan ke halaman utama aplikasi!"); }
-    @FXML private void handleLearnMoreAction(ActionEvent event) { showInfoAlert("Pelajari Lebih Lanjut", "Halaman detail fitur akan segera hadir!"); }
 
     private void showInfoAlert(String title, String message) {
         Alert alert = new Alert(Alert.AlertType.INFORMATION);

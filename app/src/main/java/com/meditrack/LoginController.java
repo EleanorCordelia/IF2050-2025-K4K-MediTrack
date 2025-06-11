@@ -2,6 +2,8 @@ package com.meditrack; // Ensure this package declaration matches your folder st
 
 import com.meditrack.dao.PenggunaDAO; // Import PenggunaDAO
 import com.meditrack.model.Pengguna; // Import Pengguna model
+import com.meditrack.util.UserSession; // Import UserSession
+import javafx.application.Platform;
 import javafx.event.ActionEvent; // Import for button click events
 import javafx.fxml.FXML; // Import for FXML annotations (linking UI elements)
 import javafx.fxml.FXMLLoader; // Import for loading new FXML files for navigation
@@ -34,9 +36,11 @@ public class LoginController {
         Pengguna user = penggunaDAO.getPenggunaByEmailAndPassword(email, password);
 
         if (user != null) {
-            showAlert(Alert.AlertType.INFORMATION, "Login Berhasil", "Selamat datang, " + user.getNama() + "!");
-            // TODO: Arahkan ke Dashboard atau halaman utama setelah login berhasil
-            // Example: navigateToDashboard(event); // Uncomment and implement this when dashboard is ready
+            // Set user session with the logged in user's ID
+            UserSession.setUserId(user.getId());
+            System.out.println("Login successful for user: " + user.getNama());
+            // Navigate immediately without showing alert first
+            navigateToMenu(event);
         } else {
             showAlert(Alert.AlertType.ERROR, "Login Gagal", "Email atau kata sandi salah. Silakan coba lagi.");
         }
@@ -66,6 +70,41 @@ public class LoginController {
         } catch (IOException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Gagal", "Tidak dapat membuka halaman registrasi.");
+        }
+    }
+
+    private void navigateToMenu(ActionEvent event) {
+        try {
+            System.out.println("=== STARTING NAVIGATION TO MENU ===");
+            System.out.println("Current user ID in session: " + UserSession.getUserId());
+            
+            // Load the FXML file
+            System.out.println("Loading menu.fxml...");
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
+            if (loader.getLocation() == null) {
+                throw new IOException("Cannot find /fxml/menu.fxml");
+            }
+            
+            Parent menuRoot = loader.load();
+            System.out.println("menu.fxml loaded successfully");
+            
+            // Get the current stage
+            System.out.println("Getting current stage...");
+            Stage stage = (Stage) ((javafx.scene.control.Button) event.getSource()).getScene().getWindow();
+            
+            // Create new scene and set it
+            System.out.println("Creating new scene...");
+            Scene scene = new Scene(menuRoot);
+            stage.setScene(scene);
+            stage.setTitle("MediTrack - Menu");
+            stage.show();
+            
+            System.out.println("=== NAVIGATION TO MENU SUCCESSFUL ===");
+            
+        } catch (Exception e) {
+            System.err.println("=== NAVIGATION TO MENU FAILED ===");
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Navigasi Gagal", "Tidak bisa membuka halaman menu. Error: " + e.getMessage());
         }
     }
 
