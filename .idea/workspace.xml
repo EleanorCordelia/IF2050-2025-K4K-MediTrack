@@ -4,13 +4,74 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="feat(rekomendasi): enhance AI dummy implementation for recommendation feature">
-      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/checksums/checksums.lock" afterDir="false" />
+    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="style(landing): refine UI on landing page for better user experience">
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.bin" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/executionHistory/executionHistory.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/fileHashes.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/8.14.1/fileHashes/resourceHashesCache.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" beforeDir="false" afterPath="$PROJECT_DIR$/.gradle/buildOutputCleanup/buildOutputCleanup.lock" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1aa23cbd-70f1-408c-bd94-583360b8adce/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1aa23cbd-70f1-408c-bd94-583360b8adce/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1aa23cbd-70f1-408c-bd94-583360b8adce/_.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1aa23cbd-70f1-408c-bd94-583360b8adce/buildfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1aa23cbd-70f1-408c-bd94-583360b8adce/entry.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1aa23cbd-70f1-408c-bd94-583360b8adce/projectfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/1aa23cbd-70f1-408c-bd94-583360b8adce/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/299809bej2lq28sk5ymo1okwn/candidates.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/32rnuereuvfhkcgxum7xigq20/candidates.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/64159b85-e07e-4e50-aeec-63d0e0123916/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/64159b85-e07e-4e50-aeec-63d0e0123916/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/64159b85-e07e-4e50-aeec-63d0e0123916/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/64159b85-e07e-4e50-aeec-63d0e0123916/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/748d8412-fa87-459d-b1f2-d454e4acdb24/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/748d8412-fa87-459d-b1f2-d454e4acdb24/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/748d8412-fa87-459d-b1f2-d454e4acdb24/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/748d8412-fa87-459d-b1f2-d454e4acdb24/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8c84a481-29b3-4848-b382-bc13396070ce/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8c84a481-29b3-4848-b382-bc13396070ce/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8c84a481-29b3-4848-b382-bc13396070ce/_.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8c84a481-29b3-4848-b382-bc13396070ce/buildfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8c84a481-29b3-4848-b382-bc13396070ce/entry.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8c84a481-29b3-4848-b382-bc13396070ce/projectfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/8c84a481-29b3-4848-b382-bc13396070ce/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/b624fb85-5b35-4062-8e48-ed58a71dea9d/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/b624fb85-5b35-4062-8e48-ed58a71dea9d/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/b624fb85-5b35-4062-8e48-ed58a71dea9d/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/b624fb85-5b35-4062-8e48-ed58a71dea9d/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/cgu81us4w0lgo327azoog4y28/candidates.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ddd8a5b8-1539-43b3-9929-6a3c13c0cbd4/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ddd8a5b8-1539-43b3-9929-6a3c13c0cbd4/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ddd8a5b8-1539-43b3-9929-6a3c13c0cbd4/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ddd8a5b8-1539-43b3-9929-6a3c13c0cbd4/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e4d80163-cd37-40d0-aa35-38e9a24e8c8e/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e4d80163-cd37-40d0-aa35-38e9a24e8c8e/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e4d80163-cd37-40d0-aa35-38e9a24e8c8e/_.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e4d80163-cd37-40d0-aa35-38e9a24e8c8e/buildfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e4d80163-cd37-40d0-aa35-38e9a24e8c8e/entry.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e4d80163-cd37-40d0-aa35-38e9a24e8c8e/projectfingerprint.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/e4d80163-cd37-40d0-aa35-38e9a24e8c8e/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ec213798-593a-4cf8-a814-5f45135acb68/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ec213798-593a-4cf8-a814-5f45135acb68/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ec213798-593a-4cf8-a814-5f45135acb68/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/ec213798-593a-4cf8-a814-5f45135acb68/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f6410cce-e092-4563-9106-9aa2aaa9a946/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f6410cce-e092-4563-9106-9aa2aaa9a946/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f6410cce-e092-4563-9106-9aa2aaa9a946/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f6410cce-e092-4563-9106-9aa2aaa9a946/work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f7c364e8-cbea-459b-89d8-6fa8d4c237b5/.globals.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f7c364e8-cbea-459b-89d8-6fa8d4c237b5/.strings.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f7c364e8-cbea-459b-89d8-6fa8d4c237b5/_app.work.bin" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gradle/configuration-cache/f7c364e8-cbea-459b-89d8-6fa8d4c237b5/work.bin" beforeDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/classes/java/main/com/meditrack/LandingController.class" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/classes/java/main/com/meditrack/LandingController.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/resources/main/fxml/landing.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/resources/main/fxml/landing.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" beforeDir="false" afterPath="$PROJECT_DIR$/app/build/tmp/compileJava/previous-compilation-data.bin" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/LandingController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MainApp.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MainApp.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/fxml/landing.fxml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -136,13 +197,22 @@
       <option name="project" value="LOCAL" />
       <updated>1749402883546</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="style(landing): refine UI on landing page for better user experience">
+      <option name="closed" value="true" />
+      <created>1749652826855</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1749652826855</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO." />
     <MESSAGE value="test(rekomendasi): add JUnit tests for recommendation feature, all tests passed&#10;&#10;- Save semester progress for ongoing development" />
     <MESSAGE value="feat(rekomendasi): enhance AI dummy implementation for recommendation feature" />
-    <option name="LAST_COMMIT_MESSAGE" value="feat(rekomendasi): enhance AI dummy implementation for recommendation feature" />
+    <MESSAGE value="style(landing): refine UI on landing page for better user experience" />
+    <option name="LAST_COMMIT_MESSAGE" value="style(landing): refine UI on landing page for better user experience" />
   </component>
 </project>

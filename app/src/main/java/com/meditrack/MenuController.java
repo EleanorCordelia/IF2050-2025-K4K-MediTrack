@@ -450,8 +450,11 @@ public class MenuController implements Initializable {
                 Parent landingRoot = FXMLLoader.load(landingFxmlUrl);
                 Scene landingScene = new Scene(landingRoot);
                 Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+                
+                // Maintain desktop app window properties
                 currentStage.setScene(landingScene);
                 currentStage.setTitle("MediTrack - Selamat Datang");
+                currentStage.setResizable(true);
                 currentStage.show();
             } catch (IOException e) {
                 System.err.println("IOException during logout navigation:");
@@ -849,8 +852,11 @@ public class MenuController implements Initializable {
 
             // Mendapatkan stage saat ini
             Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+            
+            // Maintain desktop app window properties
             currentStage.setScene(new Scene(rekomendasiObatRoot));
             currentStage.setTitle("MediTrack - Rekomendasi Obat");
+            currentStage.setResizable(true);
             currentStage.show();
         } catch (IOException e) {
             e.printStackTrace();
