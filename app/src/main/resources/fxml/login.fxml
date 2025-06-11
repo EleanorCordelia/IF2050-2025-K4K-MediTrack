@@ -81,11 +81,7 @@
         <StackPane prefWidth="600.0">
             <ImageView fitWidth="600.0" fitHeight="700.0" preserveRatio="false">
                 <image>
-<<<<<<< HEAD
                     <Image url="@../images/login.jpg"/>
-=======
-                    <Image url="@../images/login.png"/>
->>>>>>> kondisi-aktual
                 </image>
             </ImageView>
         </StackPane>

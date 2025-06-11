@@ -11,7 +11,14 @@
       "Bash(./gradlew:*)",
       "Bash(git reset:*)",
       "Bash(grep:*)",
-      "Bash(git add:*)"
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(true)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git checkout:*)",
+      "Bash(cp:*)",
+      "Bash(rg:*)"
     ],
     "deny": []
   }

@@ -9,7 +9,6 @@ import java.util.List;
 
 public class KondisiAktualDAO {
 
-<<<<<<< HEAD
     /** Cari semua record untuk satu user, urut DESC by tgl_pencatatan */
     public List<KondisiAktual> findByUser(int userId) throws SQLException {
         String sql = "SELECT * FROM kondisi_aktual WHERE user_id = ? " +
@@ -44,27 +43,25 @@ public class KondisiAktualDAO {
 
             if (rs.next()) {
                 return mapResultSetToKondisiAktual(rs);
-=======
-    /** 1. Ambil semua data dari tabel kondisiaktual */
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error getting latest data for user " + userId + ": " + e.getMessage());
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /** Ambil semua data dari tabel kondisi_aktual */
     public List<KondisiAktual> getAllKondisiAktual() {
         List<KondisiAktual> list = new ArrayList<>();
-        String sql = "SELECT * FROM kondisiaktual";
+        String sql = "SELECT * FROM kondisi_aktual";
         try (Connection conn = SQLiteConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                KondisiAktual ka = new KondisiAktual(
-                        rs.getInt("idKondisi"),
-                        rs.getInt("idPengguna"),
-                        rs.getString("tekananDarah"),
-                        rs.getInt("detakJantung"),
-                        rs.getDouble("suhuTubuh"),
-                        rs.getString("tingkatStres"),
-                        rs.getDouble("durasiOlahraga"),
-                        rs.getDouble("jumlahLangkah"),
-                        rs.getString("waktuPencatatan")
-                );
+                KondisiAktual ka = mapResultSetToKondisiAktual(rs);
                 list.add(ka);
             }
         } catch (SQLException e) {
@@ -73,37 +70,24 @@ public class KondisiAktualDAO {
         return list;
     }
 
-    /** 2. Cari data kondisiaktual berdasarkan ID pengguna */
+    /** Cari data kondisi_aktual berdasarkan ID pengguna */
     public List<KondisiAktual> getKondisiAktualByUserId(int userId) {
         List<KondisiAktual> list = new ArrayList<>();
-        String sql = "SELECT * FROM kondisiaktual WHERE idPengguna = ?";
+        String sql = "SELECT * FROM kondisi_aktual WHERE user_id = ?";
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
             ps.setInt(1, userId);
             ResultSet rs = ps.executeQuery();
             while (rs.next()) {
-                KondisiAktual ka = new KondisiAktual(
-                        rs.getInt("idKondisi"),
-                        rs.getInt("idPengguna"),
-                        rs.getString("tekananDarah"),
-                        rs.getInt("detakJantung"),
-                        rs.getDouble("suhuTubuh"),
-                        rs.getString("tingkatStres"),
-                        rs.getDouble("durasiOlahraga"),
-                        rs.getDouble("jumlahLangkah"),
-                        rs.getString("waktuPencatatan")
-                );
+                KondisiAktual ka = mapResultSetToKondisiAktual(rs);
                 list.add(ka);
->>>>>>> rekomendasi
             }
         } catch (SQLException e) {
-            System.err.println("Error getting latest data for user " + userId + ": " + e.getMessage());
             e.printStackTrace();
         }
         return list;
     }
 
-<<<<<<< HEAD
     /** Simpan entri baru - gunakan ini untuk insert data baru */
     public boolean insert(KondisiAktual k) {
         if (k == null || k.getUserId() == null) return false;
@@ -124,23 +108,6 @@ public class KondisiAktualDAO {
             ps.setDouble(6, k.getDurasiTidur());
             ps.setInt(7, k.getDurasiOlahraga());
             ps.setInt(8, k.getJumlahLangkah());
-=======
-    /** 3. Masukkan data kondisiaktual baru (INSERT) */
-    public boolean insertKondisiAktual(KondisiAktual ka) {
-        String sql = "INSERT INTO kondisiaktual(idPengguna, tekananDarah, detakJantung, suhuTubuh, tingkatStres, durasiOlahraga, jumlahLangkah, waktuPencatatan) " +
-                "VALUES(?, ?, ?, ?, ?, ?, ?, ?)";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            ps.setInt(1, ka.getIdPengguna());
-            ps.setString(2, ka.getTekananDarah());
-            ps.setInt(3, ka.getDetakJantung());
-            ps.setDouble(4, ka.getSuhuTubuh());
-            ps.setString(5, ka.getTingkatStres());
-            ps.setDouble(6, ka.getDurasiOlahraga());
-            ps.setDouble(7, ka.getJumlahLangkah());
-            ps.setString(8, ka.getWaktuPencatatan());
->>>>>>> rekomendasi
 
             int affected = ps.executeUpdate();
             if (affected == 0) return false;
@@ -160,7 +127,11 @@ public class KondisiAktualDAO {
         }
     }
 
-<<<<<<< HEAD
+    /** Masukkan data kondisi_aktual baru (INSERT) - alias untuk insert() */
+    public boolean insertKondisiAktual(KondisiAktual ka) {
+        return insert(ka);
+    }
+
     /**
      * Method save() yang konsisten dengan controller
      * Ini akan selalu insert record baru (tidak update)
@@ -203,31 +174,17 @@ public class KondisiAktualDAO {
 
             int affected = ps.executeUpdate();
             return affected > 0;
-=======
-    /** 4. Perbarui data kondisiaktual (UPDATE) */
-    public boolean updateKondisiAktual(KondisiAktual ka) {
-        String sql = "UPDATE kondisiaktual SET idPengguna = ?, tekananDarah = ?, detakJantung = ?, suhuTubuh = ?, " +
-                "tingkatStres = ?, durasiOlahraga = ?, jumlahLangkah = ?, waktuPencatatan = ? " +
-                "WHERE idKondisi = ?";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, ka.getIdPengguna());
-            ps.setString(2, ka.getTekananDarah());
-            ps.setInt(3, ka.getDetakJantung());
-            ps.setDouble(4, ka.getSuhuTubuh());
-            ps.setString(5, ka.getTingkatStres());
-            ps.setDouble(6, ka.getDurasiOlahraga());
-            ps.setDouble(7, ka.getJumlahLangkah());
-            ps.setString(8, ka.getWaktuPencatatan());
-            ps.setInt(9, ka.getIdKondisi());
->>>>>>> rekomendasi
 
         } catch (SQLException e) {
             System.err.println("Error updating kondisi aktual: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
+    }
+
+    /** Perbarui data kondisi_aktual (UPDATE) - alias untuk update() */
+    public boolean updateKondisiAktual(KondisiAktual ka) {
+        return update(ka);
     }
 
     /** Hapus entri berdasarkan ID */
@@ -247,7 +204,6 @@ public class KondisiAktualDAO {
             return false;
         }
     }
-<<<<<<< HEAD
 
     /** Hapus semua entri untuk user tertentu */
     public boolean deleteByUserId(int userId) {
@@ -364,6 +320,3 @@ public class KondisiAktualDAO {
         return false;
     }
 }
-=======
-}
->>>>>>> rekomendasi
