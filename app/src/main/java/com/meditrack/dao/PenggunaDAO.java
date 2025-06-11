@@ -11,11 +11,9 @@ public class PenggunaDAO {
     public List<Pengguna> getAllPengguna() {
         List<Pengguna> list = new ArrayList<>();
         String sql = "SELECT * FROM pengguna";
-
         try (Connection conn = SQLiteConnection.getConnection();
              Statement stmt = conn.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
-
             while (rs.next()) {
                 Pengguna p = new Pengguna(
                         rs.getInt("idPengguna"),
@@ -37,19 +35,15 @@ public class PenggunaDAO {
 
     public boolean insertPengguna(Pengguna p) {
         String sql = "INSERT INTO pengguna(nama, email, password, tanggalLahir, jenisKelamin, tinggiBadan, beratBadan) VALUES(?, ?, ?, ?, ?, ?, ?)";
-
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
             ps.setString(1, p.getNama());
             ps.setString(2, p.getEmail());
             ps.setString(3, p.getPassword());
             ps.setString(4, p.getTanggalLahir());
             ps.setString(5, p.getJenisKelamin());
-
             if (p.getTinggiBadan() != null) ps.setDouble(6, p.getTinggiBadan());
             else ps.setNull(6, Types.REAL);
-
             if (p.getBeratBadan() != null) ps.setDouble(7, p.getBeratBadan());
             else ps.setNull(7, Types.REAL);
 
@@ -96,17 +90,12 @@ public class PenggunaDAO {
     public boolean deletePengguna(int idPengguna) {
         String selectSql = "SELECT * FROM pengguna WHERE idPengguna = ?";
         String deleteSql = "DELETE FROM pengguna WHERE idPengguna = ?";
-
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement selectPs = conn.prepareStatement(selectSql);
              PreparedStatement deletePs = conn.prepareStatement(deleteSql)) {
-
-            // Pastikan pengguna dengan id tersebut ada
             selectPs.setInt(1, idPengguna);
             ResultSet rs = selectPs.executeQuery();
-
             if (rs.next()) {
-                // Hapus pengguna
                 deletePs.setInt(1, idPengguna);
                 int affectedRows = deletePs.executeUpdate();
                 if (affectedRows > 0) {
@@ -120,7 +109,6 @@ public class PenggunaDAO {
                 System.out.println("Pengguna dengan ID " + idPengguna + " tidak ditemukan.");
                 return false;
             }
-
         } catch (SQLException e) {
             System.err.println("Terjadi kesalahan saat menghapus pengguna: " + e.getMessage());
             e.printStackTrace();
@@ -141,17 +129,6 @@ public class PenggunaDAO {
         }
     }
 
-<<<<<<< HEAD
-    public Pengguna getPenggunaByEmailAndPassword(String email, String password) {
-        String sql = "SELECT * FROM pengguna WHERE email = ? AND password = ?";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setString(1, email);
-            ps.setString(2, password);
-
-            ResultSet rs = ps.executeQuery();
-=======
     public boolean updateUsername(int idPengguna, String newUsername) {
         String sql = "UPDATE pengguna SET nama = ? WHERE idPengguna = ?";
         try (Connection conn = SQLiteConnection.getConnection();
@@ -169,11 +146,8 @@ public class PenggunaDAO {
         String sql = "SELECT * FROM pengguna WHERE idPengguna = ?";
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
-
             ps.setInt(1, idPengguna);
             ResultSet rs = ps.executeQuery();
-
->>>>>>> manajemen-pengguna
             if (rs.next()) {
                 return new Pengguna(
                         rs.getInt("idPengguna"),
@@ -186,18 +160,34 @@ public class PenggunaDAO {
                         rs.getObject("beratBadan") != null ? rs.getDouble("beratBadan") : null
                 );
             }
-<<<<<<< HEAD
-=======
-
->>>>>>> manajemen-pengguna
         } catch (SQLException e) {
             e.printStackTrace();
         }
         return null;
     }
-<<<<<<< HEAD
 
+    public Pengguna getPenggunaByEmailAndPassword(String email, String password) {
+        String sql = "SELECT * FROM pengguna WHERE email = ? AND password = ?";
+        try (Connection conn = SQLiteConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, email);
+            ps.setString(2, password);
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return new Pengguna(
+                        rs.getInt("idPengguna"),
+                        rs.getString("nama"),
+                        rs.getString("email"),
+                        rs.getString("password"),
+                        rs.getString("tanggalLahir"),
+                        rs.getString("jenisKelamin"),
+                        rs.getObject("tinggiBadan") != null ? rs.getDouble("tinggiBadan") : null,
+                        rs.getObject("beratBadan") != null ? rs.getDouble("beratBadan") : null
+                );
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }
-=======
-}
->>>>>>> manajemen-pengguna
