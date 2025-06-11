@@ -2,13 +2,9 @@ name: Java CI/CD with Gradle
 
 on:
   push:
-    branches:
-      - main
-      - develop
+    branches: [ main, develop ]
   pull_request:
-    branches:
-      - main
-      - develop
+    branches: [ main, develop ]
 
 jobs:
   build:
@@ -24,6 +20,16 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
 
+      - name: Cache Gradle packages
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
 
@@ -31,16 +37,16 @@ jobs:
         run: chmod +x ./gradlew
 
       - name: Build with Gradle
-        run: ./gradlew build
+        run: ./gradlew build --no-daemon
 
       - name: Run tests with JUnit
-        run: ./gradlew test
+        run: ./gradlew test --no-daemon
 
       - name: Create distribution package
-        run: ./gradlew distZip
+        run: ./gradlew distZip --no-daemon
 
       - name: Upload Build Artifacts (distribution)
         uses: actions/upload-artifact@v4
         with:
-          name: distribution-zip
+          name: distribution-zip-${{ github.ref_name }}
           path: build/distributions/*.zip
