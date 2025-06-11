@@ -18,10 +18,10 @@ jobs:
       - name: Checkout repository
         uses: actions/checkout@v4
 
-      - name: Set up JDK 17
+      - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
 
       - name: Setup Gradle
@@ -39,8 +39,24 @@ jobs:
       - name: Create distribution package
         run: ./gradlew distZip
 
+      - name: Upload Build Artifacts (JAR files)
+        uses: actions/upload-artifact@v4
+        with:
+          name: jar-files-${{ github.ref_name }}
+          path: build/libs/*.jar
+          retention-days: 30
+
       - name: Upload Build Artifacts (distribution)
         uses: actions/upload-artifact@v4
         with:
-          name: distribution-zip
+          name: distribution-zip-${{ github.ref_name }}
           path: build/distributions/*.zip
+          retention-days: 30
+
+      - name: Upload Test Reports
+        uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: test-reports-${{ github.ref_name }}
+          path: build/reports/tests/test/
+          retention-days: 7
