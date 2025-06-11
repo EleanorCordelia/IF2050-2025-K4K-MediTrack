@@ -2,7 +2,7 @@ package com.meditrack;
 
 import com.meditrack.dao.PenggunaDAO;
 import com.meditrack.model.Pengguna;
-import com.meditrack.util.DatabaseUtil;
+import com.meditrack.util.SQLiteConnection;
 import com.meditrack.util.UserSession;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -24,16 +24,12 @@ import java.sql.SQLException;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.ResourceBundle;
-import com.meditrack.util.SQLiteConnection;
-import javafx.fxml.FXML;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.stage.FileChooser;
 import java.io.File;
 import javafx.scene.control.DatePicker;
 import java.sql.Types;
-
-
 
 public class ManajemenPenggunaController implements Initializable {
 
@@ -60,20 +56,20 @@ public class ManajemenPenggunaController implements Initializable {
     @FXML private Button deactivateAccountButton;
     @FXML private Button deleteAccountButton;
 
-    @FXML
-    private ChoiceBox<String> jenisKelamin;
-
-    @FXML
-    public void initialize() {
-        jenisKelamin.getItems().addAll("Pria", "Wanita", "Lainnya");
-    }
+    @FXML private ChoiceBox<String> jenisKelamin;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private TextField namaField;
+    @FXML private TextField emailField;
+    @FXML private DatePicker tanggalLahirPicker;
+    @FXML private TextField tinggiBadanField;
+    @FXML private TextField beratBadanField;
+    @FXML private TextField avatarPathField;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         if (jenisKelamin != null) {
             jenisKelamin.getItems().addAll("Pria", "Wanita", "Lainnya");
-        } else {
-            System.err.println("ChoiceBox 'jenisKelamin' belum terhubung (fx:id salah?).");
         }
         loadUserData();
         loadLoggedInUser();
@@ -81,70 +77,60 @@ public class ManajemenPenggunaController implements Initializable {
         setupPreferensiControls();
     }
 
-
     private void loadUserData() {
         int loggedInUserId = UserSession.getUserId();
+        if (loggedInUserId <= 0) {
+            System.err.println("No user logged in.");
+            return;
+        }
+
         Pengguna pengguna = new PenggunaDAO().getPenggunaById(loggedInUserId);
         if (pengguna != null) {
-            profileName.setText(pengguna.getNama());
-            profileAlteress.setText("Alteress"); // sementara placeholder
-            emailLabel.setText(pengguna.getEmail());
-            phoneLabel.setText(pengguna.getNoHp());
-            dobLabel.setText(pengguna.getTanggalLahir());
-            genderLabel.setText(pengguna.getJenisKelamin());
+            if (profileName != null) profileName.setText(pengguna.getNama());
+            if (profileAlteress != null) profileAlteress.setText("Alteress");
+            if (emailLabel != null) emailLabel.setText(pengguna.getEmail());
+            if (phoneLabel != null) phoneLabel.setText(pengguna.getNoHp());
+            if (dobLabel != null) dobLabel.setText(pengguna.getTanggalLahir());
+            if (genderLabel != null) genderLabel.setText(pengguna.getJenisKelamin());
 
             // Set user avatar image
-            try {
-                String avatarPath = pengguna.getAvatarPath() != null ? pengguna.getAvatarPath() : "/images/carlos_fernando.jpg";
-                profileAvatar.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(avatarPath))));
-                Circle clip = new Circle(profileAvatar.getFitWidth() / 2, profileAvatar.getFitHeight() / 2, profileAvatar.getFitWidth() / 2);
-                profileAvatar.setClip(clip);
-            } catch (Exception e) {
-                System.err.println("Failed to load avatar image: " + e.getMessage());
-                profileAvatar.setImage(null);
+            if (profileAvatar != null) {
+                loadAvatar(pengguna.getAvatarPath());
             }
         } else {
             System.err.println("Pengguna tidak ditemukan di database.");
         }
     }
 
-    public void loadLoggedInUser() {
-        int loggedInUserId = UserSession.getUserId();  // Ambil ID user yang login
+    private void loadAvatar(String avatarPath) {
+        try {
+            String path = avatarPath != null ? avatarPath : "/images/carlos_fernando.jpg";
+            profileAvatar.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+            Circle clip = new Circle(profileAvatar.getFitWidth() / 2, profileAvatar.getFitHeight() / 2, profileAvatar.getFitWidth() / 2);
+            profileAvatar.setClip(clip);
+        } catch (Exception e) {
+            System.err.println("Failed to load avatar image: " + e.getMessage());
+            if (profileAvatar != null) {
+                profileAvatar.setImage(null);
+            }
+        }
+    }
 
-        // 🔥 Tambahkan validasi di sini
+    public void loadLoggedInUser() {
+        int loggedInUserId = UserSession.getUserId();
         if (loggedInUserId <= 0) {
             System.err.println("Belum ada pengguna yang login.");
             return;
         }
 
-        try (Connection conn = DatabaseUtil.getConnection()) {
+        try (Connection conn = SQLiteConnection.getConnection()) {
             String query = "SELECT * FROM pengguna WHERE idPengguna = ?";
             PreparedStatement stmt = conn.prepareStatement(query);
             stmt.setInt(1, loggedInUserId);
             ResultSet rs = stmt.executeQuery();
+
             if (rs.next()) {
-                profileName.setText(rs.getString("nama"));
-                profileAlteress.setText("Alteress"); // placeholder
-
-                fullNameLabel.setText(rs.getString("nama"));
-                emailLabel.setText(rs.getString("email"));
-                phoneLabel.setText(rs.getString("no_hp"));
-                dobLabel.setText(rs.getString("tanggalLahir"));
-                genderLabel.setText(rs.getString("jenis_kelamin"));
-
-                // Avatar
-                try {
-                    String avatarPath = rs.getString("avatarPath");
-                    if (avatarPath == null || avatarPath.isEmpty()) {
-                        avatarPath = "/images/dummy.png";
-                    }
-                    profileAvatar.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(avatarPath))));
-                    Circle clip = new Circle(profileAvatar.getFitWidth() / 2, profileAvatar.getFitHeight() / 2, profileAvatar.getFitWidth() / 2);
-                    profileAvatar.setClip(clip);
-                } catch (Exception e) {
-                    System.err.println("Failed to load avatar image: " + e.getMessage());
-                    profileAvatar.setImage(null);
-                }
+                updateUIFromResultSet(rs);
             } else {
                 System.err.println("Pengguna login tidak ditemukan di database.");
             }
@@ -154,35 +140,20 @@ public class ManajemenPenggunaController implements Initializable {
         }
     }
 
-    // LoginController.java (atau yang setara)
-    @FXML
-    private void handleLogin() {
-        String email = emailField.getText();
-        String password = passwordField.getText();
+    private void updateUIFromResultSet(ResultSet rs) throws SQLException {
+        if (profileName != null) profileName.setText(rs.getString("nama"));
+        if (profileAlteress != null) profileAlteress.setText("Alteress");
+        if (fullNameLabel != null) fullNameLabel.setText(rs.getString("nama"));
+        if (emailLabel != null) emailLabel.setText(rs.getString("email"));
+        if (phoneLabel != null) phoneLabel.setText(rs.getString("noHp"));
+        if (dobLabel != null) dobLabel.setText(rs.getString("tanggalLahir"));
+        if (genderLabel != null) genderLabel.setText(rs.getString("jenisKelamin"));
 
-        try (Connection conn = DatabaseUtil.getConnection()) {
-            String query = "SELECT * FROM pengguna WHERE email = ? AND password = ?";
-            PreparedStatement stmt = conn.prepareStatement(query);
-            stmt.setString(1, email);
-            stmt.setString(2, password);
-            ResultSet rs = stmt.executeQuery();
-
-            if (rs.next()) {
-                int idPengguna = rs.getInt("idPengguna");
-                UserSession.setUserId(idPengguna);  // 🔥 INI PENTING!
-                System.out.println("Login sukses. ID: " + idPengguna);
-
-                // Arahkan ke halaman berikutnya
-                // ...
-            } else {
-                System.out.println("Login gagal.");
-                showAlert(Alert.AlertType.ERROR, "Login Gagal", "Email atau password salah.");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
+        // Avatar
+        if (profileAvatar != null) {
+            loadAvatar(rs.getString("avatarPath"));
         }
     }
-
 
     private void setupListeners() {
         if (changePasswordButton != null) {
@@ -222,6 +193,44 @@ public class ManajemenPenggunaController implements Initializable {
         }
     }
 
+    // Fixed updatePassword method using consistent database connection
+    public boolean updatePassword(int idPengguna, String newPassword) {
+        if (idPengguna <= 0 || newPassword == null || newPassword.trim().isEmpty()) {
+            System.err.println("Invalid parameters for password update");
+            return false;
+        }
+
+        String sql = "UPDATE pengguna SET password = ? WHERE idPengguna = ?";
+        try (Connection conn = SQLiteConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newPassword);
+            ps.setInt(2, idPengguna);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Fixed updateUsername method using consistent database connection
+    public boolean updateUsername(int idPengguna, String newUsername) {
+        if (idPengguna <= 0 || newUsername == null || newUsername.trim().isEmpty()) {
+            System.err.println("Invalid parameters for username update");
+            return false;
+        }
+
+        String sql = "UPDATE pengguna SET nama = ? WHERE idPengguna = ?";
+        try (Connection conn = SQLiteConnection.getConnection();
+             PreparedStatement ps = conn.prepareStatement(sql)) {
+            ps.setString(1, newUsername.trim());
+            ps.setInt(2, idPengguna);
+            return ps.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
     @FXML
     private void handleChangePassword() {
         showAlert(Alert.AlertType.INFORMATION, "Ubah Kata Sandi", "Fitur ubah kata sandi akan menampilkan dialog baru atau halaman terpisah.");
@@ -252,7 +261,6 @@ public class ManajemenPenggunaController implements Initializable {
                         PenggunaDAO dao = new PenggunaDAO();
                         if (dao.deletePengguna(loggedInUserId)) {
                             showAlert(Alert.AlertType.INFORMATION, "Sukses", "Akun berhasil dihapus.");
-                            // TODO: Panggil logout di sini
                         } else {
                             showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal menghapus akun.");
                         }
@@ -260,60 +268,19 @@ public class ManajemenPenggunaController implements Initializable {
                 });
     }
 
-
-    private Optional<ButtonType> showAlert(Alert.AlertType type, String title, String content) {
-        Alert alert = new Alert(type);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(content);
-        return alert.showAndWait();
-    }
-    public boolean updatePassword(int idPengguna, String newPassword) {
-        String sql = "UPDATE pengguna SET password = ? WHERE idPengguna = ?";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, newPassword);
-            ps.setInt(2, idPengguna);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    public boolean updateUsername(int idPengguna, String newUsername) {
-        // 🔥 Validasi: Username tidak boleh null atau kosong
-        if (newUsername == null || newUsername.trim().isEmpty()) {
-            System.err.println("Username tidak boleh kosong.");
-            return false;
-        }
-
-        String sql = "UPDATE pengguna SET nama = ? WHERE idPengguna = ?";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-            ps.setString(1, newUsername);
-            ps.setInt(2, idPengguna);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    @FXML private TextField usernameField;
-    @FXML private PasswordField passwordField;
-
-
-    // Handler untuk update username
     @FXML
     private void handleUpdateUsername() {
+        if (usernameField == null) {
+            System.err.println("Username field not initialized");
+            return;
+        }
+
         String newUsername = usernameField.getText();
-        if (newUsername != null && !newUsername.isEmpty()) {
+        if (newUsername != null && !newUsername.trim().isEmpty()) {
             int loggedInUserId = UserSession.getUserId();
-            PenggunaDAO dao = new PenggunaDAO();
-            if (dao.updateUsername(loggedInUserId, newUsername)) {
+            if (updateUsername(loggedInUserId, newUsername)) {
                 showAlert(Alert.AlertType.INFORMATION, "Sukses", "Username berhasil diperbarui!");
-                profileName.setText(newUsername);
+                if (profileName != null) profileName.setText(newUsername);
             } else {
                 showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal memperbarui username.");
             }
@@ -322,21 +289,20 @@ public class ManajemenPenggunaController implements Initializable {
         }
     }
 
-    // Handler untuk update password
     @FXML
     private void handleUpdatePassword() {
+        if (passwordField == null) {
+            System.err.println("Password field not initialized");
+            return;
+        }
+
         String newPassword = passwordField.getText();
-        if (newPassword != null && !newPassword.isEmpty()) {
+        if (newPassword != null && !newPassword.trim().isEmpty()) {
             int loggedInUserId = UserSession.getUserId();
-            Pengguna pengguna = new PenggunaDAO().getPenggunaById(loggedInUserId);
-            if (pengguna != null) {
-                pengguna.setPassword(newPassword);
-                boolean success = new PenggunaDAO().updatePengguna(pengguna);
-                if (success) {
-                    showAlert(Alert.AlertType.INFORMATION, "Sukses", "Password berhasil diperbarui!");
-                } else {
-                    showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal memperbarui password.");
-                }
+            if (updatePassword(loggedInUserId, newPassword)) {
+                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Password berhasil diperbarui!");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal memperbarui password.");
             }
         } else {
             showAlert(Alert.AlertType.WARNING, "Peringatan", "Password tidak boleh kosong.");
@@ -346,29 +312,34 @@ public class ManajemenPenggunaController implements Initializable {
     @FXML
     private void handleSidebarButton(javafx.event.ActionEvent event) {
         System.out.println("Sidebar button clicked.");
-        // Implementasi logika navigasi jika perlu
     }
 
     @FXML
     private void handleUpdateUserInfo() {
         System.out.println("Button 'Simpan Perubahan' diklik.");
 
-        int loggedInUserId = UserSession.getUserId(); // ID pengguna yang login
+        int loggedInUserId = UserSession.getUserId();
+        if (loggedInUserId <= 0) {
+            showAlert(Alert.AlertType.ERROR, "Error", "No user logged in.");
+            return;
+        }
 
-        String nama = namaField.getText();
-        String email = emailField.getText();
-        String password = passwordField.getText();
-        String tanggalLahir = (tanggalLahirPicker.getValue() != null) ? tanggalLahirPicker.getValue().toString() : "";
-        String selectedJenisKelamin = (jenisKelamin.getValue() != null) ? jenisKelamin.getValue() : "";
-        String tinggiBadanText = tinggiBadanField.getText();
-        String beratBadanText = beratBadanField.getText();
+        // Null checks for all fields
+        String nama = namaField != null ? namaField.getText() : "";
+        String email = emailField != null ? emailField.getText() : "";
+        String password = passwordField != null ? passwordField.getText() : "";
+        String tanggalLahir = (tanggalLahirPicker != null && tanggalLahirPicker.getValue() != null) ?
+                tanggalLahirPicker.getValue().toString() : "";
+        String selectedJenisKelamin = (jenisKelamin != null && jenisKelamin.getValue() != null) ?
+                jenisKelamin.getValue() : "";
+        String tinggiBadanText = tinggiBadanField != null ? tinggiBadanField.getText() : "";
+        String beratBadanText = beratBadanField != null ? beratBadanField.getText() : "";
 
         if (nama.isEmpty() || email.isEmpty() || password.isEmpty()) {
             showAlert(Alert.AlertType.WARNING, "Validasi", "Nama, Email, dan Password wajib diisi.");
             return;
         }
 
-        // 🔥 Validasi Tinggi & Berat Badan di sini
         Double tinggiBadan = null;
         Double beratBadan = null;
         try {
@@ -383,7 +354,7 @@ public class ManajemenPenggunaController implements Initializable {
             return;
         }
 
-        try (Connection conn = DatabaseUtil.getConnection()) {
+        try (Connection conn = SQLiteConnection.getConnection()) {
             String sql = "UPDATE pengguna SET nama=?, email=?, password=?, tanggalLahir=?, jenisKelamin=?, tinggiBadan=?, beratBadan=? WHERE idPengguna=?";
             PreparedStatement ps = conn.prepareStatement(sql);
             ps.setString(1, nama);
@@ -401,7 +372,7 @@ public class ManajemenPenggunaController implements Initializable {
             if (rowsUpdated > 0) {
                 System.out.println("Informasi pengguna berhasil diperbarui di database.");
                 showAlert(Alert.AlertType.INFORMATION, "Sukses", "Informasi pengguna berhasil diperbarui!");
-                loadLoggedInUser(); // untuk refresh tampilan
+                loadLoggedInUser();
             } else {
                 System.out.println("Gagal memperbarui informasi pengguna di database.");
                 showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal memperbarui informasi pengguna.");
@@ -412,34 +383,24 @@ public class ManajemenPenggunaController implements Initializable {
         }
     }
 
-    @FXML private TextField namaField;
-    @FXML private TextField emailField;
-    @FXML private DatePicker tanggalLahirPicker;
-    @FXML private TextField tinggiBadanField;
-    @FXML private TextField beratBadanField;
-
     @FXML
     private void handleChangeProfilePicture() {
+        if (profileAvatar == null) {
+            System.err.println("Profile avatar not initialized");
+            return;
+        }
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Pilih Foto Profil Baru");
         fileChooser.getExtensionFilters().addAll(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
 
-
-        // Tampilkan dialog untuk memilih file
         File selectedFile = fileChooser.showOpenDialog(profileAvatar.getScene().getWindow());
         if (selectedFile != null) {
             try {
-                // Load dan set gambar baru
                 Image newImage = new Image(selectedFile.toURI().toString());
                 profileAvatar.setImage(newImage);
-
-                // OPTIONAL: Simpan path ke database (jika diinginkan)
-                // Pengguna pengguna = new PenggunaDAO().getPenggunaById(1); // contoh id 1
-                // pengguna.setAvatarPath(selectedFile.getAbsolutePath());
-                // new PenggunaDAO().updatePengguna(pengguna);
-
                 System.out.println("Foto profil berhasil diubah: " + selectedFile.getAbsolutePath());
             } catch (Exception e) {
                 System.err.println("Gagal memuat gambar baru: " + e.getMessage());
@@ -449,23 +410,28 @@ public class ManajemenPenggunaController implements Initializable {
     }
 
     @FXML
-    private TextField avatarPathField;
-
-    @FXML
     private void handleBrowseAvatar() {
+        if (profileAvatar == null) {
+            System.err.println("Profile avatar not initialized");
+            return;
+        }
+
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Pilih Gambar Avatar");
         fileChooser.getExtensionFilters().add(
                 new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
         );
         File selectedFile = fileChooser.showOpenDialog(profileAvatar.getScene().getWindow());
-        if (selectedFile != null) {
+        if (selectedFile != null && avatarPathField != null) {
             avatarPathField.setText(selectedFile.getAbsolutePath());
         }
     }
 
-
-
-
-
+    private Optional<ButtonType> showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        return alert.showAndWait();
+    }
 }

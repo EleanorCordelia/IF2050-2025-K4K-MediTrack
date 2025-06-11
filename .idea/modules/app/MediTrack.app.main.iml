@@ -9,15 +9,10 @@
     </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:win:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:win:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-swing:win:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:win:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:win:20" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:win:21.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:win:21.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:win:21.0.3" level="project" />
     <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.42.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:win:21.0.3" level="project" />
   </component>
 </module>

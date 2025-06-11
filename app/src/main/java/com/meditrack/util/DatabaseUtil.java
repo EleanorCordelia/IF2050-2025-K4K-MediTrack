@@ -10,7 +10,7 @@ import java.sql.SQLException;
  */
 public class DatabaseUtil {
 
-    private static final String DB_URL = "jdbc:sqlite:mediTrack.db";  // Ubah nama file DB jika beda
+    private static final String DB_URL = "jdbc:sqlite:meditrack.db";  // Ubah nama file DB jika beda
 
     public static Connection getConnection() throws SQLException {
         return DriverManager.getConnection(DB_URL);

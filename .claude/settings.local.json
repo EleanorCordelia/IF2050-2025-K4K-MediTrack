@@ -4,7 +4,11 @@
       "Bash(sqlite3:*)",
       "Bash(find:*)",
       "Bash(python3:*)",
-      "Bash(mkdir:*)"
+      "Bash(mkdir:*)",
+      "Bash(./gradlew test:*)",
+      "Bash(ls:*)",
+      "Bash(export:*)",
+      "Bash(./gradlew:*)"
     ],
     "deny": []
   }
