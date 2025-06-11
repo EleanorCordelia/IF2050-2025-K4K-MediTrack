@@ -1,111 +1,171 @@
 package com.meditrack.dao;
 
 import com.meditrack.model.Jadwal;
-import com.meditrack.util.SQLiteConnection;
-
 import java.sql.*;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+/**
+ * JadwalDAO yang bersih untuk operasi CRUD pada tabel 'jadwal'.
+ * Semua metode menggunakan satu koneksi yang di-inject melalui konstruktor.
+ * Sudah disesuaikan dengan model Jadwal dan controller yang ada.
+ */
 public class JadwalDAO {
 
-    /** 1. Ambil semua data dari tabel jadwal */
-    public List<Jadwal> getAllJadwal() {
-        List<Jadwal> list = new ArrayList<>();
+    private final Connection connection;
+
+    public JadwalDAO(Connection connection) {
+        this.connection = connection;
+    }
+
+    /**
+     * Menyimpan objek Jadwal baru ke database.
+     * @param jadwal Objek Jadwal yang akan disimpan.
+     */
+    public void addJadwal(Jadwal jadwal) throws SQLException {
+        String sql = "INSERT INTO jadwal (id_pengguna, nama_aktivitas, tanggal_mulai, jam_mulai, tanggal_selesai, jam_selesai, kategori, catatan) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, 1);  // user ID sementara (kalau ada login ganti sesuai session)
+            pstmt.setString(2, jadwal.getNamaAktivitas());
+            pstmt.setString(3, jadwal.getTanggalMulai().toString());
+            pstmt.setString(4, jadwal.getWaktuMulai().toString());
+            pstmt.setString(5, jadwal.getTanggalSelesai().toString());
+            pstmt.setString(6, jadwal.getWaktuSelesai().toString());
+            pstmt.setString(7, jadwal.getKategori());
+            pstmt.setString(8, jadwal.getCatatan());
+            pstmt.executeUpdate();
+        }
+    }
+
+
+    /**
+     * Mengambil semua jadwal dari database.
+     * @return List dari objek Jadwal.
+     */
+    public List<Jadwal> getAllJadwal() throws SQLException {
+        List<Jadwal> jadwalList = new ArrayList<>();
         String sql = "SELECT * FROM jadwal";
-        try (Connection conn = SQLiteConnection.getConnection();
-             Statement stmt = conn.createStatement();
+
+        try (Statement stmt = connection.createStatement();
              ResultSet rs = stmt.executeQuery(sql)) {
 
             while (rs.next()) {
-                Jadwal j = new Jadwal(
-                        rs.getInt("idJadwal"),
-                        rs.getInt("idPengguna"),
-                        rs.getString("tanggal"),
-                        rs.getString("prioritas")
-                );
-                list.add(j);
+                jadwalList.add(mapResultSetToJadwal(rs));
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return list;
+        return jadwalList;
     }
 
-    /** 2. Cari data jadwal berdasarkan ID */
-    public Jadwal getJadwalById(int id) {
-        String sql = "SELECT * FROM jadwal WHERE idJadwal = ?";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
+    /**
+     * Mengambil semua jadwal pada tanggal tertentu.
+     * @param date Tanggal yang dicari.
+     * @return List dari objek Jadwal pada tanggal tersebut.
+     */
+    public List<Jadwal> getJadwalByDate(LocalDate date) throws SQLException {
+        List<Jadwal> jadwalList = new ArrayList<>();
+        String sql = "SELECT * FROM jadwal WHERE tanggal_mulai = ?";
 
-            ps.setInt(1, id);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next()) {
-                return new Jadwal(
-                        rs.getInt("idJadwal"),
-                        rs.getInt("idPengguna"),
-                        rs.getString("tanggal"),
-                        rs.getString("prioritas")
-                );
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, date.toString());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                while (rs.next()) {
+                    jadwalList.add(mapResultSetToJadwal(rs));
+                }
             }
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
-        return null;
+        return jadwalList;
     }
 
-    /** 3. Masukkan data jadwal baru (INSERT) */
-    public boolean insertJadwal(Jadwal j) {
-        String sql = "INSERT INTO jadwal(idPengguna, tanggal, prioritas) VALUES(?, ?, ?)";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
-
-            ps.setInt(1, j.getIdPengguna());
-            ps.setString(2, j.getTanggal());
-            ps.setString(3, j.getPrioritas());
-
-            int affectedRows = ps.executeUpdate();
-            if (affectedRows == 0) return false;
-            ResultSet keys = ps.getGeneratedKeys();
-            if (keys.next()) {
-                j.setIdJadwal(keys.getInt(1));
+    // ✅ DITAMBAHKAN: Method yang dibutuhkan oleh JadwalPenggunaController
+    /**
+     * Mengambil satu jadwal berdasarkan ID uniknya.
+     * @param id ID dari jadwal yang akan dicari.
+     * @return Optional berisi objek Jadwal jika ditemukan, atau Optional kosong jika tidak.
+     */
+    public Optional<Jadwal> getJadwalById(int id) throws SQLException {
+        String sql = "SELECT * FROM jadwal WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            try (ResultSet rs = pstmt.executeQuery()) {
+                if (rs.next()) {
+                    return Optional.of(mapResultSetToJadwal(rs));
+                }
             }
-            return true;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+        }
+        return Optional.empty();
+    }
+
+    // ✅ DITAMBAHKAN: Method yang dibutuhkan oleh JadwalPenggunaController
+    /**
+     * Memeriksa apakah ada jadwal pada tanggal tertentu.
+     * @param date Tanggal yang akan diperiksa.
+     * @return true jika ada jadwal, false jika tidak.
+     */
+    public boolean hasJadwalOnDate(LocalDate date) throws SQLException {
+        String sql = "SELECT 1 FROM jadwal WHERE tanggal_mulai = ? LIMIT 1";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, date.toString());
+            try (ResultSet rs = pstmt.executeQuery()) {
+                return rs.next();
+            }
         }
     }
 
-    /** 4. Perbarui data jadwal (UPDATE) */
-    public boolean updateJadwal(Jadwal j) {
-        String sql = "UPDATE jadwal SET idPengguna = ?, tanggal = ?, prioritas = ? WHERE idJadwal = ?";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
-
-            ps.setInt(1, j.getIdPengguna());
-            ps.setString(2, j.getTanggal());
-            ps.setString(3, j.getPrioritas());
-            ps.setInt(4, j.getIdJadwal());
-
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    /**
+     * Mengupdate data jadwal yang ada di database.
+     * @param jadwal Objek Jadwal yang berisi data baru dan ID yang akan diupdate.
+     */
+    public void updateJadwal(Jadwal jadwal) throws SQLException {
+        String sql = "UPDATE jadwal SET nama_aktivitas = ?, tanggal_mulai = ?, jam_mulai = ?, " +
+                "tanggal_selesai = ?, jam_selesai = ?, kategori = ?, catatan = ? " +
+                "WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setString(1, jadwal.getNamaAktivitas());
+            pstmt.setString(2, jadwal.getTanggalMulai().toString());
+            pstmt.setString(3, jadwal.getWaktuMulai().toString());
+            pstmt.setString(4, jadwal.getTanggalSelesai().toString());
+            pstmt.setString(5, jadwal.getWaktuSelesai().toString());
+            pstmt.setString(6, jadwal.getKategori());
+            pstmt.setString(7, jadwal.getCatatan());
+            pstmt.setInt(8, jadwal.getId());
+            pstmt.executeUpdate();
         }
     }
 
-    /** 5. Hapus data jadwal (DELETE) */
-    public boolean deleteJadwal(int id) {
-        String sql = "DELETE FROM jadwal WHERE idJadwal = ?";
-        try (Connection conn = SQLiteConnection.getConnection();
-             PreparedStatement ps = conn.prepareStatement(sql)) {
 
-            ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
+    /**
+     * Menghapus jadwal dari database berdasarkan ID-nya.
+     * @param id ID dari jadwal yang akan dihapus.
+     */
+    public void deleteJadwal(int id) throws SQLException {
+        String sql = "DELETE FROM jadwal WHERE id = ?";
+        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
+            pstmt.setInt(1, id);
+            pstmt.executeUpdate();
         }
+    }
+
+    // ✅ DIPERBAIKI: Helper method ini disesuaikan dengan constructor Jadwal.java yang benar.
+    /**
+     * Helper method untuk memetakan satu baris ResultSet ke objek Jadwal.
+     * @param rs ResultSet yang sedang di-iterasi.
+     * @return Objek Jadwal yang sudah terisi data.
+     */
+    private Jadwal mapResultSetToJadwal(ResultSet rs) throws SQLException {
+        // Nama kolom harus sama persis dengan yang ada di tabel database Anda
+        int id = rs.getInt("id");
+        String namaAktivitas = rs.getString("nama_aktivitas");
+        LocalDate tanggalMulai = LocalDate.parse(rs.getString("tanggal_mulai"));
+        LocalTime waktuMulai = LocalTime.parse(rs.getString("jam_mulai"));
+        LocalTime waktuSelesai = LocalTime.parse(rs.getString("jam_selesai"));
+        LocalDate tanggalSelesai = LocalDate.parse(rs.getString("tanggal_selesai"));
+        String kategori = rs.getString("kategori");
+        String catatan = rs.getString("catatan");
+
+        // Menggunakan constructor yang sesuai (tanpa id_pengguna)
+        return new Jadwal(id, namaAktivitas, tanggalMulai, waktuMulai, tanggalSelesai, waktuSelesai, kategori, catatan);
     }
 }

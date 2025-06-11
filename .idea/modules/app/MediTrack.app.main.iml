@@ -12,7 +12,8 @@
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:win:21.0.3" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:win:21.0.3" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:win:21.0.3" level="project" />
-    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.42.0.0" level="project" />
+    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.46.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:win:21.0.3" level="project" />
+    <orderEntry type="library" name="Gradle: org.slf4j:slf4j-api:1.7.36" level="project" />
   </component>
 </module>

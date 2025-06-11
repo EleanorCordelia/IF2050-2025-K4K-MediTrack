@@ -52,6 +52,8 @@ dependencies {
     testImplementation 'org.mockito:mockito-core:5.3.1'
     testImplementation 'org.openjfx:javafx-controls:21.0.3'
     testImplementation 'org.openjfx:javafx-fxml:21.0.3'
+    testImplementation 'org.openjfx:javafx-graphics:21.0.3'
+    testImplementation 'org.xerial:sqlite-jdbc:3.42.0.0'
 }
 
 application {
@@ -64,11 +66,13 @@ test {
         events "passed", "skipped", "failed"
     }
 
-    // Optional JavaFX testing support (headless) - temporarily disabled
-    // systemProperty 'java.awt.headless', 'false'
-    // systemProperty 'testfx.robot', 'glass'
-    // systemProperty 'testfx.headless', 'true'
-    // systemProperty 'prism.order', 'sw'
+    // JavaFX testing support (headless)
+    systemProperty 'java.awt.headless', 'true'
+    systemProperty 'testfx.robot', 'glass'
+    systemProperty 'testfx.headless', 'true'
+    systemProperty 'prism.order', 'sw'
+    systemProperty 'glass.platform', 'Monocle'
+    systemProperty 'monocle.platform', 'Headless'
 
     // Test result summary
     afterSuite { desc, result ->

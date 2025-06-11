@@ -1,4 +1,4 @@
-package com.meditrack.controller;
+package com.meditrack;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;

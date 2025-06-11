@@ -6,6 +6,7 @@
   <component name="ChangeListManager">
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
     <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="style(landing): improve UI design for landing page" />
 =======
     <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="feat(manajemen-pengguna): update user management, pending login feature for idLogin&#10;&#10;- Implemented improvements in user management module.&#10;- Waiting for login feature to retrieve idLogin for complete functionality.">
@@ -76,6 +77,17 @@
       <change beforePath="$PROJECT_DIR$/app/src/main/resources/images/logo.png" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/resources/images/logo.png" afterDir="false" />
 >>>>>>> kondisi-aktual
       <change beforePath="$PROJECT_DIR$/build/reports/problems/problems-report.html" beforeDir="false" afterPath="$PROJECT_DIR$/build/reports/problems/problems-report.html" afterDir="false" />
+=======
+    <list default="true" id="77836a53-b443-4a87-8527-4d30d516e1e4" name="Changes" comment="fix(database): finalize DB connection, tested run with PenggunaDAO and MainApp&#10;&#10;- Fixed SQLite connection (DB_URL, PRAGMA, etc.)&#10;- Verified PenggunaDAO table fetch and CRUD works as expected&#10;- Tested integration with MainApp, verified PenggunaView loads data correctly&#10;&#10;This ensures the database is properly connected and integrated into the main application with working PenggunaDAO.">
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/meditrack.db" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.db" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/meditrack.sqbpro" beforeDir="false" afterPath="$PROJECT_DIR$/app/meditrack.sqbpro" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/JadwalPenggunaController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/JadwalPenggunaController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/MenuController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/TambahJadwalController.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/TambahJadwalController.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/JadwalDAO.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/dao/JadwalDAO.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Jadwal.java" beforeDir="false" afterPath="$PROJECT_DIR$/app/src/main/java/com/meditrack/model/Jadwal.java" afterDir="false" />
+>>>>>>> origin/jadwal
     </list>
 >>>>>>> manajemen-pengguna
     <option name="SHOW_DIALOG" value="false" />
@@ -106,6 +118,7 @@
                 <item name="MediTrack" type="f1a62948:ProjectNode" />
               </path>
 <<<<<<< HEAD
+<<<<<<< HEAD
 =======
               <path>
                 <item name="" type="6a2764b6:ExternalProjectsStructure$RootNode" />
@@ -113,6 +126,8 @@
                 <item name="app" type="2d1252cf:ModuleNode" />
               </path>
 >>>>>>> kondisi-aktual
+=======
+>>>>>>> origin/jadwal
             </expand>
             <select />
           </tree_state>
@@ -123,8 +138,12 @@
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
       <list>
+<<<<<<< HEAD
         <option value="HTML File" />
         <option value="FxmlFile" />
+=======
+        <option value="JavaFXApplication" />
+>>>>>>> origin/jadwal
         <option value="Class" />
       </list>
     </option>
@@ -139,6 +158,7 @@
   </component>
 <<<<<<< HEAD
 <<<<<<< HEAD
+<<<<<<< HEAD
   <component name="ProjectColorInfo">{
     &quot;customColor&quot;: &quot;&quot;,
     &quot;associatedIndex&quot;: 3
@@ -147,11 +167,16 @@
   <component name="ProblemsViewState">
     <option name="selectedTabId" value="CurrentFile" />
   </component>
+=======
+>>>>>>> origin/jadwal
   <component name="ProjectColorInfo">{
   &quot;customColor&quot;: &quot;&quot;,
   &quot;associatedIndex&quot;: 3
 }</component>
+<<<<<<< HEAD
 >>>>>>> manajemen-pengguna
+=======
+>>>>>>> origin/jadwal
   <component name="ProjectId" id="2y5BysbWGcZYfcye9XzgokTpnj7" />
 =======
   <component name="ProjectColorInfo">{
@@ -165,6 +190,7 @@
   </component>
   <component name="PropertiesComponent">{
   &quot;keyToString&quot;: {
+<<<<<<< HEAD
 <<<<<<< HEAD
     &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
 <<<<<<< HEAD
@@ -191,6 +217,12 @@
     &quot;project.structure.proportion&quot;: &quot;0.0&quot;,
     &quot;project.structure.side.proportion&quot;: &quot;0.2&quot;
 >>>>>>> kondisi-aktual
+=======
+    &quot;RunOnceActivity.ShowReadmeOnStart&quot;: &quot;true&quot;,
+    &quot;git-widget-placeholder&quot;: &quot;jadwal&quot;,
+    &quot;ignore.virus.scanning.warn.message&quot;: &quot;true&quot;,
+    &quot;kotlin-language-version-configured&quot;: &quot;true&quot;
+>>>>>>> origin/jadwal
   }
 }</component>
   <component name="RunManager">

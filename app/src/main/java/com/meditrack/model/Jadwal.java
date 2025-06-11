@@ -1,53 +1,117 @@
 package com.meditrack.model;
 
+import java.time.LocalDate;
+import java.time.LocalTime;
+
+/**
+ * Model Jadwal yang bersih dan konsisten.
+ * Kelas ini mewakili satu baris data dari tabel 'jadwal' di database.
+ * Versi ini disesuaikan agar kompatibel dengan TambahJadwalController.
+ */
 public class Jadwal {
-    private int idJadwal;
-    private int idPengguna;
-    private String tanggal;   // disimpan sebagai 'YYYY-MM-DD'
-    private String prioritas; // 'Tinggi', 'Sedang', atau 'Rendah'
 
-    // Konstruktor kosong (diperlukan misalnya untuk inisialisasi manual atau framework)
-    public Jadwal() { }
+    private int id; // Diubah dari idJadwal
+    private String namaAktivitas;
+    private LocalDate tanggalMulai;
+    private LocalTime waktuMulai;
+    private LocalDate tanggalSelesai;
+    private LocalTime waktuSelesai;
+    private String kategori; // Diubah dari tingkatAktivitas
+    private String catatan;
+    // Field idPengguna untuk sementara tidak digunakan di form ini, jadi bisa diabaikan di constructor
 
-    // Konstruktor lengkap (misalnya untuk memetakan ResultSet ke objek Jadwal)
-    public Jadwal(int idJadwal, int idPengguna, String tanggal, String prioritas) {
-        this.idJadwal = idJadwal;
-        this.idPengguna = idPengguna;
-        this.tanggal = tanggal;
-        this.prioritas = prioritas;
+    /**
+     * Konstruktor untuk membuat objek Jadwal baru dari UI (sebelum disimpan ke DB).
+     * Cocok dengan logika 'Tambah Baru' di TambahJadwalController.
+     */
+    public Jadwal(String namaAktivitas, LocalDate tanggalMulai, LocalTime waktuMulai, LocalDate tanggalSelesai, LocalTime waktuSelesai, String kategori, String catatan) {
+        this.namaAktivitas = namaAktivitas;
+        this.tanggalMulai = tanggalMulai;
+        this.waktuMulai = waktuMulai;
+        this.tanggalSelesai = tanggalSelesai;
+        this.waktuSelesai = waktuSelesai;
+        this.kategori = kategori;
+        this.catatan = catatan;
     }
 
-    // Getter & Setter
-
-    public int getIdJadwal() {
-        return idJadwal;
+    /**
+     * Konstruktor lengkap untuk membuat objek Jadwal dari data yang ada di DB.
+     * Cocok dengan logika 'Edit' di TambahJadwalController.
+     */
+    public Jadwal(int id, String namaAktivitas, LocalDate tanggalMulai, LocalTime waktuMulai, LocalDate tanggalSelesai, LocalTime waktuSelesai, String kategori, String catatan) {
+        this.id = id;
+        this.namaAktivitas = namaAktivitas;
+        this.tanggalMulai = tanggalMulai;
+        this.waktuMulai = waktuMulai;
+        this.tanggalSelesai = tanggalSelesai;
+        this.waktuSelesai = waktuSelesai;
+        this.kategori = kategori;
+        this.catatan = catatan;
     }
 
-    public void setIdJadwal(int idJadwal) {
-        this.idJadwal = idJadwal;
+    // --- GETTERS & SETTERS ---
+
+    public int getId() { // Diubah dari getIdJadwal
+        return id;
     }
 
-    public int getIdPengguna() {
-        return idPengguna;
+    public void setId(int id) { // Diubah dari setIdJadwal
+        this.id = id;
     }
 
-    public void setIdPengguna(int idPengguna) {
-        this.idPengguna = idPengguna;
+    public String getNamaAktivitas() {
+        return namaAktivitas;
     }
 
-    public String getTanggal() {
-        return tanggal;
+    public void setNamaAktivitas(String namaAktivitas) {
+        this.namaAktivitas = namaAktivitas;
     }
 
-    public void setTanggal(String tanggal) {
-        this.tanggal = tanggal;
+    public LocalDate getTanggalMulai() {
+        return tanggalMulai;
     }
 
-    public String getPrioritas() {
-        return prioritas;
+    public void setTanggalMulai(LocalDate tanggalMulai) {
+        this.tanggalMulai = tanggalMulai;
     }
 
-    public void setPrioritas(String prioritas) {
-        this.prioritas = prioritas;
+    public LocalTime getWaktuMulai() {
+        return waktuMulai;
+    }
+
+    public void setWaktuMulai(LocalTime waktuMulai) {
+        this.waktuMulai = waktuMulai;
+    }
+
+    public LocalDate getTanggalSelesai() {
+        return tanggalSelesai;
+    }
+
+    public void setTanggalSelesai(LocalDate tanggalSelesai) {
+        this.tanggalSelesai = tanggalSelesai;
+    }
+
+    public LocalTime getWaktuSelesai() {
+        return waktuSelesai;
+    }
+
+    public void setWaktuSelesai(LocalTime waktuSelesai) {
+        this.waktuSelesai = waktuSelesai;
+    }
+
+    public String getKategori() { // Diubah dari getTingkatAktivitas
+        return kategori;
+    }
+
+    public void setKategori(String kategori) { // Diubah dari setTingkatAktivitas
+        this.kategori = kategori;
+    }
+
+    public String getCatatan() {
+        return catatan;
+    }
+
+    public void setCatatan(String catatan) {
+        this.catatan = catatan;
     }
 }
