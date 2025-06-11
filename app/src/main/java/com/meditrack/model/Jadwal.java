@@ -34,7 +34,6 @@ public class Jadwal {
         this.catatan = catatan;
     }
 
-<<<<<<< HEAD
     /**
      * Konstruktor lengkap untuk membuat objek Jadwal dari data yang ada di DB.
      * Cocok dengan logika 'Edit' di TambahJadwalController.
