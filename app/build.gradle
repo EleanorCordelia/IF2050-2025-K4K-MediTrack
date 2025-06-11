@@ -56,6 +56,20 @@ dependencies {
     testImplementation 'org.xerial:sqlite-jdbc:3.42.0.0'
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
+    test {
+        java {
+            srcDirs = ['test/java'] // letak test di luar src
+        }
+    }
+}
+
+
 application {
     mainClass = 'com.meditrack.MainApp'
 }
@@ -66,13 +80,6 @@ test {
         events "passed", "skipped", "failed"
     }
 
-    // JavaFX testing support (headless)
-    systemProperty 'java.awt.headless', 'true'
-    systemProperty 'testfx.robot', 'glass'
-    systemProperty 'testfx.headless', 'true'
-    systemProperty 'prism.order', 'sw'
-    systemProperty 'glass.platform', 'Monocle'
-    systemProperty 'monocle.platform', 'Headless'
 
     // Test result summary
     afterSuite { desc, result ->

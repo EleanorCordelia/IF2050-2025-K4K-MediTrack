@@ -52,7 +52,14 @@
                     <Font name="Poppins Medium" size="15.0" />
                 </font>
             </Button>
-            <Button fx:id="rekomendasiButton" alignment="BASELINE_LEFT" graphicTextGap="15.0" maxWidth="1.7976931348623157E308" onAction="#handleSidebarButton" styleClass="sidebar-button" text="Rekomendasi" textFill="#A5B2E4">
+            <Button fx:id="rekomendasiButton"
+                    alignment="BASELINE_LEFT"
+                    graphicTextGap="15.0"
+                    maxWidth="1.7976931348623157E308"
+                    onAction="#handleRekomendasiButton"
+                    styleClass="sidebar-button"
+                    text="Rekomendasi"
+                    textFill="#A5B2E4">
                 <graphic>
                     <ImageView fitHeight="20.0" fitWidth="20.0">
                         <Image url="@/images/icon-rekomendasi.png" />

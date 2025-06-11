@@ -4,26 +4,46 @@ public class DaftarObat {
     private int idObat;
     private String namaObat;
     private String dosis;
-    private String waktuKonsumsi;   // format 'HH:MM:SS'
+    private String waktuKonsumsi;
     private String efekSamping;
-    private String statusKonsumsi;  // 'Dikonsumsi', 'Belum dikonsumsi', atau 'Terlewat'
+    private String statusKonsumsi;
+    private String deskripsi;
+    private String caraKonsumsi;
+    private int urutanKonsumsi;
 
-    // Konstruktor kosong (dibutuhkan misalnya untuk inisialisasi manual atau framework)
+    // Konstruktor kosong
     public DaftarObat() { }
 
-    // Konstruktor lengkap (digunakan misalnya pada pemetaan ResultSet)
-    public DaftarObat(int idObat, String namaObat, String dosis,
-                      String waktuKonsumsi, String efekSamping, String statusKonsumsi) {
+    // Konstruktor lengkap (9 parameter)
+    public DaftarObat(int idObat, String namaObat, String dosis, String waktuKonsumsi,
+                      String efekSamping, String statusKonsumsi,
+                      String deskripsi, String caraKonsumsi, int urutanKonsumsi) {
         this.idObat = idObat;
         this.namaObat = namaObat;
         this.dosis = dosis;
         this.waktuKonsumsi = waktuKonsumsi;
         this.efekSamping = efekSamping;
         this.statusKonsumsi = statusKonsumsi;
+        this.deskripsi = deskripsi;
+        this.caraKonsumsi = caraKonsumsi;
+        this.urutanKonsumsi = urutanKonsumsi;
+    }
+
+    // Konstruktor 6 parameter (kompatibel dengan kode lama)
+    public DaftarObat(int idObat, String namaObat, String dosis, String waktuKonsumsi,
+                      String efekSamping, String statusKonsumsi) {
+        this.idObat = idObat;
+        this.namaObat = namaObat;
+        this.dosis = dosis;
+        this.waktuKonsumsi = waktuKonsumsi;
+        this.efekSamping = efekSamping;
+        this.statusKonsumsi = statusKonsumsi;
+        this.deskripsi = "";
+        this.caraKonsumsi = "";
+        this.urutanKonsumsi = 0;
     }
 
     // Getter & Setter
-
     public int getIdObat() {
         return idObat;
     }
@@ -70,5 +90,29 @@ public class DaftarObat {
 
     public void setStatusKonsumsi(String statusKonsumsi) {
         this.statusKonsumsi = statusKonsumsi;
+    }
+
+    public String getDeskripsi() {
+        return deskripsi;
+    }
+
+    public void setDeskripsi(String deskripsi) {
+        this.deskripsi = deskripsi;
+    }
+
+    public String getCaraKonsumsi() {
+        return caraKonsumsi;
+    }
+
+    public void setCaraKonsumsi(String caraKonsumsi) {
+        this.caraKonsumsi = caraKonsumsi;
+    }
+
+    public int getUrutanKonsumsi() {
+        return urutanKonsumsi;
+    }
+
+    public void setUrutanKonsumsi(int urutanKonsumsi) {
+        this.urutanKonsumsi = urutanKonsumsi;
     }
 }

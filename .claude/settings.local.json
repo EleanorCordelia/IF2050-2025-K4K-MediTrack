@@ -8,7 +8,10 @@
       "Bash(./gradlew test:*)",
       "Bash(ls:*)",
       "Bash(export:*)",
-      "Bash(./gradlew:*)"
+      "Bash(./gradlew:*)",
+      "Bash(git reset:*)",
+      "Bash(grep:*)",
+      "Bash(git add:*)"
     ],
     "deny": []
   }

@@ -7,25 +7,38 @@ import javafx.scene.Scene;
 import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
+import java.io.IOException;
+
 public class MainApp extends Application {
 
     @Override
-    public void start(Stage primaryStage) throws Exception {
-        // Load semua varian Poppins, kedua weight-nya (size argumen cuma dummy)
-        Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-Regular.ttf"), 10);
-        Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-Medium.ttf"), 10);
-        Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-SemiBold.ttf"), 10);
-        Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-Bold.ttf"), 10);
+    public void start(Stage primaryStage) {
+        try {
+            // Memuat font kustom
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-Regular.ttf"), 10);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-Medium.ttf"), 10);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-SemiBold.ttf"), 10);
+            Font.loadFont(getClass().getResourceAsStream("/fonts/Poppins-Bold.ttf"), 10);
 
-        // Ganti antara landing page atau menu sesuai kebutuhan
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
-        Parent root = loader.load();
+            // Memuat file FXML untuk landing page
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/landing.fxml"));
+            Parent root = loader.load();
 
-        // Pakai angka yang sesuai dengan fxml prefWidth/prefHeight
-        Scene scene = new Scene(root, 1020, 800);
-        primaryStage.setScene(scene);
-        primaryStage.setTitle("MediTrack - Menu");
-        primaryStage.show();
+            // Membuat Scene
+            Scene scene = new Scene(root);
+
+            // Mengatur properti window (Stage)
+            primaryStage.setScene(scene);
+            primaryStage.setTitle("MediTrack - Landing Page");
+            primaryStage.show();
+
+        } catch (IOException e) {
+            System.err.println("Gagal memuat file FXML atau resources lainnya.");
+            e.printStackTrace();
+        } catch (Exception e) {
+            System.err.println("Terjadi error tak terduga saat memulai aplikasi.");
+            e.printStackTrace();
+        }
     }
 
     public static void main(String[] args) {

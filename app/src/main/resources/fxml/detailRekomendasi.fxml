@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.meditrack.DetailRekomendasiController"
+      spacing="10" alignment="CENTER" prefWidth="400" prefHeight="300"
+      style="-fx-background-color: white; -fx-padding: 20; -fx-border-color: #E5E7EB; -fx-border-radius: 8;">
+    <Label text="Detail Rekomendasi" style="-fx-font-size: 20px; -fx-font-weight: bold;"/>
+    <Text fx:id="detailText" wrappingWidth="350"/>
+    <Button text="Tutup" onAction="#handleClose"/>
+</VBox>

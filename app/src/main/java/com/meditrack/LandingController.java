@@ -1,57 +1,177 @@
 package com.meditrack;
 
+import javafx.animation.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Label;
+import javafx.scene.effect.DropShadow;
+import javafx.scene.image.ImageView;
+import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.HBox;
+import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
 import javafx.stage.Stage;
-import javafx.scene.Node;
-
+import javafx.util.Duration;
 import java.io.IOException;
-import java.net.URL;
 
 public class LandingController {
 
+    private double xOffset = 0;
+    private double yOffset = 0;
+
+    // FXML References
+    @FXML private HBox headerBar;
+    @FXML private ImageView heroIcon;
+    @FXML private Label heroHeading;
+    @FXML private Label heroDescription;
+    @FXML private HBox heroButtons;
+    @FXML private VBox heroImageContainer;
+    @FXML private VBox featureSection;
+    @FXML private HBox featureCardsContainer;
+    @FXML private HBox featureCardsContainer2;
+
     @FXML
-    private void handleGabungAction(ActionEvent event) {
-        System.out.println("Gabung button clicked. Attempting to load menu.fxml...");
-        try {
-            URL menuFxmlUrl = getClass().getResource("/fxml/menu.fxml");
+    public void initialize() {
+        prepareForAnimation();
+        playEntranceAnimation();
+        addCardHoverEffects();
+    }
 
-            if (menuFxmlUrl == null) {
-                System.err.println("Error: Cannot find /fxml/menu.fxml. " +
-                        "Pastikan file tersebut ada di src/main/resources/fxml/");
-                return;
+    private void prepareForAnimation() {
+        // Sembunyikan semua elemen sebelum dianimasikan
+        setInitialState(headerBar, -20);
+        setInitialState(heroIcon, 20);
+        setInitialState(heroHeading, 20);
+        setInitialState(heroDescription, 20);
+        setInitialState(heroButtons, 20);
+        setInitialState(heroImageContainer, 0, 0.95); // Sedikit kecil
+        setInitialState(featureSection, 30);
+    }
+
+    private void setInitialState(Node node, double yTranslate) {
+        setInitialState(node, yTranslate, 0);
+    }
+
+    private void setInitialState(Node node, double yTranslate, double scale) {
+        if (node != null) {
+            node.setOpacity(0);
+            node.setTranslateY(yTranslate);
+            if (scale != 0) {
+                node.setScaleX(scale);
+                node.setScaleY(scale);
             }
-
-            FXMLLoader loader = new FXMLLoader(menuFxmlUrl);
-            Parent menuRoot = loader.load();
-
-            Scene menuScene = new Scene(menuRoot);
-
-            Stage currentStage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-            currentStage.setScene(menuScene);
-            currentStage.setTitle("MediTrack - Menu Utama");
-
-            currentStage.show();
-
-            System.out.println("menu.fxml loaded successfully and scene switched.");
-
-        } catch (IOException e) {
-            System.err.println("IOException while loading menu.fxml:");
-            e.printStackTrace();
-        } catch (Exception e) {
-            System.err.println("An unexpected error occurred during FXML loading or scene switch:");
-            e.printStackTrace();
         }
     }
 
-    @FXML
-    private void handlePenggunaAction(ActionEvent event) throws IOException {
-        Parent root = FXMLLoader.load(getClass().getResource("/fxml/penggunaView.fxml"));
-        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
-        stage.setScene(new Scene(root));
+    private void playEntranceAnimation() {
+        // Animasi untuk header
+        createSlideIn(headerBar, 800, 200).play();
+
+        // Animasi sekuensial untuk konten utama
+        SequentialTransition mainSequence = new SequentialTransition(
+                new PauseTransition(Duration.millis(500)),
+                createSlideIn(heroIcon, 400, 0),
+                createSlideIn(heroHeading, 500, 0),
+                createSlideIn(heroDescription, 500, 0),
+                createSlideIn(heroButtons, 500, 0)
+        );
+
+        // Animasi untuk gambar hero
+        ParallelTransition imageAnimation = new ParallelTransition(
+                createFadeIn(heroImageContainer, 1000),
+                createScaleIn(heroImageContainer, 1000)
+        );
+        imageAnimation.setDelay(Duration.millis(1200));
+
+        // Animasi untuk bagian fitur
+        Transition featureSectionAnimation = createSlideIn(featureSection, 800, 1500);
+
+        // Gabungkan dan mainkan
+        mainSequence.play();
+        imageAnimation.play();
+        featureSectionAnimation.play();
+    }
+
+    private void addCardHoverEffects() {
+        // Tambahkan efek hover ke semua kartu fitur
+        addHoverEffectToCards(featureCardsContainer);
+        addHoverEffectToCards(featureCardsContainer2);
+    }
+
+    private void addHoverEffectToCards(HBox container) {
+        if (container == null) return;
+        for (Node cardNode : container.getChildren()) {
+            if (cardNode instanceof VBox) {
+                VBox card = (VBox) cardNode;
+                TranslateTransition liftUp = new TranslateTransition(Duration.millis(200), card);
+                liftUp.setToY(-8);
+
+                TranslateTransition dropDown = new TranslateTransition(Duration.millis(200), card);
+                dropDown.setToY(0);
+
+                DropShadow hoverShadow = new DropShadow(25, Color.rgb(37, 99, 235, 0.15));
+                DropShadow defaultShadow = new DropShadow(20, Color.rgb(0, 0, 0, 0.05));
+                card.setEffect(defaultShadow);
+
+                card.setOnMouseEntered(e -> {
+                    liftUp.play();
+                    card.setEffect(hoverShadow);
+                });
+                card.setOnMouseExited(e -> {
+                    dropDown.play();
+                    card.setEffect(defaultShadow);
+                });
+            }
+        }
+    }
+
+    // Helper untuk membuat animasi
+    private Transition createSlideIn(Node node, int duration, int delay) {
+        FadeTransition ft = new FadeTransition(Duration.millis(duration), node);
+        ft.setToValue(1);
+
+        TranslateTransition tt = new TranslateTransition(Duration.millis(duration), node);
+        tt.setToY(0);
+        tt.setInterpolator(Interpolator.EASE_OUT);
+
+        ParallelTransition pt = new ParallelTransition(node, ft, tt);
+        pt.setDelay(Duration.millis(delay));
+        return pt;
+    }
+
+    private Transition createFadeIn(Node node, int duration) {
+        FadeTransition ft = new FadeTransition(Duration.millis(duration), node);
+        ft.setToValue(1);
+        return ft;
+    }
+
+    private Transition createScaleIn(Node node, int duration) {
+        ScaleTransition st = new ScaleTransition(Duration.millis(duration), node);
+        st.setToX(1.0);
+        st.setToY(1.0);
+        st.setInterpolator(Interpolator.EASE_OUT);
+        return st;
+    }
+
+    // --- Logika yang sudah ada ---
+
+    @FXML private void handleMousePressed(MouseEvent event) {
+        if (headerBar == null) return;
+        Stage stage = (Stage) headerBar.getScene().getWindow();
+        xOffset = stage.getX() - event.getScreenX();
+        yOffset = stage.getY() - event.getScreenY();
+    }
+
+    @FXML private void handleMouseDragged(MouseEvent event) {
+        if (headerBar == null) return;
+        Stage stage = (Stage) headerBar.getScene().getWindow();
+        stage.setX(event.getScreenX() + xOffset);
+        stage.setY(event.getScreenY() + yOffset);
     }
 
     @FXML
@@ -80,5 +200,17 @@ public class LandingController {
             e.printStackTrace();
             System.err.println("Gagal membuka halaman registrasi.");
         }
+    }
+
+    @FXML private void handleGabungAction(ActionEvent event) { showInfoAlert("Gabung untuk Perubahan", "Anda akan diarahkan ke halaman utama aplikasi!"); }
+    @FXML private void handleLearnMoreAction(ActionEvent event) { showInfoAlert("Pelajari Lebih Lanjut", "Halaman detail fitur akan segera hadir!"); }
+
+    private void showInfoAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.getDialogPane().setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14px;");
+        alert.showAndWait();
     }
 }
