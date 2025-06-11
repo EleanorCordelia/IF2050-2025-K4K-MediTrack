@@ -4,128 +4,359 @@
 <?import javafx.scene.control.*?>
 <?import javafx.scene.image.*?>
 <?import javafx.geometry.Insets?>
-<?import javafx.geometry.Pos?>
+<?import javafx.scene.effect.*?>
+<?import javafx.scene.shape.*?>
 
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.meditrack.LandingController"
-            style="-fx-font-family: 'Poppins'; -fx-background-color: white;">
+            style="-fx-font-family: 'Poppins'; -fx-background-color: linear-gradient(to bottom, #f8faff 0%, #ffffff 100%);">
 
-    <!-- Header -->
-
+    <!-- Header with enhanced styling -->
     <top>
-        <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-background-color: white;">
+        <HBox spacing="20" alignment="CENTER_LEFT" 
+              style="-fx-background-color: rgba(255, 255, 255, 0.95); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.1), 10, 0, 0, 2);">
             <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
+                <Insets top="20" right="40" bottom="20" left="40"/>
             </padding>
-            <ImageView fitHeight="40" fitWidth="40">
-                <image>
-                    <Image url="@/images/logo.png"/>
-                </image>
-            </ImageView>
-            <Label text="MediTrack" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #112f82;"/>
+            
+            <!-- Logo and Brand -->
+            <HBox spacing="12" alignment="CENTER_LEFT">
+                <ImageView fitHeight="45" fitWidth="45">
+                    <image>
+                        <Image url="@/images/logo.png"/>
+                    </image>
+                    <effect>
+                        <DropShadow color="rgba(17, 47, 130, 0.2)" radius="8"/>
+                    </effect>
+                </ImageView>
+                <Label text="MediTrack" 
+                       style="-fx-font-size: 24px; -fx-font-weight: bold; -fx-text-fill: #112f82; -fx-font-family: 'Poppins';">
+                    <effect>
+                        <DropShadow color="rgba(0,0,0,0.1)" radius="2"/>
+                    </effect>
+                </Label>
+            </HBox>
+            
             <Region HBox.hgrow="ALWAYS"/>
-            <Label text="Beranda" style="-fx-font-size: 16px; -fx-font-weight: 600;"/>
-            <Button text="Registrasi"
-                    style="-fx-border-color: black; -fx-background-color: transparent; -fx-border-radius: 32; -fx-text-fill: black; -fx-font-size: 14px;"/>
-            <Button text="Masuk"
-                    style="-fx-background-color: #112f82; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 32;"/>
+            
+            <!-- Navigation -->
+            <HBox spacing="30" alignment="CENTER">
+                <Button fx:id="homeNavButton" text="Beranda" 
+                        styleClass="nav-button-active"
+                        style="-fx-background-color: transparent; -fx-text-fill: #112f82; -fx-font-size: 16px; -fx-font-weight: 600; -fx-border-color: transparent; -fx-cursor: hand; -fx-padding: 8 16;"/>
+                <Button fx:id="aboutNavButton" text="Tentang" 
+                        styleClass="nav-button"
+                        style="-fx-background-color: transparent; -fx-text-fill: #6b7280; -fx-font-size: 16px; -fx-font-weight: 500; -fx-border-color: transparent; -fx-cursor: hand; -fx-padding: 8 16;"/>
+                <Button fx:id="featuresNavButton" text="Fitur" 
+                        styleClass="nav-button"
+                        style="-fx-background-color: transparent; -fx-text-fill: #6b7280; -fx-font-size: 16px; -fx-font-weight: 500; -fx-border-color: transparent; -fx-cursor: hand; -fx-padding: 8 16;"/>
+            </HBox>
+            
+            <!-- Action Buttons -->
+            <HBox spacing="12" alignment="CENTER">
+                <Button fx:id="registerButton" text="Registrasi"
+                        onAction="#handleRegisterAction"
+                        styleClass="secondary-button"
+                        style="-fx-background-color: transparent; -fx-text-fill: #112f82; -fx-border-color: #112f82; -fx-border-width: 2; -fx-border-radius: 25; -fx-background-radius: 25; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 24; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(17, 47, 130, 0.2), 4, 0, 0, 2);"/>
+                <Button fx:id="loginButton" text="Masuk"
+                        onAction="#handleLoginAction"
+                        styleClass="primary-button"
+                        style="-fx-background-color: linear-gradient(to bottom, #1751c2 0%, #112f82 100%); -fx-text-fill: white; -fx-font-size: 14px; -fx-font-weight: 600; -fx-border-radius: 25; -fx-background-radius: 25; -fx-padding: 12 24; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(17, 47, 130, 0.4), 8, 0, 0, 4);"/>
+            </HBox>
         </HBox>
     </top>
 
-    <!-- Center Section -->
+    <!-- Enhanced Hero Section -->
     <center>
-        <VBox spacing="15">
+        <VBox spacing="60">
             <padding>
-                <Insets top="30" right="30" bottom="30" left="30"/>
+                <Insets top="50" right="60" bottom="50" left="60"/>
             </padding>
-            <HBox spacing="30">
-                <VBox spacing="15" prefWidth="600">
-                    <Label text="Bersama" style="-fx-font-size: 36px; -fx-font-weight: bold;"/>
-                    <Label text="MediTrack" style="-fx-font-size: 40px; -fx-font-weight: bold; -fx-text-fill: #10217d;"/>
-                    <Label text="Jaga Kesehatan dengan Lebih Mudah!"
-                           style="-fx-font-size: 20px; -fx-font-style: italic;"/>
-                    <Label wrapText="true"
-                           text="MediTrack adalah platform kesehatan digital yang dirancang untuk membantu Anda mengelola aktivitas kesehatan sehari-hari secara praktis dan terintegrasi. Dengan fitur canggih seperti pencatatan konsumsi obat, pemantauan kondisi kesehatan melalui wearable device, serta konsultasi online dengan dokter, MediTrack memudahkan Anda dalam menjaga pola hidup sehat secara holistik. Mulai dari mengatur jadwal harian hingga mendapatkan rekomendasi personal, semua dapat dilakukan dalam satu aplikasi yang intuitif dan mudah digunakan."
-                           style="-fx-font-size: 14px;"/>
-                    <Label text="Bergabunglah dengan komunitas MediTrack dan mulai perjalanan hidup sehat Anda hari ini!"
-                           style="-fx-text-fill: #10217d; -fx-font-size: 14px; -fx-font-weight: bold;"/>
-                    <HBox spacing="15">
+            
+            <!-- Main Hero Content -->
+            <HBox spacing="60" alignment="CENTER">
+                <!-- Left Content -->
+                <VBox spacing="25" prefWidth="550" alignment="CENTER_LEFT">
+                    <!-- Hero Title with Animation Effect -->
+                    <VBox spacing="8">
+                        <Label text="Bersama" 
+                               style="-fx-font-size: 48px; -fx-font-weight: 300; -fx-text-fill: #374151; -fx-font-family: 'Poppins';">
+                            <effect>
+                                <DropShadow color="rgba(0,0,0,0.1)" radius="4"/>
+                            </effect>
+                        </Label>
+                        <Label text="MediTrack" 
+                               style="-fx-font-size: 52px; -fx-font-weight: bold; -fx-text-fill: linear-gradient(to right, #1751c2 0%, #10217d 100%); -fx-font-family: 'Poppins';">
+                            <effect>
+                                <DropShadow color="rgba(16, 33, 125, 0.3)" radius="6"/>
+                            </effect>
+                        </Label>
+                        <Label text="Jaga Kesehatan dengan Lebih Mudah!"
+                               style="-fx-font-size: 22px; -fx-font-style: italic; -fx-text-fill: #6b7280; -fx-font-weight: 500; -fx-font-family: 'Poppins';">
+                            <effect>
+                                <DropShadow color="rgba(0,0,0,0.1)" radius="2"/>
+                            </effect>
+                        </Label>
+                    </VBox>
+                    
+                    <!-- Description with better typography -->
+                    <VBox spacing="12">
+                        <Label wrapText="true"
+                               text="MediTrack adalah platform kesehatan digital yang dirancang untuk membantu Anda mengelola aktivitas kesehatan sehari-hari secara praktis dan terintegrasi."
+                               style="-fx-font-size: 16px; -fx-text-fill: #4b5563; -fx-line-spacing: 2px; -fx-font-family: 'Poppins'; -fx-font-weight: 400;"/>
+                        <Label wrapText="true"
+                               text="Dengan fitur canggih seperti pencatatan konsumsi obat, pemantauan kondisi kesehatan melalui wearable device, serta konsultasi online dengan dokter, MediTrack memudahkan Anda dalam menjaga pola hidup sehat secara holistik."
+                               style="-fx-font-size: 16px; -fx-text-fill: #4b5563; -fx-line-spacing: 2px; -fx-font-family: 'Poppins'; -fx-font-weight: 400;"/>
+                        <Label text="Bergabunglah dengan komunitas MediTrack dan mulai perjalanan hidup sehat Anda hari ini!"
+                               style="-fx-text-fill: #10217d; -fx-font-size: 16px; -fx-font-weight: 600; -fx-font-family: 'Poppins'; -fx-padding: 8 0;"/>
+                    </VBox>
+                    
+                    <!-- Enhanced Action Buttons -->
+                    <HBox spacing="20" alignment="CENTER_LEFT">
                         <Button fx:id="gabungButton"
-                                text="Gabung untuk Perubahan"
+                                text="🚀 Gabung untuk Perubahan"
                                 onAction="#handleGabungAction"
-                                style="-fx-background-color: #112f82; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 10;"/>
-                        <Button text="Pelajari Lebih Lanjut"
-                                style="-fx-background-color: #eef6ff; -fx-text-fill: #112f82; -fx-border-color: #112f82; -fx-border-width: 1; -fx-border-radius: 10;"/>
+                                styleClass="hero-primary-button"
+                                style="-fx-background-color: linear-gradient(to bottom, #1751c2 0%, #112f82 100%); -fx-text-fill: white; -fx-font-size: 16px; -fx-font-weight: 600; -fx-border-radius: 30; -fx-background-radius: 30; -fx-padding: 16 32; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(17, 47, 130, 0.4), 12, 0, 0, 6);"/>
+                        <Button fx:id="learnMoreButton" 
+                                text="📖 Pelajari Lebih Lanjut"
+                                onAction="#handleLearnMoreAction"
+                                styleClass="hero-secondary-button"
+                                style="-fx-background-color: rgba(238, 246, 255, 0.8); -fx-text-fill: #112f82; -fx-border-color: #112f82; -fx-border-width: 2; -fx-border-radius: 30; -fx-background-radius: 30; -fx-font-size: 16px; -fx-font-weight: 600; -fx-padding: 16 32; -fx-cursor: hand; -fx-effect: dropshadow(gaussian, rgba(17, 47, 130, 0.2), 8, 0, 0, 4);"/>
                     </HBox>
+                    
+                    <!-- Trust Indicators -->
+                    <VBox spacing="12">
+                        <HBox spacing="20" alignment="CENTER_LEFT">
+                            <HBox spacing="6" alignment="CENTER">
+                                <Label text="⭐⭐⭐⭐⭐" style="-fx-font-size: 14px;"/>
+                                <Label text="4.9/5" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #10217d;"/>
+                                <Label text="(1,234 ulasan)" style="-fx-font-size: 12px; -fx-text-fill: #6b7280;"/>
+                            </HBox>
+                            <Separator orientation="VERTICAL" prefHeight="20"/>
+                            <HBox spacing="6" alignment="CENTER">
+                                <Label text="👥" style="-fx-font-size: 14px;"/>
+                                <Label text="10,000+" style="-fx-font-size: 14px; -fx-font-weight: 600; -fx-text-fill: #10217d;"/>
+                                <Label text="pengguna aktif" style="-fx-font-size: 12px; -fx-text-fill: #6b7280;"/>
+                            </HBox>
+                        </HBox>
+                    </VBox>
                 </VBox>
 
-                <ImageView fitWidth="500" preserveRatio="true">
-                    <image>
-                        <Image url="@/images/doctor.png"/>
-                    </image>
-                </ImageView>
+                <!-- Right Image with Enhanced Effects -->
+                <VBox alignment="CENTER" spacing="0">
+                    <ImageView fitWidth="480" preserveRatio="true">
+                        <image>
+                            <Image url="@/images/doctor.png"/>
+                        </image>
+                        <effect>
+                            <DropShadow color="rgba(17, 47, 130, 0.2)" radius="20" offsetX="0" offsetY="10"/>
+                        </effect>
+                    </ImageView>
+                </VBox>
             </HBox>
 
-            <!-- Tambahkan tombol Kelola Pengguna di bawah konten utama -->
-            <HBox alignment="CENTER">
-                <Button text="Kelola Pengguna"
-                        onAction="#handlePenggunaAction"
-                        style="-fx-background-color: #2196F3; -fx-text-fill: white;"
-                        prefWidth="200" prefHeight="40"/>
-            </HBox>
+            <!-- Quick Access Features -->
+            <VBox spacing="25" alignment="CENTER">
+                <Label text="✨ Mulai dengan fitur unggulan kami" 
+                       style="-fx-font-size: 18px; -fx-font-weight: 600; -fx-text-fill: #10217d; -fx-font-family: 'Poppins';"/>
+                
+                <HBox spacing="20" alignment="CENTER">
+                    <Button fx:id="quickRecommendationButton"
+                            text="🩺 Rekomendasi Cepat"
+                            onAction="#handleQuickRecommendationAction"
+                            styleClass="feature-button"
+                            style="-fx-background-color: rgba(34, 197, 94, 0.1); -fx-text-fill: #16a34a; -fx-border-color: #16a34a; -fx-border-width: 1; -fx-border-radius: 20; -fx-background-radius: 20; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 20; -fx-cursor: hand;"/>
+                    
+                    <Button fx:id="quickScheduleButton"
+                            text="📅 Atur Jadwal"
+                            onAction="#handleQuickScheduleAction"
+                            styleClass="feature-button"
+                            style="-fx-background-color: rgba(59, 130, 246, 0.1); -fx-text-fill: #2563eb; -fx-border-color: #2563eb; -fx-border-width: 1; -fx-border-radius: 20; -fx-background-radius: 20; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 20; -fx-cursor: hand;"/>
+                    
+                    <Button fx:id="quickConsultButton"
+                            text="💬 Konsultasi Online"
+                            onAction="#handleQuickConsultAction"
+                            styleClass="feature-button"
+                            style="-fx-background-color: rgba(168, 85, 247, 0.1); -fx-text-fill: #7c3aed; -fx-border-color: #7c3aed; -fx-border-width: 1; -fx-border-radius: 20; -fx-background-radius: 20; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 20; -fx-cursor: hand;"/>
+                    
+                    <Button text="👤 Kelola Pengguna"
+                            onAction="#handlePenggunaAction"
+                            styleClass="admin-button"
+                            style="-fx-background-color: rgba(239, 68, 68, 0.1); -fx-text-fill: #dc2626; -fx-border-color: #dc2626; -fx-border-width: 1; -fx-border-radius: 20; -fx-background-radius: 20; -fx-font-size: 14px; -fx-font-weight: 600; -fx-padding: 12 20; -fx-cursor: hand;"/>
+                </HBox>
+            </VBox>
         </VBox>
     </center>
 
-    <!-- Footer -->
+    <!-- Enhanced Interactive Footer -->
     <bottom>
-        <HBox spacing="20" alignment="CENTER" style="-fx-background-color: #f5f7fb;">
-            <padding>
-                <Insets top="20" right="20" bottom="20" left="20"/>
-            </padding>
-            <VBox alignment="CENTER">
-                <ImageView fitWidth="32" preserveRatio="true">
-                    <image><Image url="@/images/icon-rekomendasi.png"/></image>
-                </ImageView>
-                <Label text="Rekomendasi" style="-fx-font-weight: bold;"/>
-                <Label text="Saran obat &amp; suplemen"/>
-            </VBox>
-            <VBox alignment="CENTER">
-                <ImageView fitWidth="32" preserveRatio="true">
-                    <image><Image url="@/images/icon-obat.png"/></image>
-                </ImageView>
-                <Label text="Obat" style="-fx-font-weight: bold;"/>
-                <Label text="Atur jadwal konsumsi"/>
-            </VBox>
-            <VBox alignment="CENTER">
-                <ImageView fitWidth="32" preserveRatio="true">
-                    <image><Image url="@/images/icon-laporan.png"/></image>
-                </ImageView>
-                <Label text="Laporan Kesehatan" style="-fx-font-weight: bold;"/>
-                <Label text="Pantau grafik &amp; data"/>
-            </VBox>
-            <VBox alignment="CENTER">
-                <ImageView fitWidth="32" preserveRatio="true">
-                    <image><Image url="@/images/icon-konsultasi.png"/></image>
-                </ImageView>
-                <Label text="Konsultasi" style="-fx-font-weight: bold;"/>
-                <Label text="Hubungi dokter online"/>
-            </VBox>
-            <VBox alignment="CENTER">
-                <ImageView fitWidth="32" preserveRatio="true">
-                    <image><Image url="@/images/icon-jadwal.png"/></image>
-                </ImageView>
-                <Label text="Jadwal" style="-fx-font-weight: bold;"/>
-                <Label text="Atur &amp; lihat aktivitas"/>
-            </VBox>
-            <VBox alignment="CENTER">
-                <ImageView fitWidth="32" preserveRatio="true">
-                    <image><Image url="@/images/icon-pengaturan.png"/></image>
-                </ImageView>
-                <Label text="Pengaturan" style="-fx-font-weight: bold;"/>
-                <Label text="Atur preferensi profil"/>
-            </VBox>
-        </HBox>
+        <VBox spacing="0">
+            <!-- Feature Showcase -->
+            <HBox style="-fx-background-color: linear-gradient(to bottom, #f8faff 0%, #f1f5f9 100%); -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.05), 8, 0, 0, -2);">
+                <padding>
+                    <Insets top="40" right="60" bottom="40" left="60"/>
+                </padding>
+                <VBox spacing="30" alignment="CENTER" HBox.hgrow="ALWAYS">
+                    <Label text="🎯 Fitur Unggulan MediTrack" 
+                           style="-fx-font-size: 24px; -fx-font-weight: 700; -fx-text-fill: #112f82; -fx-font-family: 'Poppins';"/>
+                    
+                    <!-- Feature Grid -->
+                    <HBox spacing="30" alignment="CENTER">
+                        <!-- Feature Card 1 -->
+                        <VBox alignment="CENTER" spacing="15" 
+                              style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4); -fx-cursor: hand; -fx-pref-width: 180;"
+                              onMouseEntered="#handleFeatureHover" onMouseExited="#handleFeatureExit">
+                            <StackPane>
+                                <Circle radius="30" style="-fx-fill: rgba(34, 197, 94, 0.1);"/>
+                                <ImageView fitWidth="40" preserveRatio="true">
+                                    <image><Image url="@/images/icon-rekomendasi.png"/></image>
+                                </ImageView>
+                            </StackPane>
+                            <Label text="Rekomendasi AI" 
+                                   style="-fx-font-weight: 700; -fx-font-size: 16px; -fx-text-fill: #112f82; -fx-font-family: 'Poppins';"/>
+                            <Label wrapText="true" text="Saran obat &amp; suplemen berbasis AI yang personal" 
+                                   style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-text-alignment: center; -fx-font-family: 'Poppins';"/>
+                        </VBox>
+                        
+                        <!-- Feature Card 2 -->
+                        <VBox alignment="CENTER" spacing="15" 
+                              style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4); -fx-cursor: hand; -fx-pref-width: 180;"
+                              onMouseEntered="#handleFeatureHover" onMouseExited="#handleFeatureExit">
+                            <StackPane>
+                                <Circle radius="30" style="-fx-fill: rgba(59, 130, 246, 0.1);"/>
+                                <ImageView fitWidth="40" preserveRatio="true">
+                                    <image><Image url="@/images/icon-obat.png"/></image>
+                                </ImageView>
+                            </StackPane>
+                            <Label text="Smart Schedule" 
+                                   style="-fx-font-weight: 700; -fx-font-size: 16px; -fx-text-fill: #112f82; -fx-font-family: 'Poppins';"/>
+                            <Label wrapText="true" text="Pengingat otomatis jadwal konsumsi obat" 
+                                   style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-text-alignment: center; -fx-font-family: 'Poppins';"/>
+                        </VBox>
+                        
+                        <!-- Feature Card 3 -->
+                        <VBox alignment="CENTER" spacing="15" 
+                              style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4); -fx-cursor: hand; -fx-pref-width: 180;"
+                              onMouseEntered="#handleFeatureHover" onMouseExited="#handleFeatureExit">
+                            <StackPane>
+                                <Circle radius="30" style="-fx-fill: rgba(168, 85, 247, 0.1);"/>
+                                <ImageView fitWidth="40" preserveRatio="true">
+                                    <image><Image url="@/images/icon-laporan.png"/></image>
+                                </ImageView>
+                            </StackPane>
+                            <Label text="Health Analytics" 
+                                   style="-fx-font-weight: 700; -fx-font-size: 16px; -fx-text-fill: #112f82; -fx-font-family: 'Poppins';"/>
+                            <Label wrapText="true" text="Dashboard analitik kesehatan real-time" 
+                                   style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-text-alignment: center; -fx-font-family: 'Poppins';"/>
+                        </VBox>
+                        
+                        <!-- Feature Card 4 -->
+                        <VBox alignment="CENTER" spacing="15" 
+                              style="-fx-background-color: white; -fx-background-radius: 16; -fx-padding: 25; -fx-effect: dropshadow(gaussian, rgba(0,0,0,0.08), 12, 0, 0, 4); -fx-cursor: hand; -fx-pref-width: 180;"
+                              onMouseEntered="#handleFeatureHover" onMouseExited="#handleFeatureExit">
+                            <StackPane>
+                                <Circle radius="30" style="-fx-fill: rgba(239, 68, 68, 0.1);"/>
+                                <ImageView fitWidth="40" preserveRatio="true">
+                                    <image><Image url="@/images/icon-konsultasi.png"/></image>
+                                </ImageView>
+                            </StackPane>
+                            <Label text="Telehealth" 
+                                   style="-fx-font-weight: 700; -fx-font-size: 16px; -fx-text-fill: #112f82; -fx-font-family: 'Poppins';"/>
+                            <Label wrapText="true" text="Konsultasi online dengan dokter berpengalaman" 
+                                   style="-fx-font-size: 13px; -fx-text-fill: #6b7280; -fx-text-alignment: center; -fx-font-family: 'Poppins';"/>
+                        </VBox>
+                    </HBox>
+                </VBox>
+            </HBox>
+            
+            <!-- Footer Info -->
+            <HBox style="-fx-background-color: #112f82;">
+                <padding>
+                    <Insets top="30" right="60" bottom="30" left="60"/>
+                </padding>
+                <VBox spacing="20" HBox.hgrow="ALWAYS">
+                    <!-- Top Footer -->
+                    <HBox spacing="60" alignment="CENTER_LEFT">
+                        <!-- Brand Section -->
+                        <VBox spacing="15" prefWidth="300">
+                            <HBox spacing="12" alignment="CENTER_LEFT">
+                                <ImageView fitHeight="32" fitWidth="32">
+                                    <image><Image url="@/images/logo.png"/></image>
+                                    <effect><ColorAdjust brightness="1.0"/></effect>
+                                </ImageView>
+                                <Label text="MediTrack" 
+                                       style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: white; -fx-font-family: 'Poppins';"/>
+                            </HBox>
+                            <Label wrapText="true" 
+                                   text="Platform kesehatan digital terpercaya untuk hidup yang lebih sehat dan terorganisir."
+                                   style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.8); -fx-font-family: 'Poppins';"/>
+                            
+                            <!-- Social Media -->
+                            <HBox spacing="12">
+                                <Button text="📘" 
+                                        style="-fx-background-color: rgba(255,255,255,0.1); -fx-text-fill: white; -fx-border-radius: 20; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 8; -fx-cursor: hand;"
+                                        onAction="#handleSocialMedia"/>
+                                <Button text="📷" 
+                                        style="-fx-background-color: rgba(255,255,255,0.1); -fx-text-fill: white; -fx-border-radius: 20; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 8; -fx-cursor: hand;"
+                                        onAction="#handleSocialMedia"/>
+                                <Button text="🐦" 
+                                        style="-fx-background-color: rgba(255,255,255,0.1); -fx-text-fill: white; -fx-border-radius: 20; -fx-background-radius: 20; -fx-font-size: 16px; -fx-padding: 8; -fx-cursor: hand;"
+                                        onAction="#handleSocialMedia"/>
+                            </HBox>
+                        </VBox>
+                        
+                        <!-- Quick Links -->
+                        <VBox spacing="15" prefWidth="150">
+                            <Label text="Quick Links" 
+                                   style="-fx-font-size: 16px; -fx-font-weight: 600; -fx-text-fill: white; -fx-font-family: 'Poppins';"/>
+                            <VBox spacing="8">
+                                <Button text="Tentang Kami" 
+                                        style="-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.8); -fx-border-color: transparent; -fx-cursor: hand; -fx-alignment: baseline-left; -fx-padding: 4 0;"
+                                        onAction="#handleFooterLink"/>
+                                <Button text="Fitur" 
+                                        style="-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.8); -fx-border-color: transparent; -fx-cursor: hand; -fx-alignment: baseline-left; -fx-padding: 4 0;"
+                                        onAction="#handleFooterLink"/>
+                                <Button text="Bantuan" 
+                                        style="-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.8); -fx-border-color: transparent; -fx-cursor: hand; -fx-alignment: baseline-left; -fx-padding: 4 0;"
+                                        onAction="#handleFooterLink"/>
+                            </VBox>
+                        </VBox>
+                        
+                        <!-- Contact Info -->
+                        <VBox spacing="15" prefWidth="200">
+                            <Label text="Hubungi Kami" 
+                                   style="-fx-font-size: 16px; -fx-font-weight: 600; -fx-text-fill: white; -fx-font-family: 'Poppins';"/>
+                            <VBox spacing="8">
+                                <Label text="📧 support@meditrack.id" 
+                                       style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.8); -fx-font-family: 'Poppins';"/>
+                                <Label text="📞 +62 21 1234 5678" 
+                                       style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.8); -fx-font-family: 'Poppins';"/>
+                                <Label text="📍 Jakarta, Indonesia" 
+                                       style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.8); -fx-font-family: 'Poppins';"/>
+                            </VBox>
+                        </VBox>
+                    </HBox>
+                    
+                    <!-- Bottom Footer -->
+                    <Separator style="-fx-background-color: rgba(255,255,255,0.2);"/>
+                    <HBox alignment="CENTER_LEFT">
+                        <Label text="© 2024 MediTrack. All rights reserved." 
+                               style="-fx-font-size: 14px; -fx-text-fill: rgba(255,255,255,0.7); -fx-font-family: 'Poppins';"/>
+                        <Region HBox.hgrow="ALWAYS"/>
+                        <HBox spacing="20">
+                            <Button text="Privacy Policy" 
+                                    style="-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.7); -fx-border-color: transparent; -fx-cursor: hand; -fx-font-size: 14px;"
+                                    onAction="#handleFooterLink"/>
+                            <Button text="Terms of Service" 
+                                    style="-fx-background-color: transparent; -fx-text-fill: rgba(255,255,255,0.7); -fx-border-color: transparent; -fx-cursor: hand; -fx-font-size: 14px;"
+                                    onAction="#handleFooterLink"/>
+                        </HBox>
+                    </HBox>
+                </VBox>
+            </HBox>
+        </VBox>
     </bottom>
 
 </BorderPane>
