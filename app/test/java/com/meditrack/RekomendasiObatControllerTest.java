@@ -6,13 +6,14 @@ import com.meditrack.dao.PenggunaDAO;
 import com.meditrack.model.DaftarObat;
 import com.meditrack.model.Pengguna;
 import com.meditrack.model.Rekomendasi;
-import javafx.embed.swing.JFXPanel;
+import javafx.application.Platform;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
 import org.junit.jupiter.api.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CountDownLatch;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -27,8 +28,12 @@ public class RekomendasiObatControllerTest {
 
     @BeforeAll
     static void initToolkit() {
-        // Initialize JavaFX Toolkit to avoid IllegalStateException
-        new JFXPanel();
+        // Initialize JavaFX Platform for testing
+        try {
+            Platform.startup(() -> {});
+        } catch (IllegalStateException e) {
+            // Platform already started, ignore
+        }
     }
 
     @BeforeEach
