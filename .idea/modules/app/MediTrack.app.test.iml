@@ -3,7 +3,9 @@
   <component name="NewModuleRootManager">
     <output-test url="file://$MODULE_DIR$/../../../app/build/classes/java/test" />
     <exclude-output />
-    <content url="file://$MODULE_DIR$/../../../app/src/test" />
+    <content url="file://$MODULE_DIR$/../../../app/test">
+      <sourceFolder url="file://$MODULE_DIR$/../../../app/test/java" isTestSource="true" />
+    </content>
     <orderEntry type="inheritedJdk" />
     <orderEntry type="sourceFolder" forTests="false" />
     <orderEntry type="module" module-name="MediTrack.app.main" />
@@ -11,19 +13,24 @@
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-fxml:win:20" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:20" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-controls:win:20" level="project" />
+    <orderEntry type="library" name="Gradle: org.openjfx:javafx-swing:win:20" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:20" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-graphics:win:20" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:20" level="project" />
     <orderEntry type="library" name="Gradle: org.openjfx:javafx-base:win:20" level="project" />
-    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.41.2.1" level="project" />
+    <orderEntry type="library" name="Gradle: org.xerial:sqlite-jdbc:3.42.0.0" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter:5.9.2" level="project" />
+    <orderEntry type="library" name="Gradle: org.mockito:mockito-core:5.3.1" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-params:5.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.jupiter:junit-jupiter-api:5.9.2" level="project" />
+    <orderEntry type="library" name="Gradle: net.bytebuddy:byte-buddy:1.14.4" level="project" />
+    <orderEntry type="library" name="Gradle: net.bytebuddy:byte-buddy-agent:1.14.4" level="project" />
     <orderEntry type="library" scope="PROVIDED" name="Gradle: org.apiguardian:apiguardian-api:1.1.2" level="project" />
     <orderEntry type="library" name="Gradle: org.junit.platform:junit-platform-commons:1.9.2" level="project" />
     <orderEntry type="library" name="Gradle: org.opentest4j:opentest4j:1.2.0" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.jupiter:junit-jupiter-engine:5.9.2" level="project" />
     <orderEntry type="library" scope="RUNTIME" name="Gradle: org.junit.platform:junit-platform-engine:1.9.2" level="project" />
+    <orderEntry type="library" scope="RUNTIME" name="Gradle: org.objenesis:objenesis:3.3" level="project" />
   </component>
   <component name="TestModuleProperties" production-module="MediTrack.app.main" />
 </module>

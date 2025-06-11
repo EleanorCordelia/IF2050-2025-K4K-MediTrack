@@ -1,36 +1,29 @@
 /*
  * build.gradle (modul app)
-<<<<<<< HEAD
- * Disusun ulang agar hanya ada satu blok dependencies.
-=======
- * Simple and stable configuration with testing support.
->>>>>>> 7f199c692950a45a0f07577d1d371c4ece1f7015
+ * Konfigurasi clean merge, sudah stabil dengan testing dan dependensi lengkap.
  */
 
 plugins {
-    // Plugin untuk membuat dan menjalankan aplikasi Java (CLI/GUI).
     id 'application'
-
-    // Plugin JavaFX agar Gradle otomatis menambahkan modul‐modul JavaFX ke classpath.
     id 'org.openjfx.javafxplugin' version '0.0.13'
 }
 
 repositories {
-    // Mengambil dependency dari Maven Central
     mavenCentral()
 }
 
 java {
-    // Gunakan Java toolchain (versi 21) agar lingkungan build konsisten di mana pun.
     toolchain {
         languageVersion = JavaLanguageVersion.of(21)
     }
 }
 
-<<<<<<< HEAD
-=======
-// Configure source sets untuk custom test directory
 sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java']
+        }
+    }
     test {
         java {
             srcDirs = ['test/java']
@@ -41,77 +34,39 @@ sourceSets {
     }
 }
 
->>>>>>> 7f199c692950a45a0f07577d1d371c4ece1f7015
 javafx {
-    // Versi JavaFX yang akan digunakan
     version = "20"
-    // Modul JavaFX yang dibutuhkan (controls + fxml)
-    modules = [ 'javafx.controls', 'javafx.fxml' ]
+    modules = [ 'javafx.controls', 'javafx.fxml', 'javafx.swing' ]
 }
 
 dependencies {
-<<<<<<< HEAD
-=======
-    // === PRODUCTION DEPENDENCIES ===
-
->>>>>>> 7f199c692950a45a0f07577d1d371c4ece1f7015
-    // Dependency JavaFX (sesuai modul di atas)
+    // Production Dependencies
     implementation 'org.openjfx:javafx-controls:20'
     implementation 'org.openjfx:javafx-fxml:20'
     implementation 'org.openjfx:javafx-graphics:20'
+    implementation 'org.xerial:sqlite-jdbc:3.42.0.0'
 
-    // Dependency SQLite JDBC untuk mengakses meditrack.db
-    implementation 'org.xerial:sqlite-jdbc:3.41.2.1'
-
-<<<<<<< HEAD
-    // Jika ingin menambahkan unit test (JUnit 5), bisa pakai baris ini:
+    // Testing Dependencies
     testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-=======
-    // === TESTING DEPENDENCIES ===
-
-    // JUnit 5 (Jupiter) - Core testing framework
-    testImplementation 'org.junit.jupiter:junit-jupiter:5.9.2'
-
-    // Mockito - Mocking framework for unit tests
-    testImplementation 'org.mockito:mockito-core:4.11.0'
-    testImplementation 'org.mockito:mockito-inline:4.11.0'
-    testImplementation 'org.mockito:mockito-junit-jupiter:4.11.0'
-
-    // TestFX - JavaFX testing framework
-    testImplementation 'org.testfx:testfx-core:4.0.16-alpha'
-    testImplementation 'org.testfx:testfx-junit5:4.0.16-alpha'
-
-    // AssertJ - Fluent assertions library
-    testImplementation 'org.assertj:assertj-core:3.24.2'
-
-    // H2 Database - In-memory database for testing
-    testImplementation 'com.h2database:h2:2.1.214'
->>>>>>> 7f199c692950a45a0f07577d1d371c4ece1f7015
+    testRuntimeOnly 'org.junit.jupiter:junit-jupiter-engine:5.9.2'
+    testImplementation 'org.mockito:mockito-core:5.3.1'
 }
 
 application {
-    // Kelas utama (MainClass) aplikasi JavaFX
     mainClass = 'com.meditrack.MainApp'
 }
 
 test {
-    // Aktifkan JUnit platform untuk testing
     useJUnitPlatform()
-<<<<<<< HEAD
-=======
+    testLogging {
+        events "passed", "skipped", "failed"
+    }
 
-    // JavaFX headless testing configuration
+    // Optional JavaFX testing support (headless)
     systemProperty 'java.awt.headless', 'false'
     systemProperty 'testfx.robot', 'glass'
     systemProperty 'testfx.headless', 'true'
     systemProperty 'prism.order', 'sw'
-
-    // Test logging untuk debugging
-    testLogging {
-        events "passed", "skipped", "failed"
-        exceptionFormat "full"
-        showStandardStreams = false
-    }
 
     // Test result summary
     afterSuite { desc, result ->
@@ -129,5 +84,4 @@ tasks.register('unitTest', Test) {
     }
     group = 'verification'
     description = 'Runs unit tests only'
->>>>>>> 7f199c692950a45a0f07577d1d371c4ece1f7015
 }

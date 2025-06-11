@@ -12,7 +12,6 @@
             style="-fx-font-family: 'Poppins'; -fx-background-color: white;">
 
     <!-- Header -->
-
     <top>
         <HBox spacing="20" alignment="CENTER_LEFT" style="-fx-background-color: white;">
             <padding>
@@ -27,8 +26,10 @@
             <Region HBox.hgrow="ALWAYS"/>
             <Label text="Beranda" style="-fx-font-size: 16px; -fx-font-weight: 600;"/>
             <Button text="Registrasi"
+                    onAction="#handleRegisterAction"
                     style="-fx-border-color: black; -fx-background-color: transparent; -fx-border-radius: 32; -fx-text-fill: black; -fx-font-size: 14px;"/>
             <Button text="Masuk"
+                    onAction="#handleLoginAction"
                     style="-fx-background-color: #112f82; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 32;"/>
         </HBox>
     </top>
@@ -134,5 +135,4 @@
             </VBox>
         </HBox>
     </bottom>
-
 </BorderPane>
