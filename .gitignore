@@ -1,8 +1,15 @@
-# Ignore Gradle project-specific cache directory
-.gradle
+# Add this to .gitignore
+echo "# Build files
+.gradle/
+build/
+app/build/
 
-# Ignore Gradle build output directory
-build
-# IntelliJ IDEA project files
-.idea/
-*.iml
+# IDE files
+.idea/workspace.xml
+.idea/tasks.xml
+.idea/usage.statistics.xml
+.idea/shelf/
+
+# OS files
+.DS_Store
+Thumbs.db" >> .gitignore
