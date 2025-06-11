@@ -17,16 +17,9 @@
 <BorderPane xmlns="http://javafx.com/javafx"
             xmlns:fx="http://javafx.com/fxml"
             fx:controller="com.meditrack.LandingController"
-<<<<<<< HEAD
             style="-fx-font-family: 'Poppins'; -fx-background-color: white;">
 
     <!-- Header -->
-=======
-            prefWidth="1200" prefHeight="800"
-            style="-fx-font-family: 'Poppins'; -fx-background-color: #fdfdff;">
-
-    <!-- HEADER -->
->>>>>>> rekomendasi
     <top>
         <HBox fx:id="headerBar" alignment="CENTER_LEFT" spacing="25"
               onMousePressed="#handleMousePressed" onMouseDragged="#handleMouseDragged"
@@ -34,7 +27,6 @@
             <padding>
                 <Insets bottom="15" left="50" right="50" top="15" />
             </padding>
-<<<<<<< HEAD
             <ImageView fitHeight="40" fitWidth="40">
                 <image>
                     <Image url="@/images/logo.png"/>
@@ -49,27 +41,6 @@
             <Button text="Masuk"
                     onAction="#handleLoginAction"
                     style="-fx-background-color: #112f82; -fx-text-fill: white; -fx-font-size: 14px; -fx-border-radius: 32;"/>
-=======
-            <HBox alignment="CENTER_LEFT" spacing="12">
-                <ImageView fitHeight="36" fitWidth="36" pickOnBounds="true" preserveRatio="true">
-                    <image><Image url="@/images/logo.png" /></image>
-                </ImageView>
-                <Label text="MediTrack" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #0d1b3e;" />
-            </HBox>
-            <HBox alignment="CENTER_LEFT" spacing="25" HBox.hgrow="ALWAYS">
-                <HBox.margin><Insets left="60.0" /></HBox.margin>
-                <VBox alignment="CENTER" spacing="4">
-                    <Label text="Beranda" style="-fx-font-weight: 600; -fx-text-fill: #0d1b3e; -fx-font-size: 14px; -fx-cursor: hand;"/>
-                    <Rectangle fx:id="activeNavIndicator" arcHeight="5.0" arcWidth="5.0" fill="#2563eb" height="3.0" strokeWidth="0.0" width="30.0" />
-                </VBox>
-                <Label text="Fitur" style="-fx-font-weight: 500; -fx-text-fill: #5a647e; -fx-font-size: 14px; -fx-cursor: hand;" />
-                <Label text="Tentang Kami" style="-fx-font-weight: 500; -fx-text-fill: #5a647e; -fx-font-size: 14px; -fx-cursor: hand;" />
-            </HBox>
-            <HBox alignment="CENTER" spacing="12">
-                <Button onAction="#handleLoginAction" text="Masuk" style="-fx-font-weight: 600; -fx-padding: 10 20; -fx-background-radius: 8; -fx-border-radius: 8; -fx-background-color: #f0f4ff; -fx-text-fill: #2563eb; -fx-cursor: hand;" />
-                <Button onAction="#handleRegisterAction" text="Registrasi" style="-fx-font-weight: 600; -fx-padding: 10 20; -fx-background-radius: 8; -fx-border-radius: 8; -fx-background-color: #2563eb; -fx-text-fill: white; -fx-cursor: hand;" />
-            </HBox>
->>>>>>> rekomendasi
         </HBox>
     </top>
 
@@ -146,30 +117,8 @@
                         </VBox>
                     </HBox>
                 </VBox>
-<<<<<<< HEAD
-<<<<<<< HEAD
-
-=======
-            </HBox>
->>>>>>> 7f199c692950a45a0f07577d1d371c4ece1f7015
-                <ImageView fitWidth="500" preserveRatio="true">
-                    <image>
-                        <Image url="@/images/doctor.png"/>
-                    </image>
-                </ImageView>
-<<<<<<< HEAD
-            </HBox>
-
-            <!-- Tambahkan tombol Kelola Pengguna di bawah konten utama -->
-            <HBox alignment="CENTER">
-                <Button text="Kelola Pengguna"
-                        onAction="#handlePenggunaAction"
-                        style="-fx-background-color: #2196F3; -fx-text-fill: white;"
-                        prefWidth="200" prefHeight="40"/>
-            </HBox>
-=======
->>>>>>> 7f199c692950a45a0f07577d1d371c4ece1f7015
-        </VBox>
+            </VBox>
+        </ScrollPane>
     </center>
 
     <!-- Footer -->
@@ -223,9 +172,3 @@
         </HBox>
     </bottom>
 </BorderPane>
-=======
-            </VBox>
-        </ScrollPane>
-    </center>
-</BorderPane>
->>>>>>> rekomendasi

@@ -70,11 +70,7 @@ goto fail
 :execute
 @rem Setup the command line
 
-<<<<<<< HEAD
 set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\javafx-fxml-21.0.3-win.jar;%APP_HOME%\lib\javafx-controls-21.0.3-win.jar;%APP_HOME%\lib\javafx-graphics-21.0.3-win.jar;%APP_HOME%\lib\sqlite-jdbc-3.42.0.0.jar;%APP_HOME%\lib\javafx-base-21.0.3-win.jar
-=======
-set CLASSPATH=%APP_HOME%\lib\app.jar;%APP_HOME%\lib\javafx-fxml-21.0.3-win.jar;%APP_HOME%\lib\javafx-fxml-21.0.3.jar;%APP_HOME%\lib\javafx-controls-21.0.3-win.jar;%APP_HOME%\lib\javafx-controls-21.0.3.jar;%APP_HOME%\lib\javafx-swing-20-win.jar;%APP_HOME%\lib\javafx-graphics-21.0.3-win.jar;%APP_HOME%\lib\javafx-graphics-21.0.3.jar;%APP_HOME%\lib\javafx-base-21.0.3-win.jar;%APP_HOME%\lib\javafx-base-21.0.3.jar;%APP_HOME%\lib\sqlite-jdbc-3.42.0.0.jar
->>>>>>> rekomendasi
 
 
 @rem Execute app
