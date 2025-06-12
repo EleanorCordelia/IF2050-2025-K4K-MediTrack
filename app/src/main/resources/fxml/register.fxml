@@ -11,7 +11,7 @@
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
             fx:controller="com.meditrack.RegisterController"
-            prefWidth="1200.0" prefHeight="700.0"
+            prefWidth="1500" prefHeight="800"
             style="-fx-background-color: white;">
 
     <left>

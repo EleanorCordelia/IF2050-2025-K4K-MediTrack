@@ -104,7 +104,7 @@ public class RekomendasiObatController {
             jadwalButton.setOnAction(e -> navigateToPage("/fxml/jadwalPengguna.fxml", "MediTrack - Jadwal"));
         }
         if (pengaturanButton != null) {
-            pengaturanButton.setOnAction(e -> navigateToPage("/fxml/pengaturanView.fxml", "MediTrack - Pengaturan"));
+            pengaturanButton.setOnAction(e -> navigateToPage("/fxml/manajemenpengguna.fxml", "MediTrack - Pengaturan"));
         }
         if (logoutButton != null) {
             logoutButton.setOnAction(e -> handleLogout());
@@ -135,7 +135,7 @@ public class RekomendasiObatController {
      */
     private void handleLogout() {
         UserSession.clear();
-        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
+        navigateToPage("/fxml/landing.fxml", "MediTrack - Landing Page");
     }
     
     /**

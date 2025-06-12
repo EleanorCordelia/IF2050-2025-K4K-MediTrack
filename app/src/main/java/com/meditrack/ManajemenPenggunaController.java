@@ -402,7 +402,7 @@ public class ManajemenPenggunaController implements Initializable {
                     navigateToPage("/fxml/menu.fxml", "MediTrack - Menu");
                     break;
                 case "rekomendasiButton":
-                    navigateToPage("/fxml/rekomendasi.fxml", "MediTrack - Rekomendasi");
+                    navigateToPage("/fxml/rekomendasiobat.fxml", "MediTrack - Rekomendasi");
                     break;
                 case "obatButton":
                     navigateToPage("/fxml/obat.fxml", "MediTrack - Obat");
@@ -414,7 +414,7 @@ public class ManajemenPenggunaController implements Initializable {
                     navigateToPage("/fxml/konsultasi.fxml", "MediTrack - Konsultasi");
                     break;
                 case "jadwalButton":
-                    navigateToPage("/fxml/jadwal.fxml", "MediTrack - Jadwal");
+                    navigateToPage("/fxml/jadwalpengguna.fxml", "MediTrack - Jadwal");
                     break;
                 case "keluarButton":
                     handleLogout();

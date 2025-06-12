@@ -52,7 +52,7 @@
                     </ImageView>
                 </StackPane>
                 <Label text="MediTrack"
-                       style="-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: 600; -fx-text-fill: #1E3A8A;"/>
+                       style="-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1E3A8A;"/>
             </HBox>
 
             <!-- Navigation Menu -->

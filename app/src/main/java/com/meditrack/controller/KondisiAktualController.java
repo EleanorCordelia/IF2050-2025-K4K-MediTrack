@@ -158,7 +158,7 @@ public class KondisiAktualController {
             jadwalButton.setOnAction(e -> navigateToPage("/fxml/jadwalPengguna.fxml", "MediTrack - Jadwal"));
         }
         if (pengaturanButton != null) {
-            pengaturanButton.setOnAction(e -> navigateToPage("/fxml/pengaturanView.fxml", "MediTrack - Pengaturan"));
+            pengaturanButton.setOnAction(e -> navigateToPage("/fxml/manajemenpengguna.fxml", "MediTrack - Pengaturan"));
         }
         if (logoutButton != null) {
             logoutButton.setOnAction(e -> handleLogout());
@@ -189,7 +189,7 @@ public class KondisiAktualController {
      */
     private void handleLogout() {
         UserSession.clear();
-        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
+        navigateToPage("/fxml/landing.fxml", "MediTrack - Landing Page");
     }
 
     /**
@@ -413,8 +413,10 @@ public class KondisiAktualController {
 
     @FXML
     private void handleSimpanData() {
+        System.out.println("=== DEBUG SAVE DATA START ===");
+
         try {
-            // Validate and parse input
+            // Get input values
             String tekananDarah = txtTekananDarah.getText().trim();
             String detakJantungStr = txtDetakJantung.getText().trim();
             String suhuTubuhStr = txtSuhuTubuh.getText().trim();
@@ -423,35 +425,211 @@ public class KondisiAktualController {
             String durasiOlahragaStr = txtDurasiOlahraga.getText().trim();
             String jumlahLangkahStr = txtJumlahLangkah.getText().trim();
 
-            // Basic validation
+            System.out.println("Input values:");
+            System.out.println("- Tekanan Darah: " + tekananDarah);
+            System.out.println("- Detak Jantung: " + detakJantungStr);
+            System.out.println("- Suhu Tubuh: " + suhuTubuhStr);
+            System.out.println("- Tingkat Stres: " + tingkatStres);
+            System.out.println("- Durasi Tidur: " + durasiTidurStr);
+            System.out.println("- Durasi Olahraga: " + durasiOlahragaStr);
+            System.out.println("- Jumlah Langkah: " + jumlahLangkahStr);
+            System.out.println("- Current User ID: " + currentUserId);
+
+            // ===== VALIDASI LENGKAP =====
+
+            // 1. Cek apakah semua field diisi
             if (tekananDarah.isEmpty() || detakJantungStr.isEmpty() || suhuTubuhStr.isEmpty() ||
-                tingkatStres == null || durasiTidurStr.isEmpty() || durasiOlahragaStr.isEmpty() ||
-                jumlahLangkahStr.isEmpty()) {
+                    tingkatStres == null || durasiTidurStr.isEmpty() || durasiOlahragaStr.isEmpty() ||
+                    jumlahLangkahStr.isEmpty()) {
+                System.out.println("Validation failed: Empty fields");
                 showValidationError("Semua field harus diisi!");
                 return;
             }
 
-            // Parse numeric values
-            Integer detakJantung = Integer.parseInt(detakJantungStr);
-            Double suhuTubuh = Double.parseDouble(suhuTubuhStr);
-            Double durasiTidur = Double.parseDouble(durasiTidurStr);
-            Integer durasiOlahraga = Integer.parseInt(durasiOlahragaStr);
-            Integer jumlahLangkah = Integer.parseInt(jumlahLangkahStr);
+            // 2. Validasi format tekanan darah (harus ada / di tengah)
+            if (!tekananDarah.matches("^\\d{2,3}/\\d{2,3}$")) {
+                System.out.println("Validation failed: Invalid blood pressure format");
+                showValidationError("Ganti format tekanan darah menjadi (nomor)/(nomor). Contoh: 120/80 atau 180/60");
+                return;
+            }
 
-            // Create new KondisiAktual object
-            KondisiAktual newData = new KondisiAktual(
-                currentUserId, tekananDarah, detakJantung, suhuTubuh,
-                tingkatStres, durasiTidur, durasiOlahraga, jumlahLangkah
-            );
+            // 3. Validasi detak jantung
+            int detakJantung;
+            try {
+                detakJantung = Integer.parseInt(detakJantungStr);
+                if (detakJantung <= 0) {
+                    System.out.println("Validation failed: Invalid heart rate (negative or zero)");
+                    showValidationError("Ganti format detak jantung dengan angka positif. Contoh: 75");
+                    return;
+                }
+                if (detakJantung < 30 || detakJantung > 200) {
+                    System.out.println("Validation failed: Heart rate out of range");
+                    showValidationError("Ganti detak jantung dengan nilai yang wajar (30-200 BPM)");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Validation failed: Heart rate not a number");
+                showValidationError("Ganti format detak jantung dengan angka positif. Contoh: 75");
+                return;
+            }
+
+            // 4. Validasi suhu tubuh - DIPERBAIKI: Bisa integer atau decimal
+            double suhuTubuh;
+            try {
+                suhuTubuh = Double.parseDouble(suhuTubuhStr);
+                if (suhuTubuh <= 0) {
+                    System.out.println("Validation failed: Invalid temperature (negative or zero)");
+                    showValidationError("Ganti format suhu tubuh dengan angka positif. Contoh: 36 atau 36.5");
+                    return;
+                }
+                if (suhuTubuh < 30.0 || suhuTubuh > 45.0) {
+                    System.out.println("Validation failed: Temperature out of range");
+                    showValidationError("Ganti suhu tubuh dengan nilai yang wajar (30.0-45.0°C)");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Validation failed: Temperature not a valid number");
+                showValidationError("Ganti format suhu tubuh dengan angka. Contoh: 36 atau 36.5");
+                return;
+            }
+
+            // 5. Validasi durasi tidur - DIPERBAIKI: Bisa integer atau decimal
+            double durasiTidur;
+            try {
+                durasiTidur = Double.parseDouble(durasiTidurStr);
+                if (durasiTidur <= 0) {
+                    System.out.println("Validation failed: Invalid sleep duration (negative or zero)");
+                    showValidationError("Ganti format durasi tidur dengan angka positif. Contoh: 8 atau 7.5");
+                    return;
+                }
+                if (durasiTidur > 24.0) {
+                    System.out.println("Validation failed: Sleep duration too long");
+                    showValidationError("Ganti durasi tidur dengan nilai maksimal 24 jam");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Validation failed: Sleep duration not a valid number");
+                showValidationError("Ganti format durasi tidur dengan angka. Contoh: 8 atau 7.5");
+                return;
+            }
+
+            // 6. Validasi durasi olahraga
+            int durasiOlahraga;
+            try {
+                durasiOlahraga = Integer.parseInt(durasiOlahragaStr);
+                if (durasiOlahraga <= 0) {
+                    System.out.println("Validation failed: Invalid exercise duration (negative or zero)");
+                    showValidationError("Ganti format durasi olahraga dengan angka menit. Contoh: 30 atau 60");
+                    return;
+                }
+                if (durasiOlahraga > 1440) {
+                    System.out.println("Validation failed: Exercise duration too long");
+                    showValidationError("Ganti durasi olahraga dengan nilai maksimal 1440 menit (24 jam)");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Validation failed: Exercise duration not a number");
+                showValidationError("Ganti format durasi olahraga dengan angka menit. Contoh: 30 atau 60");
+                return;
+            }
+
+            // 7. Validasi jumlah langkah
+            int jumlahLangkah;
+            try {
+                jumlahLangkah = Integer.parseInt(jumlahLangkahStr);
+                if (jumlahLangkah <= 0) {
+                    System.out.println("Validation failed: Invalid steps count (negative or zero)");
+                    showValidationError("Ganti format jumlah langkah dengan angka bulat. Contoh: 8000 atau 12000");
+                    return;
+                }
+                if (jumlahLangkah > 100000) {
+                    System.out.println("Validation failed: Steps count too high");
+                    showValidationError("Ganti jumlah langkah dengan nilai maksimal 100,000 langkah");
+                    return;
+                }
+            } catch (NumberFormatException e) {
+                System.out.println("Validation failed: Steps count not a number");
+                showValidationError("Ganti format jumlah langkah dengan angka bulat. Contoh: 8000 atau 12000");
+                return;
+            }
+
+            System.out.println("All validations passed!");
+
+            // ===== JIKA SEMUA VALIDASI BERHASIL =====
+
+            // Test database connection first
+            System.out.println("Testing database connection...");
+            try {
+                KondisiAktual testData = dao.getLatestByUserId(currentUserId);
+                System.out.println("Database connection test: SUCCESS");
+            } catch (Exception e) {
+                System.out.println("Database connection test: FAILED - " + e.getMessage());
+                e.printStackTrace();
+                showValidationError("Masalah koneksi database. Silakan coba lagi.");
+                return;
+            }
+
+            // Create new KondisiAktual object using setters (lebih aman)
+            System.out.println("Creating KondisiAktual object...");
+            KondisiAktual newData;
+
+            try {
+                newData = new KondisiAktual();
+                newData.setUserId(currentUserId);
+                newData.setTekananDarah(tekananDarah);
+                newData.setDetakJantung(detakJantung);
+                newData.setSuhuTubuh(suhuTubuh);
+                newData.setTingkatStres(tingkatStres);
+                newData.setDurasiTidur(durasiTidur);
+                newData.setDurasiOlahraga(durasiOlahraga);
+                newData.setJumlahLangkah(jumlahLangkah);
+
+                System.out.println("KondisiAktual object created successfully using setters");
+                System.out.println("Object details:");
+                System.out.println("- User ID: " + newData.getUserId());
+                System.out.println("- Tekanan Darah: " + newData.getTekananDarah());
+                System.out.println("- Detak Jantung: " + newData.getDetakJantung());
+                System.out.println("- Suhu Tubuh: " + newData.getSuhuTubuh());
+                System.out.println("- Tingkat Stres: " + newData.getTingkatStres());
+                System.out.println("- Durasi Tidur: " + newData.getDurasiTidur());
+                System.out.println("- Durasi Olahraga: " + newData.getDurasiOlahraga());
+                System.out.println("- Jumlah Langkah: " + newData.getJumlahLangkah());
+
+            } catch (Exception e) {
+                System.out.println("Failed to create KondisiAktual object: " + e.getMessage());
+                e.printStackTrace();
+                showValidationError("Gagal membuat objek data. Silakan coba lagi.");
+                return;
+            }
+
+            // Validate the object before saving
+            if (newData.getUserId() == null || newData.getUserId() <= 0) {
+                System.out.println("ERROR: Invalid user ID in newData: " + newData.getUserId());
+                showValidationError("ID pengguna tidak valid. Silakan login ulang.");
+                return;
+            }
 
             // Save to database
-            boolean success = dao.save(newData);
-            
+            System.out.println("Calling dao.save()...");
+            boolean success = false;
+
+            try {
+                success = dao.save(newData);
+                System.out.println("dao.save() returned: " + success);
+
+            } catch (Exception e) {
+                System.out.println("Exception during dao.save(): " + e.getMessage());
+                e.printStackTrace();
+                showValidationError("Terjadi kesalahan saat menyimpan: " + e.getMessage());
+                return;
+            }
+
             if (success) {
+                System.out.println("Data saved successfully!");
                 hideInputForm();
                 clearInputFields();
                 loadLatestData(); // Refresh displayed data
-                
+
                 // Show success message
                 if (lblSuccessMessage != null && successMessage != null) {
                     lblSuccessMessage.setText("Data berhasil disimpan!");
@@ -466,18 +644,19 @@ public class KondisiAktualController {
                     );
                     timeline.play();
                 }
+
             } else {
-                throw new RuntimeException("Gagal menyimpan ke database");
+                System.out.println("Save failed: dao.save() returned false");
+                showValidationError("Gagal menyimpan data ke database. Silakan coba lagi.");
             }
 
-        } catch (NumberFormatException e) {
-            showValidationError("Format angka tidak valid. Periksa kembali input Anda.");
-        } catch (IllegalArgumentException e) {
-            showValidationError(e.getMessage());
         } catch (Exception e) {
+            System.out.println("Unexpected exception in handleSimpanData(): " + e.getMessage());
             e.printStackTrace();
-            showValidationError("Terjadi kesalahan saat menyimpan data. Coba lagi.");
+            showValidationError("Terjadi kesalahan sistem: " + e.getMessage());
         }
+
+        System.out.println("=== DEBUG SAVE DATA END ===");
     }
 
     private void showInputForm() {
@@ -528,6 +707,46 @@ public class KondisiAktualController {
         if (lblValidationError != null && validationMessages != null) {
             lblValidationError.setText(message);
             validationMessages.setVisible(true);
+        }
+    }
+
+    /**
+     * Validasi format tekanan darah (sistol/diastol)
+     */
+    /**
+     * Validasi format tekanan darah (sistol/diastol)
+     */
+    private boolean isValidBloodPressureFormat(String tekananDarah) {
+        if (tekananDarah == null || tekananDarah.trim().isEmpty()) {
+            return false;
+        }
+
+        // Pattern: angka/angka (contoh: 120/80, 180/60)
+        String pattern = "^\\d{2,3}/\\d{2,3}$";
+        return tekananDarah.matches(pattern);
+    }
+
+    /**
+     * Validasi angka positif
+     */
+    private boolean isValidPositiveNumber(String value) {
+        try {
+            double num = Double.parseDouble(value);
+            return num > 0;
+        } catch (NumberFormatException e) {
+            return false;
+        }
+    }
+
+    /**
+     * Validasi angka integer positif
+     */
+    private boolean isValidPositiveInteger(String value) {
+        try {
+            int num = Integer.parseInt(value);
+            return num > 0;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
 }

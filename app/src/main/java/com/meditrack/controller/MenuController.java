@@ -402,7 +402,7 @@ public class MenuController implements Initializable {
         // Close database connection
         closeDatabase();
         // Navigate to login page
-        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
+        navigateToPage("/fxml/landing.fxml", "MediTrack - Landing Page");
     }
 
     /**

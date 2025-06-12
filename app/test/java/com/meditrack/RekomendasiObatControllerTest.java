@@ -44,14 +44,4 @@ public class RekomendasiObatControllerTest {
         String result = controller.dummyAIRekomendasi(80, "Sedang", 30, 1000);
         assertEquals("Omega 3 Fish Oil", result);
     }
-
-    @Disabled("Test ini butuh JavaFX runtime (Stage/Scene), abaikan di CI/CD")
-    @Test
-    void testUpdateCardStyleVisual() {
-        VBox card = new VBox();
-        Label statusLabel = new Label();
-        controller.updateCardStyle(card, statusLabel, "Selesai");
-        assertTrue(card.getStyle().contains("#f0fdf4"));
-        assertTrue(statusLabel.getStyle().contains("#b7eb8f"));
-    }
 }
