@@ -10,7 +10,7 @@
 
 <BorderPane xmlns:fx="http://javafx.com/fxml"
             xmlns="http://javafx.com/javafx"
-            fx:controller="com.meditrack.RegisterController"
+            fx:controller="com.meditrack.controller.RegisterController"
             prefWidth="1500" prefHeight="800"
             style="-fx-background-color: white;">
 

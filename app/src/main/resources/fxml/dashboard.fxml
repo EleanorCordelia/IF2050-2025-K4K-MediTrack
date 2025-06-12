@@ -6,7 +6,7 @@
 
 <VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx"
       xmlns:fx="http://javafx.com/fxml"
-      fx:controller="com.meditrack.DashboardController">
+      fx:controller="com.meditrack.controller.DashboardController">
     <Label text="Selamat Datang di MediTrack Dashboard!" />
     <Button text="Lihat Jadwal" />
     <Button text="Cek Kondisi Fisik" />

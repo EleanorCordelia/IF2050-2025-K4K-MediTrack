@@ -1,5 +1,6 @@
 package com.meditrack;
 
+import com.meditrack.controller.RekomendasiObatController;
 import com.meditrack.model.Rekomendasi;
 import javafx.scene.control.Label;
 import javafx.scene.layout.VBox;
