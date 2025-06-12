@@ -25,6 +25,11 @@
             <children>
                 <HBox alignment="CENTER_LEFT" spacing="10.0" style="-fx-padding: 20 25;">
                     <children>
+                        <!-- Tambahkan tombol Back to Menu di sini -->
+                        <Button fx:id="backToMenuButton" onAction="#handleBackToMenu"
+                                style="-fx-background-color: #1E3A8A; -fx-text-fill: white; -fx-background-radius: 8; -fx-padding: 8 16;"
+                                text="← Back to Menu" />
+                        <Region HBox.hgrow="ALWAYS" />
                         <Label fx:id="monthYearLabel" style="-fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #151D48;" text="Januari 2025" />
                         <Region HBox.hgrow="ALWAYS" />
                         <Button fx:id="prevMonthButton" mnemonicParsing="false" style="-fx-background-color: #F1F5F9; -fx-background-radius: 8;" text="&lt;" />

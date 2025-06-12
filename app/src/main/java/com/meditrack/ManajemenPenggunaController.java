@@ -15,7 +15,13 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.shape.Circle;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.stage.Stage;
+import javafx.scene.control.Button;
 
+import java.io.IOException;
 import java.net.URL;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -43,6 +49,15 @@ public class ManajemenPenggunaController implements Initializable {
     @FXML private Label phoneLabel;
     @FXML private Label dobLabel;
     @FXML private Label genderLabel;
+    // Tambahkan ini di bagian field declarations
+    @FXML private Button menuButton;
+    @FXML private Button rekomendasiButton;
+    @FXML private Button obatButton;
+    @FXML private Button laporanButton;
+    @FXML private Button konsultasiButton;
+    @FXML private Button jadwalButton;
+    @FXML private Button keluarButton;
+    @FXML private Button pengaturanButton;
 
     // FXML elements for buttons
     @FXML private Button editProfileButton;
@@ -145,13 +160,13 @@ public class ManajemenPenggunaController implements Initializable {
         if (profileAlteress != null) profileAlteress.setText("Alteress");
         if (fullNameLabel != null) fullNameLabel.setText(rs.getString("nama"));
         if (emailLabel != null) emailLabel.setText(rs.getString("email"));
-        if (phoneLabel != null) phoneLabel.setText(rs.getString("noHp"));
+        if (phoneLabel != null) phoneLabel.setText(rs.getString("nohp"));
         if (dobLabel != null) dobLabel.setText(rs.getString("tanggalLahir"));
         if (genderLabel != null) genderLabel.setText(rs.getString("jenisKelamin"));
 
         // Avatar
         if (profileAvatar != null) {
-            loadAvatar(rs.getString("avatarPath"));
+            loadAvatar(rs.getString("avatar_path"));
         }
     }
 
@@ -253,19 +268,85 @@ public class ManajemenPenggunaController implements Initializable {
 
     @FXML
     private void handleDeleteAccount() {
-        showAlert(Alert.AlertType.CONFIRMATION, "Konfirmasi Hapus Akun",
-                "PERINGATAN: Apakah Anda yakin ingin menghapus akun secara permanen? Tindakan ini tidak dapat dibatalkan.")
-                .ifPresent(response -> {
-                    if (response == ButtonType.OK) {
-                        int loggedInUserId = UserSession.getUserId();
-                        PenggunaDAO dao = new PenggunaDAO();
-                        if (dao.deletePengguna(loggedInUserId)) {
-                            showAlert(Alert.AlertType.INFORMATION, "Sukses", "Akun berhasil dihapus.");
-                        } else {
-                            showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal menghapus akun.");
-                        }
-                    }
-                });
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Konfirmasi Hapus Akun");
+        confirmAlert.setHeaderText("PERINGATAN!");
+        confirmAlert.setContentText("Apakah Anda yakin ingin menghapus akun secara permanen?");
+
+        Optional<ButtonType> result = confirmAlert.showAndWait();
+        if (result.isPresent() && result.get() == ButtonType.OK) {
+            try {
+                int loggedInUserId = UserSession.getUserId();
+                System.out.println("Attempting to delete user ID: " + loggedInUserId);
+
+                if (loggedInUserId <= 0) {
+                    showAlert(Alert.AlertType.ERROR, "Error", "User ID tidak valid: " + loggedInUserId);
+                    return;
+                }
+
+                // Hapus akun dari database
+                PenggunaDAO dao = new PenggunaDAO();
+                boolean deleted = dao.deletePengguna(loggedInUserId);
+
+                System.out.println("Delete result: " + deleted);
+
+                if (deleted) {
+                    System.out.println("Account deleted successfully, clearing session...");
+                    // Clear session
+                    UserSession.clear();
+
+                    // Langsung navigasi ke landing page
+                    navigateToLandingPage();
+
+                } else {
+                    System.err.println("Failed to delete account from database");
+                    showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal menghapus akun dari database.");
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Error", "Terjadi kesalahan: " + e.getMessage());
+            }
+        }
+    }
+
+    /**
+     * Navigate to landing page
+     */
+    private void navigateToLandingPage() {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/landing.fxml"));
+            javafx.scene.Parent root = loader.load();
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+
+            // Get current stage
+            javafx.stage.Stage stage = (javafx.stage.Stage) profileAvatar.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle("MediTrack - Landing");
+            stage.show();
+
+            System.out.println("Successfully navigated to landing page");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Failed to navigate to landing page: " + e.getMessage());
+
+            // Fallback: try to navigate to login page
+            try {
+                javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource("/fxml/login.fxml"));
+                javafx.scene.Parent root = loader.load();
+                javafx.scene.Scene scene = new javafx.scene.Scene(root);
+
+                javafx.stage.Stage stage = (javafx.stage.Stage) profileAvatar.getScene().getWindow();
+                stage.setScene(scene);
+                stage.setTitle("MediTrack - Login");
+                stage.show();
+
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka halaman landing. Silakan restart aplikasi.");
+            }
+        }
     }
 
     @FXML
@@ -309,9 +390,43 @@ public class ManajemenPenggunaController implements Initializable {
         }
     }
 
+
     @FXML
     private void handleSidebarButton(javafx.event.ActionEvent event) {
-        System.out.println("Sidebar button clicked.");
+        Button sourceButton = (Button) event.getSource();
+        String buttonId = sourceButton.getId();
+
+        try {
+            switch (buttonId) {
+                case "menuButton":
+                    navigateToPage("/fxml/menu.fxml", "MediTrack - Menu");
+                    break;
+                case "rekomendasiButton":
+                    navigateToPage("/fxml/rekomendasi.fxml", "MediTrack - Rekomendasi");
+                    break;
+                case "obatButton":
+                    navigateToPage("/fxml/obat.fxml", "MediTrack - Obat");
+                    break;
+                case "laporanButton":
+                    navigateToPage("/fxml/kondisiAktual.fxml", "MediTrack - Laporan Kesehatan");
+                    break;
+                case "konsultasiButton":
+                    navigateToPage("/fxml/konsultasi.fxml", "MediTrack - Konsultasi");
+                    break;
+                case "jadwalButton":
+                    navigateToPage("/fxml/jadwal.fxml", "MediTrack - Jadwal");
+                    break;
+                case "keluarButton":
+                    handleLogout();
+                    break;
+                default:
+                    System.out.println("Unknown button clicked: " + buttonId);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(javafx.scene.control.Alert.AlertType.ERROR, "Error",
+                    "Gagal membuka halaman: " + e.getMessage());
+        }
     }
 
     @FXML
@@ -433,5 +548,46 @@ public class ManajemenPenggunaController implements Initializable {
         alert.setHeaderText(null);
         alert.setContentText(content);
         return alert.showAndWait();
+    }
+
+    /**
+     * Navigate to different page
+     */
+    private void navigateToPage(String fxmlPath, String title) throws IOException {
+        try {
+            javafx.fxml.FXMLLoader loader = new javafx.fxml.FXMLLoader(getClass().getResource(fxmlPath));
+            javafx.scene.Parent root = loader.load();
+            javafx.scene.Scene scene = new javafx.scene.Scene(root);
+
+            javafx.stage.Stage stage = (javafx.stage.Stage) profileAvatar.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.show();
+
+            System.out.println("Successfully navigated to: " + title);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Failed to navigate to: " + fxmlPath);
+            throw e;
+        }
+    }
+
+    /**
+     * Handle logout - navigate to landing page
+     */
+    private void handleLogout() {
+        try {
+            // Clear user session
+            UserSession.clear();
+
+            // Navigate to landing page
+            navigateToPage("/fxml/landing.fxml", "MediTrack - Landing");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(javafx.scene.control.Alert.AlertType.ERROR, "Error",
+                    "Gagal kembali ke halaman landing");
+        }
     }
 }

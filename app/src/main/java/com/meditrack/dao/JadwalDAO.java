@@ -138,17 +138,48 @@ public class JadwalDAO {
 
     /**
      * Menghapus jadwal dari database berdasarkan ID-nya.
+     *
      * @param id ID dari jadwal yang akan dihapus.
+     * @return
      */
-    public void deleteJadwal(int id) throws SQLException {
-        String sql = "DELETE FROM jadwal WHERE id = ?";
-        try (PreparedStatement pstmt = connection.prepareStatement(sql)) {
-            pstmt.setInt(1, id);
-            pstmt.executeUpdate();
+    public boolean deleteJadwal(int id) {
+        try {
+            System.out.println("Deleting jadwal ID: " + id);
+
+            // Simple delete tanpa foreign key check
+            String sql = "DELETE FROM jadwal WHERE id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                ps.setInt(1, id);
+                int affected = ps.executeUpdate();
+
+                System.out.println("Delete affected rows: " + affected);
+                return affected > 0;
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Delete error: " + e.getMessage());
+
+            // Jika error foreign key, coba dengan disable dulu
+            try {
+                connection.createStatement().execute("PRAGMA foreign_keys = OFF");
+
+                String sql = "DELETE FROM jadwal WHERE id = ?";
+                try (PreparedStatement ps = connection.prepareStatement(sql)) {
+                    ps.setInt(1, id);
+                    int affected = ps.executeUpdate();
+
+                    connection.createStatement().execute("PRAGMA foreign_keys = ON");
+
+                    return affected > 0;
+                }
+
+            } catch (SQLException e2) {
+                System.err.println("Fallback delete also failed: " + e2.getMessage());
+                return false;
+            }
         }
     }
 
-    // ✅ DIPERBAIKI: Helper method ini disesuaikan dengan constructor Jadwal.java yang benar.
     /**
      * Helper method untuk memetakan satu baris ResultSet ke objek Jadwal.
      * @param rs ResultSet yang sedang di-iterasi.
@@ -167,5 +198,29 @@ public class JadwalDAO {
 
         // Menggunakan constructor yang sesuai (tanpa id_pengguna)
         return new Jadwal(id, namaAktivitas, tanggalMulai, waktuMulai, tanggalSelesai, waktuSelesai, kategori, catatan);
+    }
+
+    public void debugDatabaseStructure() {
+        try {
+            System.out.println("=== DEBUG DATABASE STRUCTURE ===");
+            // Cek struktur tabel jadwal
+            ResultSet rs = connection.getMetaData().getColumns(null, null, "jadwal", null);
+            System.out.println("Kolom tabel jadwal:");
+            while (rs.next()) {
+                System.out.println("- " + rs.getString("COLUMN_NAME") + " (" + rs.getString("TYPE_NAME") + ")");
+            }
+
+            // Cek data yang ada
+            Statement stmt = connection.createStatement();
+            ResultSet dataRs = stmt.executeQuery("SELECT * FROM jadwal LIMIT 5");
+            System.out.println("\nSample data jadwal:");
+            while (dataRs.next()) {
+                System.out.println("ID: " + dataRs.getInt(1) + ", Nama: " + dataRs.getString(2));
+            }
+            System.out.println("================================");
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
     }
 }

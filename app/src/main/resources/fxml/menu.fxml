@@ -135,8 +135,8 @@
                 <Button fx:id="pengaturanButton" text="Pengaturan" onAction="#handleSidebarButton"
                         alignment="CENTER_LEFT" graphicTextGap="12" maxWidth="Infinity"
                         style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 8;
-                               -fx-font-family: 'Poppins'; -fx-font-size: 14px; -fx-font-weight: 400;
-                               -fx-padding: 12 20; -fx-cursor: hand;">
+                        -fx-font-family: 'Poppins'; -fx-font-size: 14px; -fx-font-weight: 400;
+                        -fx-padding: 12 20; -fx-cursor: hand;">
                     <graphic>
                         <ImageView fitWidth="18" fitHeight="18">
                             <image><Image url="@/images/pengaturan.png"/></image>

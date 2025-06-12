@@ -377,8 +377,22 @@ public class MenuController implements Initializable {
     }
 
     private void navigateToSettings() {
-        System.out.println("Navigating to Settings page");
-        navigateToPage("/fxml/pengaturanView.fxml", "MediTrack - Pengaturan");
+        System.out.println("Navigating to User Management page");
+        try {
+            // Coba berbagai kemungkinan path
+            navigateToPage("/fxml/manajemenpengguna.fxml", "MediTrack - Manajemen Pengguna");
+        } catch (Exception e1) {
+            try {
+                navigateToPage("/manajemenpengguna.fxml", "MediTrack - Manajemen Pengguna");
+            } catch (Exception e2) {
+                try {
+                    navigateToPage("manajemenpengguna.fxml", "MediTrack - Manajemen Pengguna");
+                } catch (Exception e3) {
+                    showAlert("Error", "File manajemenpengguna.fxml tidak ditemukan");
+                    e3.printStackTrace();
+                }
+            }
+        }
     }
 
     private void handleLogout() {
@@ -548,7 +562,7 @@ public class MenuController implements Initializable {
     @FXML
     private void handleSidebarButton(ActionEvent event) {
         Button sourceButton = (Button) event.getSource();
-        
+
         if (sourceButton == rekomendasiButton) {
             navigateToRecommendation();
         } else if (sourceButton == obatButton) {
@@ -560,9 +574,12 @@ public class MenuController implements Initializable {
         } else if (sourceButton == jadwalButton) {
             navigateToSchedule();
         } else if (sourceButton == pengaturanButton) {
-            navigateToSettings();
+            // Langsung ke manajemen pengguna
+            navigateToPage("/fxml/manajamenpengguna.fxml", "MediTrack - Manajemen Pengguna");
         } else if (sourceButton == keluarButton) {
             handleLogout();
         }
     }
+
+
 }

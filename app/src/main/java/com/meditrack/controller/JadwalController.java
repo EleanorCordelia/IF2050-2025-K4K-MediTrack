@@ -91,5 +91,66 @@ public class JadwalController implements Initializable {
         alert.showAndWait();
     }
 
+    /**
+     * Dipanggil saat tombol hapus di-klik
+     */
+    @FXML
+    private void onDeleteJadwal() {
+        Jadwal selectedJadwal = tableJadwal.getSelectionModel().getSelectedItem();
+
+        if (selectedJadwal == null) {
+            showAlert("Peringatan", "Pilih aktivitas yang ingin dihapus terlebih dahulu!");
+            return;
+        }
+
+        // Konfirmasi hapus
+        Alert confirmAlert = new Alert(Alert.AlertType.CONFIRMATION);
+        confirmAlert.setTitle("Konfirmasi Hapus");
+        confirmAlert.setHeaderText("Hapus Aktivitas");
+        confirmAlert.setContentText("Apakah Anda yakin ingin menghapus aktivitas '" +
+                selectedJadwal.getNamaAktivitas() + "'?");
+
+        if (confirmAlert.showAndWait().get() == javafx.scene.control.ButtonType.OK) {
+            deleteJadwal(selectedJadwal.getId()); // Gunakan getId() bukan getIdJadwal()
+        }
+    }
+
+    /**
+     * Method untuk menghapus jadwal dari database
+     */
+    private void deleteJadwal(int jadwalId) {
+        String dbURL = "jdbc:sqlite:meditrack.db";
+
+        try (Connection connection = DriverManager.getConnection(dbURL)) {
+            JadwalDAO jadwalDAO = new JadwalDAO(connection);
+
+            boolean success = jadwalDAO.deleteJadwal(jadwalId);
+
+            if (success) {
+                showSuccessAlert("Sukses", "Aktivitas berhasil dihapus!");
+                loadJadwalTable(); // Refresh table
+            } else {
+                showAlert("Gagal", "Gagal menghapus aktivitas. Silakan coba lagi.");
+            }
+
+        } catch (SQLException e) {
+            System.err.println("Error saat menghapus jadwal: " + e.getMessage());
+            e.printStackTrace();
+            showAlert("Database Error", "Terjadi kesalahan database: " + e.getMessage());
+        }
+    }
+
+    /**
+     * Helper method untuk success alert
+     */
+    private void showSuccessAlert(String title, String content) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        alert.showAndWait();
+    }
+
+
     // Anda bisa menambahkan metode lain seperti onAddJadwal(), onEditJadwal(), onDeleteJadwal() di sini.
 }

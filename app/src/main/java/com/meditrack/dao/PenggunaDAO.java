@@ -155,16 +155,21 @@ public class PenggunaDAO {
         }
     }
 
-    /** 5. Hapus pengguna berdasar ID */
     public boolean deletePengguna(int id) {
         String sql = "DELETE FROM pengguna WHERE idPengguna = ?";
+
         try (Connection conn = SQLiteConnection.getConnection();
              PreparedStatement ps = conn.prepareStatement(sql)) {
 
+            System.out.println("Executing delete for user ID: " + id);
             ps.setInt(1, id);
-            return ps.executeUpdate() > 0;
+            int rowsAffected = ps.executeUpdate();
+
+            System.out.println("Rows affected: " + rowsAffected);
+            return rowsAffected > 0;
 
         } catch (SQLException e) {
+            System.err.println("SQL Error in deletePengguna: " + e.getMessage());
             e.printStackTrace();
             return false;
         }
