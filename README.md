@@ -41,12 +41,10 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi MediTrack secara lokal:
    ```
 
 7. **Jika terjadi error JavaFX**
-   Pastikan kamu sudah mengatur konfigurasi JavaFX pada `build.gradle` dan `Run Configuration`, atau gunakan SDK yang sudah bundling JavaFX seperti Liberica JDK.
+   Atur konfigurasi JavaFX pada `build.gradle` dan `Run Configuration`, atau gunakan SDK yang sudah bundling JavaFX seperti Liberica JDK.
 
 
 ---
-
-> ✨ Untuk bagian pembagian tugas modul dan tampilan antarmuka, silakan lengkapi di README jika sudah tersedia.
 
 ## Daftar Tabel Basis Data
 
