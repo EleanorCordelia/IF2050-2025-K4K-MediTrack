@@ -35,21 +35,24 @@ public class TambahJadwalController implements Initializable {
     //</editor-fold>
 
     //<editor-fold desc="FXML Declarations">
-    @FXML private VBox mainContainer;
-    @FXML private HBox headerBox;
-    @FXML private TextField activityNameField;
-    @FXML private DatePicker startDatePicker;
-    @FXML private Spinner<Integer> startHourSpinner;
-    @FXML private Spinner<Integer> startMinuteSpinner;
-    @FXML private DatePicker endDatePicker;
-    @FXML private Spinner<Integer> endHourSpinner;
-    @FXML private Spinner<Integer> endMinuteSpinner;
-    @FXML private ChoiceBox<String> activityCategoryChoiceBox;
-    @FXML private TextArea notesTextArea;
-    @FXML private Button saveButton;
-    @FXML private Button cancelButton;
-    @FXML private Label labelWaktuMulai, labelWaktuSelesai, labelKategori, labelCatatan;
+    @FXML public VBox mainContainer;
+    @FXML public HBox headerBox;
+    @FXML public TextField activityNameField;
+    @FXML public DatePicker startDatePicker;
+    @FXML public Spinner<Integer> startHourSpinner;
+    @FXML public Spinner<Integer> startMinuteSpinner;
+    @FXML public DatePicker endDatePicker;
+    @FXML public Spinner<Integer> endHourSpinner;
+    @FXML public Spinner<Integer> endMinuteSpinner;
+    @FXML public ChoiceBox<String> activityCategoryChoiceBox;
+    @FXML public TextArea notesTextArea;
+    @FXML public Button saveButton;
+    @FXML public Button cancelButton;
+    @FXML public Label labelWaktuMulai, labelWaktuSelesai, labelKategori, labelCatatan;
     //</editor-fold>
+
+    private JadwalDAO jadwalDAO;
+    private Integer editingActivityId;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
@@ -109,6 +112,82 @@ public class TambahJadwalController implements Initializable {
         cancelButton.setOnMouseExited(e -> cancelButton.setStyle(cancelButtonStyle));
     }
 
+    private void setInitialValues() {
+        LocalDate today = LocalDate.now();
+        startDatePicker.setValue(today);
+        endDatePicker.setValue(today);
+        
+        LocalTime now = LocalTime.now();
+        LocalTime nextHour = now.plusHours(1).withMinute(0);
+        
+        startHourSpinner.getValueFactory().setValue(now.getHour());
+        startMinuteSpinner.getValueFactory().setValue(now.getMinute());
+        endHourSpinner.getValueFactory().setValue(nextHour.getHour());
+        endMinuteSpinner.getValueFactory().setValue(nextHour.getMinute());
+        
+        activityCategoryChoiceBox.setValue("Sedang");
+    }
+    
+    private void setupListeners() {
+        startDatePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null && endDatePicker.getValue() != null && newDate.isAfter(endDatePicker.getValue())) {
+                endDatePicker.setValue(newDate);
+            }
+        });
+        
+        endDatePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
+            if (newDate != null && startDatePicker.getValue() != null && newDate.isBefore(startDatePicker.getValue())) {
+                startDatePicker.setValue(newDate);
+            }
+        });
+    }
+
+    public void setInitialDateTime(LocalDate date) {
+        if (date != null) {
+            if (startDatePicker == null) startDatePicker = new DatePicker();
+            if (endDatePicker == null) endDatePicker = new DatePicker();
+            if (startHourSpinner == null) startHourSpinner = new Spinner<>(0, 23, 0);
+            if (startMinuteSpinner == null) startMinuteSpinner = new Spinner<>(0, 59, 0);
+            if (endHourSpinner == null) endHourSpinner = new Spinner<>(0, 23, 0);
+            if (endMinuteSpinner == null) endMinuteSpinner = new Spinner<>(0, 59, 0);
+
+            startDatePicker.setValue(date);
+            endDatePicker.setValue(date);
+
+            LocalTime now = LocalTime.now();
+            LocalTime nextHour = now.plusHours(1).withMinute(0);
+            startHourSpinner.getValueFactory().setValue(now.getHour());
+            startMinuteSpinner.getValueFactory().setValue(now.getMinute());
+            endHourSpinner.getValueFactory().setValue(nextHour.getHour());
+            endMinuteSpinner.getValueFactory().setValue(nextHour.getMinute());
+        }
+    }
+
+    public void setEditMode(Jadwal jadwal) {
+        if (jadwal != null) {
+            if (activityNameField == null) activityNameField = new TextField();
+            if (startDatePicker == null) startDatePicker = new DatePicker();
+            if (startHourSpinner == null) startHourSpinner = new Spinner<>(0, 23, 0);
+            if (startMinuteSpinner == null) startMinuteSpinner = new Spinner<>(0, 59, 0);
+            if (endDatePicker == null) endDatePicker = new DatePicker();
+            if (endHourSpinner == null) endHourSpinner = new Spinner<>(0, 23, 0);
+            if (endMinuteSpinner == null) endMinuteSpinner = new Spinner<>(0, 59, 0);
+            if (activityCategoryChoiceBox == null) activityCategoryChoiceBox = new ChoiceBox<>();
+            if (notesTextArea == null) notesTextArea = new TextArea();
+
+            activityNameField.setText(jadwal.getNamaAktivitas());
+            startDatePicker.setValue(jadwal.getTanggalMulai());
+            startHourSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getHour());
+            startMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getMinute());
+            endDatePicker.setValue(jadwal.getTanggalSelesai());
+            endHourSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getHour());
+            endMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getMinute());
+            activityCategoryChoiceBox.setValue(jadwal.getKategori());
+            notesTextArea.setText(jadwal.getCatatan());
+            this.editingActivityId = jadwal.getId();
+        }
+    }
+
     // Helper untuk menerapkan style fokus pada elemen
     private void applyFocusableNodeStyle(Control control, String baseStyle, String focusStyle) {
         control.setStyle(baseStyle);
@@ -138,162 +217,111 @@ public class TambahJadwalController implements Initializable {
         };
         spinner.getValueFactory().setConverter(twoDigitConverter);
     }
-
-    public void setInitialDateTime(LocalDate date) {
-        if (date != null) {
-            // Mengatur nilai DatePicker sesuai tanggal yang dikirim
-            startDatePicker.setValue(date);
-            endDatePicker.setValue(date);
-
-            // Biarkan waktu tetap diatur ke nilai default (jam saat ini)
-            LocalTime now = LocalTime.now();
-            LocalTime nextHour = now.plusHours(1).withMinute(0);
-            startHourSpinner.getValueFactory().setValue(now.getHour());
-            startMinuteSpinner.getValueFactory().setValue(now.getMinute());
-            endHourSpinner.getValueFactory().setValue(nextHour.getHour());
-            endMinuteSpinner.getValueFactory().setValue(nextHour.getMinute());
-        }
-    }
-
-    public void setInitialData(JadwalPenggunaController.Activity activity) {
-        // Set date picker value
-        startDatePicker.setValue(activity.getStartDate());
-
-        // Set hour and minute spinners
-        startHourSpinner.getValueFactory().setValue(activity.getStartTime().getHour());
-        startMinuteSpinner.getValueFactory().setValue(activity.getStartTime().getMinute());
-
-        // Set other fields if needed (like nama aktivitas, kategori, catatan, dll.)
-        activityNameField.setText(activity.getName());
-        // ... tambahkan field lain sesuai kebutuhan
-    }
-
-
-    private void setInitialValues() {
-        LocalDate today = LocalDate.now();
-        LocalTime now = LocalTime.now();
-        LocalTime nextHour = now.plusHours(1).withMinute(0);
-
-        startDatePicker.setValue(today);
-        endDatePicker.setValue(today);
-        activityCategoryChoiceBox.setValue("Aktivitas Sedang");
-
-        startHourSpinner.getValueFactory().setValue(now.getHour());
-        startMinuteSpinner.getValueFactory().setValue(now.getMinute());
-        endHourSpinner.getValueFactory().setValue(nextHour.getHour());
-        endMinuteSpinner.getValueFactory().setValue(nextHour.getMinute());
-    }
-
-    private void setupListeners() {
-        startDatePicker.valueProperty().addListener((obs, oldDate, newDate) -> {
-            if (newDate != null && endDatePicker.getValue().isBefore(newDate)) {
-                endDatePicker.setValue(newDate);
-            }
-        });
-    }
-
+    
     @FXML
     private void handleSave() {
-        if (!isInputValid()) {
-            return;
-        }
-
-        // Siapkan objek Jadwal
-        Jadwal jadwal = new Jadwal(
-                editingActivityId,  // Tambahkan ID di sini (penting untuk UPDATE)
-                activityNameField.getText().trim(),
-                startDatePicker.getValue(),
-                LocalTime.of(startHourSpinner.getValue(), startMinuteSpinner.getValue()),
-                endDatePicker.getValue(),
-                LocalTime.of(endHourSpinner.getValue(), endMinuteSpinner.getValue()),
-                activityCategoryChoiceBox.getValue(),
-                notesTextArea.getText().isEmpty() ? null : notesTextArea.getText()
-        );
-
-        String dbURL = "jdbc:sqlite:" + System.getProperty("user.dir") + "/meditrack.db";
-
-        try (Connection connection = DriverManager.getConnection(dbURL)) {
-            JadwalDAO jadwalDAO = new JadwalDAO(connection);
-
-            if (editingActivityId != -1) {
-                // Mode edit: update data
-                jadwalDAO.updateJadwal(jadwal);
-                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Jadwal berhasil diperbarui.");
-            } else {
-                // Mode tambah: insert data baru
-                jadwalDAO.addJadwal(jadwal);
-                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Jadwal berhasil disimpan.");
+        try {
+            if (!validateInput()) {
+                return;
             }
-
+            
+            initializeDAO();
+            
+            String namaAktivitas = activityNameField.getText().trim();
+            LocalDate tanggalMulai = startDatePicker.getValue();
+            LocalTime waktuMulai = LocalTime.of(startHourSpinner.getValue(), startMinuteSpinner.getValue());
+            LocalDate tanggalSelesai = endDatePicker.getValue();
+            LocalTime waktuSelesai = LocalTime.of(endHourSpinner.getValue(), endMinuteSpinner.getValue());
+            String kategori = activityCategoryChoiceBox.getValue();
+            String catatan = notesTextArea.getText().trim();
+            
+            Jadwal jadwal = new Jadwal();
+            jadwal.setNamaAktivitas(namaAktivitas);
+            jadwal.setTanggalMulai(tanggalMulai);
+            jadwal.setWaktuMulai(waktuMulai);
+            jadwal.setTanggalSelesai(tanggalSelesai);
+            jadwal.setWaktuSelesai(waktuSelesai);
+            jadwal.setKategori(kategori);
+            jadwal.setCatatan(catatan);
+            
+            if (editingActivityId != null) {
+                jadwal.setId(editingActivityId);
+                jadwalDAO.updateJadwal(jadwal);
+                showAlert(Alert.AlertType.INFORMATION, "Berhasil", "Jadwal berhasil diperbarui!");
+            } else {
+                jadwalDAO.addJadwal(jadwal);
+                showAlert(Alert.AlertType.INFORMATION, "Berhasil", "Jadwal berhasil ditambahkan!");
+            }
+            
             closeWindow();
-
+            
         } catch (SQLException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Database Error", "Gagal terhubung atau menyimpan ke file database SQLite.\n\nError: " + e.getMessage());
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Terjadi kesalahan tak terduga: " + e.getMessage());
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal menyimpan jadwal: " + e.getMessage());
         }
     }
-
-    private boolean isInputValid() {
-        String activityName = activityNameField.getText().trim();
-        if (activityName.isEmpty()) {
-            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Nama aktivitas tidak boleh kosong.");
-            return false;
-        }
-
-        LocalDate startDate = startDatePicker.getValue();
-        LocalDate endDate = endDatePicker.getValue();
-        LocalTime startTime = LocalTime.of(startHourSpinner.getValue(), startMinuteSpinner.getValue());
-        LocalTime endTime = LocalTime.of(endHourSpinner.getValue(), endMinuteSpinner.getValue());
-
-        if (startDate.isAfter(endDate) || (startDate.isEqual(endDate) && startTime.isAfter(endTime))) {
-            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Waktu mulai tidak boleh setelah waktu selesai.");
-            return false;
-        }
-        return true;
-    }
-
+    
     @FXML
     private void handleCancel() {
         closeWindow();
     }
-
-    private void closeWindow() {
-        Stage stage = (Stage) mainContainer.getScene().getWindow();
-        if (stage != null) {
-            stage.close();
+    
+    private boolean validateInput() {
+        if (activityNameField.getText().trim().isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Nama aktivitas tidak boleh kosong!");
+            return false;
+        }
+        
+        if (startDatePicker.getValue() == null) {
+            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Tanggal mulai harus dipilih!");
+            return false;
+        }
+        
+        if (endDatePicker.getValue() == null) {
+            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Tanggal selesai harus dipilih!");
+            return false;
+        }
+        
+        if (activityCategoryChoiceBox.getValue() == null) {
+            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Kategori aktivitas harus dipilih!");
+            return false;
+        }
+        
+        LocalDate startDate = startDatePicker.getValue();
+        LocalDate endDate = endDatePicker.getValue();
+        LocalTime startTime = LocalTime.of(startHourSpinner.getValue(), startMinuteSpinner.getValue());
+        LocalTime endTime = LocalTime.of(endHourSpinner.getValue(), endMinuteSpinner.getValue());
+        
+        if (startDate.isAfter(endDate)) {
+            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Tanggal mulai tidak boleh setelah tanggal selesai!");
+            return false;
+        }
+        
+        if (startDate.equals(endDate) && startTime.isAfter(endTime)) {
+            showAlert(Alert.AlertType.WARNING, "Input Tidak Valid", "Waktu mulai tidak boleh setelah waktu selesai!");
+            return false;
+        }
+        
+        return true;
+    }
+    
+    private void initializeDAO() throws SQLException {
+        if (jadwalDAO == null) {
+            Connection conn = DriverManager.getConnection("jdbc:sqlite:meditrack.db");
+            jadwalDAO = new JadwalDAO(conn);
         }
     }
-
-    private void showAlert(Alert.AlertType type, String title, String content) {
-        Alert alert = new Alert(type);
+    
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
         alert.showAndWait();
     }
-    private int editingActivityId = -1;  // Tambahkan field ini di atas, biar bisa dipakai
-
-    public void setEditMode(Jadwal jadwal) {
-        if (jadwal != null) {
-            activityNameField.setText(jadwal.getNamaAktivitas());
-            startDatePicker.setValue(jadwal.getTanggalMulai());
-            startHourSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getHour());
-            startMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuMulai().getMinute());
-            endDatePicker.setValue(jadwal.getTanggalSelesai());
-            endHourSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getHour());
-            endMinuteSpinner.getValueFactory().setValue(jadwal.getWaktuSelesai().getMinute());
-            activityCategoryChoiceBox.setValue(jadwal.getKategori());
-            notesTextArea.setText(jadwal.getCatatan());
-            this.editingActivityId = jadwal.getId();
-        }
-    }
-
-    private Jadwal editedJadwal;  // untuk getEditedJadwal()
-
-    public Jadwal getEditedJadwal() {
-        return editedJadwal;
+    
+    private void closeWindow() {
+        Stage stage = (Stage) saveButton.getScene().getWindow();
+        stage.close();
     }
 }

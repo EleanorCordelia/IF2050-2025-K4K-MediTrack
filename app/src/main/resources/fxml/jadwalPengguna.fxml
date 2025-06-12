@@ -17,24 +17,6 @@
     <padding>
         <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
     </padding>
-    
-    <!-- Top Navigation Bar -->
-    <top>
-        <HBox spacing="15" prefHeight="60" style="-fx-background-color: #FFFFFF; -fx-padding: 15 20; -fx-background-radius: 8;" alignment="CENTER_LEFT">
-            <Label text="Jadwal Saya" style="-fx-font-size: 22px; -fx-font-weight: bold; -fx-text-fill: #1E3A8A; -fx-font-family: 'Poppins';"/>
-            <Region HBox.hgrow="ALWAYS"/>
-            
-            <!-- Navigation Buttons -->
-            <Button fx:id="navMenuButton" text="Menu" onAction="#navigateToMenu" 
-                    style="-fx-background-color: #1E40AF; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-family: 'Poppins'; -fx-font-size: 12px; -fx-padding: 8 16;"/>
-            <Button fx:id="navRekomendasiButton" text="Rekomendasi" onAction="#navigateToRekomendasi"
-                    style="-fx-background-color: transparent; -fx-text-fill: #64748B; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-family: 'Poppins'; -fx-font-size: 12px; -fx-padding: 8 16;"/>
-            <Button fx:id="navLaporanButton" text="Laporan" onAction="#navigateToLaporan"
-                    style="-fx-background-color: transparent; -fx-text-fill: #64748B; -fx-border-color: #CBD5E1; -fx-border-radius: 6; -fx-background-radius: 6; -fx-font-family: 'Poppins'; -fx-font-size: 12px; -fx-padding: 8 16;"/>
-            <Button fx:id="navLogoutButton" text="Keluar" onAction="#handleLogout"
-                    style="-fx-background-color: #EF4444; -fx-text-fill: white; -fx-background-radius: 6; -fx-font-family: 'Poppins'; -fx-font-size: 12px; -fx-padding: 8 16;"/>
-        </HBox>
-    </top>
     <center>
         <VBox style="-fx-background-color: white; -fx-background-radius: 12;" BorderPane.alignment="CENTER">
             <BorderPane.margin>

@@ -21,6 +21,14 @@ public class Jadwal {
     // Field idPengguna untuk sementara tidak digunakan di form ini, jadi bisa diabaikan di constructor
 
     /**
+     * Konstruktor default untuk membuat objek Jadwal kosong.
+     * Diperlukan untuk TambahJadwalController.
+     */
+    public Jadwal() {
+        // Konstruktor kosong
+    }
+
+    /**
      * Konstruktor untuk membuat objek Jadwal baru dari UI (sebelum disimpan ke DB).
      * Cocok dengan logika 'Tambah Baru' di TambahJadwalController.
      */

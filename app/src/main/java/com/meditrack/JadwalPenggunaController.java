@@ -1,11 +1,8 @@
 package com.meditrack;
 
 import com.meditrack.dao.JadwalDAO;
-import com.meditrack.dao.PenggunaDAO;
 import com.meditrack.model.Jadwal;
-import com.meditrack.model.Pengguna;
 import com.meditrack.util.SQLiteConnection;
-import com.meditrack.util.UserSession;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -34,8 +31,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.format.TextStyle;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Locale;
 import java.util.Optional;
 import java.util.ResourceBundle;
 
@@ -49,29 +48,23 @@ public class JadwalPenggunaController implements Initializable {
     @FXML private Label selectedDateActivitiesLabel;
     @FXML private VBox activityListContainer;
     @FXML private Button addActivityButton;
+    @FXML private Button editActivityButton;
 
     // Class members
     private YearMonth currentYearMonth;
     private LocalDate selectedDate;
     private List<Button> dayButtons = new ArrayList<>();
-    private JadwalDAO jadwalDAO;
-    private PenggunaDAO penggunaDAO;
-    private int currentUserId;
-    private String currentUserName = "User";
+    public JadwalDAO jadwalDAO;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             Connection conn = SQLiteConnection.getConnection();
             jadwalDAO = new JadwalDAO(conn);
-            penggunaDAO = new PenggunaDAO();
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Koneksi Gagal", "Tidak dapat terhubung ke database.");
         }
-        
-        // Load user data from session
-        loadUserData();
 
         selectedDate = LocalDate.now();
         currentYearMonth = YearMonth.from(selectedDate);
@@ -86,6 +79,11 @@ public class JadwalPenggunaController implements Initializable {
     private void navigateMonth(int monthsToAdd) {
         currentYearMonth = currentYearMonth.plusMonths(monthsToAdd);
         updateCalendarView();
+    }
+
+    private String formatMonthYear(YearMonth yearMonth) {
+        String month = yearMonth.getMonth().getDisplayName(TextStyle.FULL, new Locale("id", "ID"));
+        return month.substring(0, 1).toUpperCase() + month.substring(1) + " " + yearMonth.getYear();
     }
 
     private void updateCalendarView() {
@@ -147,6 +145,39 @@ public class JadwalPenggunaController implements Initializable {
         }
     }
 
+    private boolean hasActivitiesOnDate(LocalDate date) {
+        try {
+            List<Jadwal> activities = jadwalDAO.getJadwalByDate(date);
+            return !activities.isEmpty();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    private List<Activity> getActivitiesForDate(LocalDate date) {
+        List<Activity> activities = new ArrayList<>();
+        try {
+            List<Jadwal> jadwalList = jadwalDAO.getJadwalByDate(date);
+            for (Jadwal jadwal : jadwalList) {
+                Activity activity = new Activity(
+                    jadwal.getId(),
+                    jadwal.getNamaAktivitas(),
+                    jadwal.getTanggalMulai(),
+                    jadwal.getWaktuMulai(),
+                    jadwal.getTanggalSelesai(),
+                    jadwal.getWaktuSelesai(),
+                    jadwal.getKategori(),
+                    jadwal.getCatatan()
+                );
+                activities.add(activity);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return activities;
+    }
+
     private void highlightSelectedDay(Button clickedButton) {
         LocalDate today = LocalDate.now();
         for (Button button : dayButtons) {
@@ -173,7 +204,7 @@ public class JadwalPenggunaController implements Initializable {
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
-            selectedDateActivitiesLabel.setText("Pada " + date.format(DateTimeFormatter.ofPattern("dd MMMM uuuu")) + ", " + currentUserName + " akan:");
+            selectedDateActivitiesLabel.setText("Pada " + date.format(DateTimeFormatter.ofPattern("dd MMMM uuuu")) + ", Anda akan:");
             activityListContainer.getChildren().clear();
 
             List<Activity> activities = getActivitiesForDate(date);
@@ -194,25 +225,6 @@ public class JadwalPenggunaController implements Initializable {
             fadeIn.play();
         });
         fadeOut.play();
-    }
-    
-    /**
-     * Load user data from session
-     */
-    private void loadUserData() {
-        currentUserId = UserSession.getUserId();
-        if (currentUserId == 0) {
-            currentUserId = 1; // Default fallback
-        }
-        
-        try {
-            Pengguna user = penggunaDAO.getPenggunaById(currentUserId);
-            if (user != null) {
-                currentUserName = user.getNama();
-            }
-        } catch (Exception e) {
-            System.err.println("Failed to load user data: " + e.getMessage());
-        }
     }
 
     private HBox createActivityCard(Activity activity) {
@@ -268,142 +280,129 @@ public class JadwalPenggunaController implements Initializable {
         Alert confirmation = new Alert(Alert.AlertType.CONFIRMATION, "Apakah Anda yakin ingin menghapus jadwal '" + activity.getName() + "'?", ButtonType.YES, ButtonType.NO);
         confirmation.setTitle("Konfirmasi Hapus");
         confirmation.setHeaderText(null);
+        
         Optional<ButtonType> result = confirmation.showAndWait();
-
         if (result.isPresent() && result.get() == ButtonType.YES) {
             try {
                 jadwalDAO.deleteJadwal(activity.getId());
+                updateCalendarView();
                 updateActivityListForDate(selectedDate);
-                updateCalendarView(); // Refresh kalender untuk menghilangkan titik indikator
+                showAlert(Alert.AlertType.INFORMATION, "Berhasil", "Jadwal berhasil dihapus!");
             } catch (SQLException e) {
                 e.printStackTrace();
-                showAlert(Alert.AlertType.ERROR, "Gagal Menghapus", "Terjadi kesalahan saat menghapus data dari database.");
+                showAlert(Alert.AlertType.ERROR, "Error", "Gagal menghapus jadwal: " + e.getMessage());
             }
         }
-    }
-
-    // ✅ DITAMBAHKAN KEMBALI: Method untuk handle edit yang hilang
-    private void handleEditAktivitas(Activity activity) {
-        try {
-            // Ambil data Jadwal lengkap dari database menggunakan ID
-            Optional<Jadwal> jadwalToEdit = jadwalDAO.getJadwalById(activity.getId());
-
-            if (jadwalToEdit.isPresent()) {
-                FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambahJadwal.fxml"));
-                Parent root = loader.load();
-
-                TambahJadwalController controller = loader.getController();
-                // Kirim objek Jadwal (bukan Activity) ke mode edit
-                controller.setEditMode(jadwalToEdit.get());
-
-                Stage popupStage = new Stage();
-                popupStage.initModality(Modality.APPLICATION_MODAL);
-                popupStage.initOwner(activityListContainer.getScene().getWindow());
-                popupStage.setTitle("Ubah Jadwal Aktivitas");
-                popupStage.setScene(new Scene(root));
-                popupStage.setResizable(false);
-                popupStage.showAndWait();
-
-                // Setelah popup ditutup, cukup refresh tampilan.
-                // Logika update ke DB sudah ditangani di dalam TambahJadwalController.
-                updateActivityListForDate(selectedDate);
-                updateCalendarView();
-            } else {
-                showAlert(Alert.AlertType.ERROR, "Data Tidak Ditemukan", "Aktivitas yang akan diubah tidak ditemukan di database.");
-                // Mungkin data sudah dihapus, refresh saja
-                updateActivityListForDate(selectedDate);
-                updateCalendarView();
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error Memuat Form", "Gagal memuat file /fxml/tambahJadwal.fxml.");
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error Database", "Gagal mengambil data untuk diubah.");
-        }
-    }
-
-    private List<Activity> getActivitiesForDate(LocalDate date) {
-        List<Activity> activities = new ArrayList<>();
-        try {
-            List<Jadwal> jadwals = jadwalDAO.getJadwalByDate(date);
-            for (Jadwal jadwal : jadwals) {
-                activities.add(new Activity(
-                        jadwal.getId(),
-                        jadwal.getNamaAktivitas(),
-                        jadwal.getTanggalMulai(),
-                        jadwal.getWaktuMulai(),
-                        jadwal.getTanggalSelesai(),
-                        jadwal.getWaktuSelesai(),
-                        jadwal.getKategori(),
-                        jadwal.getCatatan()
-                ));
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Gagal Mengambil Data", "Tidak dapat mengambil data jadwal dari database.");
-        }
-        return activities;
-    }
-
-    private boolean hasActivitiesOnDate(LocalDate date) {
-        try {
-            return jadwalDAO.hasJadwalOnDate(date);
-        } catch (SQLException e) {
-            e.printStackTrace();
-            return false;
-        }
-    }
-
-    private String formatMonthYear(YearMonth yearMonth) {
-        return yearMonth.format(DateTimeFormatter.ofPattern("MMMM uuuu"));
     }
 
     @FXML
+    private void handleEditAktivitas() {
+        List<Activity> activities = getActivitiesForDate(selectedDate);
+        if (activities.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Tidak Ada Aktivitas", "Tidak ada aktivitas pada tanggal yang dipilih untuk diedit.");
+            return;
+        }
+        
+        // Jika hanya ada satu aktivitas, edit langsung
+        if (activities.size() == 1) {
+            handleEditAktivitas(activities.get(0));
+            return;
+        }
+        
+        // Jika ada beberapa aktivitas, tampilkan pilihan
+        ChoiceDialog<Activity> dialog = new ChoiceDialog<>(activities.get(0), activities);
+        dialog.setTitle("Pilih Aktivitas");
+        dialog.setHeaderText("Pilih aktivitas yang ingin diedit:");
+        dialog.setContentText("Aktivitas:");
+        
+        Optional<Activity> result = dialog.showAndWait();
+        if (result.isPresent()) {
+            handleEditAktivitas(result.get());
+        }
+    }
+
+    private void handleEditAktivitas(Activity activity) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambahJadwal.fxml"));
+            Parent root = loader.load();
+            
+            TambahJadwalController controller = loader.getController();
+            
+            // Convert Activity to Jadwal
+            Jadwal jadwal = new Jadwal();
+            jadwal.setId(activity.getId());
+            jadwal.setNamaAktivitas(activity.getName());
+            jadwal.setTanggalMulai(activity.getStartDate());
+            jadwal.setWaktuMulai(activity.getStartTime());
+            jadwal.setTanggalSelesai(activity.getEndDate());
+            jadwal.setWaktuSelesai(activity.getEndTime());
+            jadwal.setKategori(activity.getLevel());
+            jadwal.setCatatan(activity.getNotes());
+            
+            controller.setEditMode(jadwal);
+            
+            Stage stage = new Stage();
+            stage.setTitle("Edit Jadwal");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            
+            // Refresh calendar after editing
+            updateCalendarView();
+            updateActivityListForDate(selectedDate);
+            
+        } catch (IOException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka form edit jadwal: " + e.getMessage());
+        }
+    }
+
+    @FXML 
     private void handleShowTambahJadwal() {
         try {
             FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/tambahJadwal.fxml"));
             Parent root = loader.load();
-            TambahJadwalController tambahJadwalController = loader.getController();
-            tambahJadwalController.setInitialDateTime(selectedDate);
-
-            Stage popupStage = new Stage();
-            popupStage.initModality(Modality.APPLICATION_MODAL);
-            popupStage.initOwner(addActivityButton.getScene().getWindow());
-            popupStage.setTitle("Tambah Jadwal Aktivitas Baru");
-            popupStage.setScene(new Scene(root));
-            popupStage.setResizable(false);
-            popupStage.showAndWait();
-
-            // Setelah pop-up ditutup, refresh view
-            updateActivityListForDate(selectedDate);
+            
+            TambahJadwalController controller = loader.getController();
+            controller.setInitialDateTime(selectedDate);
+            
+            Stage stage = new Stage();
+            stage.setTitle("Tambah Jadwal");
+            stage.setScene(new Scene(root));
+            stage.initModality(Modality.APPLICATION_MODAL);
+            stage.showAndWait();
+            
+            // Refresh calendar after adding
             updateCalendarView();
+            updateActivityListForDate(selectedDate);
+            
         } catch (IOException e) {
             e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error Memuat Form", "Gagal memuat file /fxml/tambahJadwal.fxml.");
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal membuka form tambah jadwal: " + e.getMessage());
         }
     }
 
-    private void showAlert(Alert.AlertType type, String title, String content) {
-        Alert alert = new Alert(type);
+    private void showAlert(Alert.AlertType alertType, String title, String message) {
+        Alert alert = new Alert(alertType);
         alert.setTitle(title);
         alert.setHeaderText(null);
-        alert.setContentText(content);
+        alert.setContentText(message);
         alert.showAndWait();
     }
 
-    // Kelas inner untuk Activity di-update untuk menyimpan ID
+    // Inner class untuk representasi Activity
     public static class Activity {
-        private final int id;
-        private final String name;
-        private final LocalDate startDate;
-        private final LocalTime startTime;
-        private final LocalDate endDate;
-        private final LocalTime endTime;
-        private final String level;
-        private final String notes;
+        private Integer id;
+        private String name;
+        private LocalDate startDate;
+        private LocalTime startTime;
+        private LocalDate endDate;
+        private LocalTime endTime;
+        private String level;
+        private String notes;
 
-        public Activity(int id, String name, LocalDate startDate, LocalTime startTime, LocalDate endDate, LocalTime endTime, String level, String notes) {
+        public Activity(Integer id, String name, LocalDate startDate, LocalTime startTime, 
+                       LocalDate endDate, LocalTime endTime, String level, String notes) {
             this.id = id;
             this.name = name;
             this.startDate = startDate;
@@ -414,7 +413,8 @@ public class JadwalPenggunaController implements Initializable {
             this.notes = notes;
         }
 
-        public int getId() { return id; }
+        // Getters
+        public Integer getId() { return id; }
         public String getName() { return name; }
         public LocalDate getStartDate() { return startDate; }
         public LocalTime getStartTime() { return startTime; }
@@ -422,52 +422,10 @@ public class JadwalPenggunaController implements Initializable {
         public LocalTime getEndTime() { return endTime; }
         public String getLevel() { return level; }
         public String getNotes() { return notes; }
-    }
 
-    @FXML
-    private void handleEditAktivitas() {
-        showAlert(Alert.AlertType.INFORMATION, "Edit Aktivitas", "Silakan pilih aktivitas yang ingin diedit.");
-    }
-    
-    // Navigation Methods
-    @FXML
-    private void navigateToMenu() {
-        navigateToPage("/fxml/menu.fxml", "MediTrack - Menu");
-    }
-    
-    @FXML
-    private void navigateToRekomendasi() {
-        navigateToPage("/fxml/rekomendasiObat.fxml", "MediTrack - Rekomendasi");
-    }
-    
-    @FXML
-    private void navigateToLaporan() {
-        navigateToPage("/fxml/kondisiAktual.fxml", "MediTrack - Laporan Kesehatan");
-    }
-    
-    @FXML
-    private void handleLogout() {
-        UserSession.clear();
-        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
-    }
-    
-    /**
-     * Navigate to a different page
-     */
-    private void navigateToPage(String fxmlPath, String title) {
-        try {
-            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
-            Parent root = loader.load();
-            Scene scene = new Scene(root);
-            
-            Stage stage = (Stage) monthYearLabel.getScene().getWindow();
-            stage.setScene(scene);
-            stage.setTitle(title);
-            stage.show();
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Error", "Gagal memuat halaman: " + e.getMessage());
+        @Override
+        public String toString() {
+            return name + " (" + startTime.format(DateTimeFormatter.ofPattern("HH:mm")) + ")";
         }
     }
-
 }
