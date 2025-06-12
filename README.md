@@ -186,8 +186,6 @@ Jika tidak menggunakan Git, aplikasi bisa dijalankan dari ZIP hasil rilis:
 | kategori | TEXT |
 | catatan | TEXT |
 
----
-
 ## Dokumentasi Proyek
 
 Berikut adalah daftar dokumentasi resmi yang telah disusun tim pengembang dengan target utama bagi _product owner_:

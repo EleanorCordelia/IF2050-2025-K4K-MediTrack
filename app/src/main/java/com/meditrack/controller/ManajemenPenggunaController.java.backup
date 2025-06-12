@@ -1,0 +1,784 @@
+package com.meditrack;
+
+import com.meditrack.dao.PenggunaDAO;
+import com.meditrack.model.Pengguna;
+import com.meditrack.util.SQLiteConnection;
+import com.meditrack.util.UserSession;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Label;
+import javafx.scene.control.ChoiceBox;
+import javafx.scene.control.ToggleButton;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
+import javafx.scene.shape.Circle;
+
+import java.net.URL;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.Objects;
+import java.util.Optional;
+import java.util.ResourceBundle;
+import javafx.scene.control.PasswordField;
+import javafx.scene.control.TextField;
+import javafx.stage.FileChooser;
+import java.io.File;
+import javafx.scene.control.DatePicker;
+import java.sql.Types;
+
+public class ManajemenPenggunaController implements Initializable {
+
+    // FXML elements from UI for Information Account section (Labels)
+    @FXML private ImageView profileAvatar;
+    @FXML private Label profileName;
+    @FXML private Label profileAlteress;
+
+    @FXML private Label fullNameLabel;
+    @FXML private Label emailLabel;
+    @FXML private Label phoneLabel;
+    @FXML private Label dobLabel;
+    @FXML private Label genderLabel;
+
+    // FXML elements for buttons
+    @FXML private Button editProfileButton;
+    @FXML private Button changePasswordButton;
+
+    // FXML elements for Preferensi section
+    @FXML private ChoiceBox<String> languageChoiceBox;
+    @FXML private ToggleButton themeToggleButton;
+
+    // FXML elements for Kelola Akun section
+    @FXML private Button deactivateAccountButton;
+    @FXML private Button deleteAccountButton;
+
+    @FXML private ChoiceBox<String> jenisKelamin;
+    @FXML private TextField usernameField;
+    @FXML private PasswordField passwordField;
+    @FXML private TextField namaField;
+    @FXML private TextField emailField;
+    @FXML private DatePicker tanggalLahirPicker;
+    @FXML private TextField tinggiBadanField;
+    @FXML private TextField beratBadanField;
+    @FXML private TextField avatarPathField;
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        if (jenisKelamin != null) {
+            jenisKelamin.getItems().addAll("Pria", "Wanita", "Lainnya");
+        }
+        loadUserData();
+        loadLoggedInUser();
+        setupListeners();
+        setupPreferensiControls();
+    }
+
+    private void loadUserData() {
+        int loggedInUserId = UserSession.getUserId();
+        if (loggedInUserId <= 0) {
+            System.err.println("No user logged in.");
+            return;
+        }
+
+        Pengguna pengguna = new PenggunaDAO().getPenggunaById(loggedInUserId);
+        if (pengguna != null) {
+            if (profileName != null) profileName.setText(pengguna.getNama());
+            if (profileAlteress != null) profileAlteress.setText("Alteress");
+            if (emailLabel != null) emailLabel.setText(pengguna.getEmail());
+            if (phoneLabel != null) phoneLabel.setText(pengguna.getNoHp());
+            if (dobLabel != null) dobLabel.setText(pengguna.getTanggalLahir());
+            if (genderLabel != null) genderLabel.setText(pengguna.getJenisKelamin());
+
+            // Set user avatar image
+            if (profileAvatar != null) {
+                loadAvatar(pengguna.getAvatarPath());
+            }
+        } else {
+            System.err.println("Pengguna tidak ditemukan di database.");
+        }
+    }
+
+    private void loadAvatar(String avatarPath) {
+        try {
+            String path = avatarPath != null ? avatarPath : "/images/carlos_fernando.jpg";
+            profileAvatar.setImage(new Image(Objects.requireNonNull(getClass().getResourceAsStream(path))));
+            Circle clip = new Circle(profileAvatar.getFitWidth() / 2, profileAvatar.getFitHeight() / 2, profileAvatar.getFitWidth() / 2);
+            profileAvatar.setClip(clip);
+        } catch (Exception e) {
+            System.err.println("Failed to load avatar image: " + e.getMessage());
+            if (profileAvatar != null) {
+                profileAvatar.setImage(null);
+            }
+        }
+    }
+
+    public void loadLoggedInUser() {
+        int loggedInUserId = UserSession.getUserId();
+        if (loggedInUserId <= 0) {
+            System.err.println("Belum ada pengguna yang login.");
+            return;
+        }
+
+        try (Connection conn = SQLiteConnection.getConnection()) {
+            String query = "SELECT * FROM pengguna WHERE idPengguna = ?";
+            PreparedStatement stmt = conn.prepareStatement(query);
+            stmt.setInt(1, loggedInUserId);
+            ResultSet rs = stmt.executeQuery();
+
+            if (rs.next()) {
+                updateUIFromResultSet(rs);
+            } else {
+                System.err.println("Pengguna login tidak ditemukan di database.");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Gagal memuat data pengguna: " + e.getMessage());
+        }
+    }
+
+    private void updateUIFromResultSet(ResultSet rs) throws SQLException {
+        if (profileName != null) profileName.setText(rs.getString("nama"));
+        if (profileAlteress != null) profileAlteress.setText("Alteress");
+        if (fullNameLabel != null) fullNameLabel.setText(rs.getString("nama"));
+        if (emailLabel != null) emailLabel.setText(rs.getString("email"));
+        if (phoneLabel != null) phoneLabel.setText(rs.getString("noHp"));
+        if (dobLabel != null) dobLabel.setText(rs.getString("tanggalLahir"));
+        if (genderLabel != null) genderLabel.setText(rs.getString("jenisKelamin"));
+
+        // Avatar
+        if (profileAvatar != null) {
+            loadAvatar(rs.getString("avatarPath"));
+        }
+    }
+
+    private void setupListeners() {
+        if (changePasswordButton != null) {
+            changePasswordButton.setOnAction(event -> handleChangePassword());
+        }
+        if (editProfileButton != null) {
+            editProfileButton.setOnAction(event -> handleEditProfile());
+        }
+        if (deactivateAccountButton != null) {
+            deactivateAccountButton.setOnAction(event -> handleDeactivateAccount());
+        }
+        if (deleteAccountButton != null) {
+            deleteAccountButton.setOnAction(event -> handleDeleteAccount());
+        }
+
+        if (themeToggleButton != null) {
+            themeToggleButton.selectedProperty().addListener((obs, oldVal, newVal) -> {
+                if (newVal) {
+                    themeToggleButton.setText("ON");
+                    showAlert(Alert.AlertType.INFORMATION, "Tema", "Tema Gelap Diaktifkan.");
+                } else {
+                    themeToggleButton.setText("OFF");
+                    showAlert(Alert.AlertType.INFORMATION, "Tema", "Tema Terang Diaktifkan.");
+                }
+            });
+            themeToggleButton.setText("OFF");
+        }
+    }
+
+    private void setupPreferensiControls() {
+        if (languageChoiceBox != null) {
+            languageChoiceBox.getItems().addAll("Indonesia", "English");
+            languageChoiceBox.setValue("Indonesia");
+            languageChoiceBox.setOnAction(event -> {
+                showAlert(Alert.AlertType.INFORMATION, "Bahasa", "Bahasa diubah ke: " + languageChoiceBox.getValue());
+            });
+        }
+    }
+
+    // Fixed updatePassword method using consistent database connection and DAO
+    public boolean updatePassword(int idPengguna, String newPassword) {
+        if (idPengguna <= 0 || newPassword == null || newPassword.trim().isEmpty()) {
+            System.err.println("Invalid parameters for password update");
+            return false;
+        }
+
+        try {
+            PenggunaDAO dao = new PenggunaDAO();
+            Pengguna pengguna = dao.getPenggunaById(idPengguna);
+            
+            if (pengguna == null) {
+                System.err.println("User not found with id: " + idPengguna);
+                return false;
+            }
+            
+            // Update password
+            pengguna.setPassword(newPassword.trim());
+            
+            // Save menggunakan DAO
+            return dao.updatePengguna(pengguna);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    // Fixed updateUsername method using consistent database connection and DAO
+    public boolean updateUsername(int idPengguna, String newUsername) {
+        if (idPengguna <= 0 || newUsername == null || newUsername.trim().isEmpty()) {
+            System.err.println("Invalid parameters for username update");
+            return false;
+        }
+
+        try {
+            PenggunaDAO dao = new PenggunaDAO();
+            Pengguna pengguna = dao.getPenggunaById(idPengguna);
+            
+            if (pengguna == null) {
+                System.err.println("User not found with id: " + idPengguna);
+                return false;
+            }
+            
+            // Update username (nama)
+            pengguna.setNama(newUsername.trim());
+            
+            // Save menggunakan DAO
+            return dao.updatePengguna(pengguna);
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+    @FXML
+    private void handleChangePassword() {
+        showAlert(Alert.AlertType.INFORMATION, "Ubah Kata Sandi", "Fitur ubah kata sandi akan menampilkan dialog baru atau halaman terpisah.");
+    }
+
+    @FXML
+    private void handleEditProfile() {
+        showAlert(Alert.AlertType.INFORMATION, "Edit Informasi Akun", "Fitur edit informasi akun akan diimplementasikan di sini.");
+    }
+
+    @FXML
+    private void handleDeactivateAccount() {
+        showAlert(Alert.AlertType.CONFIRMATION, "Konfirmasi", "Apakah Anda yakin ingin menonaktifkan akun sementara?")
+                .ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        System.out.println("Akun dinonaktifkan sementara.");
+                    }
+                });
+    }
+
+    @FXML
+    private void handleDeleteAccount() {
+        showAlert(Alert.AlertType.CONFIRMATION, "Konfirmasi Hapus Akun",
+                "PERINGATAN: Apakah Anda yakin ingin menghapus akun secara permanen? Tindakan ini tidak dapat dibatalkan.")
+                .ifPresent(response -> {
+                    if (response == ButtonType.OK) {
+                        int loggedInUserId = UserSession.getUserId();
+                        PenggunaDAO dao = new PenggunaDAO();
+                        if (dao.deletePengguna(loggedInUserId)) {
+                            showAlert(Alert.AlertType.INFORMATION, "Sukses", "Akun berhasil dihapus.");
+                        } else {
+                            showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal menghapus akun.");
+                        }
+                    }
+                });
+    }
+
+    @FXML
+    private void handleUpdateUsername() {
+        if (usernameField == null) {
+            System.err.println("Username field not initialized");
+            return;
+        }
+
+        String newUsername = usernameField.getText();
+        if (newUsername != null && !newUsername.trim().isEmpty()) {
+            int loggedInUserId = UserSession.getUserId();
+            if (updateUsername(loggedInUserId, newUsername)) {
+                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Username berhasil diperbarui!");
+                if (profileName != null) profileName.setText(newUsername);
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal memperbarui username.");
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Username tidak boleh kosong.");
+        }
+    }
+
+    @FXML
+    private void handleUpdatePassword() {
+        if (passwordField == null) {
+            System.err.println("Password field not initialized");
+            return;
+        }
+
+        String newPassword = passwordField.getText();
+        if (newPassword != null && !newPassword.trim().isEmpty()) {
+            int loggedInUserId = UserSession.getUserId();
+            if (updatePassword(loggedInUserId, newPassword)) {
+                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Password berhasil diperbarui!");
+            } else {
+                showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal memperbarui password.");
+            }
+        } else {
+            showAlert(Alert.AlertType.WARNING, "Peringatan", "Password tidak boleh kosong.");
+        }
+    }
+
+    @FXML
+    private void handleSidebarButton(javafx.event.ActionEvent event) {
+        System.out.println("Sidebar button clicked.");
+    }
+
+    @FXML
+    private void handleUpdateUserInfo() {
+        System.out.println("Button 'Simpan Perubahan' diklik.");
+
+        int loggedInUserId = UserSession.getUserId();
+        if (loggedInUserId <= 0) {
+            showAlert(Alert.AlertType.ERROR, "Error", "Tidak ada pengguna yang login.");
+            return;
+        }
+
+        // Null checks for all fields
+        String nama = namaField != null ? namaField.getText().trim() : "";
+        String email = emailField != null ? emailField.getText().trim() : "";
+        String password = passwordField != null ? passwordField.getText().trim() : "";
+        String tanggalLahir = (tanggalLahirPicker != null && tanggalLahirPicker.getValue() != null) ?
+                tanggalLahirPicker.getValue().toString() : "";
+        String selectedJenisKelamin = (jenisKelamin != null && jenisKelamin.getValue() != null) ?
+                jenisKelamin.getValue() : "";
+        String tinggiBadanText = tinggiBadanField != null ? tinggiBadanField.getText().trim() : "";
+        String beratBadanText = beratBadanField != null ? beratBadanField.getText().trim() : "";
+        String avatarPath = avatarPathField != null ? avatarPathField.getText().trim() : "";
+
+        if (nama.isEmpty() || email.isEmpty()) {
+            showAlert(Alert.AlertType.WARNING, "Validasi", "Nama dan Email wajib diisi.");
+            return;
+        }
+
+        // Validasi email format
+        if (!email.matches("^[\\w\\.-]+@[\\w\\.-]+\\.[a-zA-Z]{2,}$")) {
+            showAlert(Alert.AlertType.WARNING, "Validasi", "Format email tidak valid.");
+            return;
+        }
+
+        Double tinggiBadan = null;
+        Double beratBadan = null;
+        try {
+            if (!tinggiBadanText.isEmpty()) {
+                tinggiBadan = Double.parseDouble(tinggiBadanText);
+                if (tinggiBadan <= 0 || tinggiBadan > 300) {
+                    showAlert(Alert.AlertType.WARNING, "Validasi", "Tinggi badan harus antara 1-300 cm.");
+                    return;
+                }
+            }
+            if (!beratBadanText.isEmpty()) {
+                beratBadan = Double.parseDouble(beratBadanText);
+                if (beratBadan <= 0 || beratBadan > 1000) {
+                    showAlert(Alert.AlertType.WARNING, "Validasi", "Berat badan harus antara 1-1000 kg.");
+                    return;
+                }
+            }
+        } catch (NumberFormatException e) {
+            showAlert(Alert.AlertType.WARNING, "Validasi", "Tinggi dan Berat Badan harus berupa angka yang valid.");
+            return;
+        }
+
+        try {
+            // Ambil data pengguna saat ini dari database
+            PenggunaDAO penggunaDAO = new PenggunaDAO();
+            Pengguna currentPengguna = penggunaDAO.getPenggunaById(loggedInUserId);
+            
+            if (currentPengguna == null) {
+                showAlert(Alert.AlertType.ERROR, "Error", "Data pengguna tidak ditemukan.");
+                return;
+            }
+
+            // Update data pengguna
+            currentPengguna.setNama(nama);
+            currentPengguna.setEmail(email);
+            
+            // Hanya update password jika diisi
+            if (!password.isEmpty()) {
+                if (password.length() < 6) {
+                    showAlert(Alert.AlertType.WARNING, "Validasi", "Password minimal 6 karakter.");
+                    return;
+                }
+                currentPengguna.setPassword(password);
+            }
+            
+            if (!tanggalLahir.isEmpty()) {
+                currentPengguna.setTanggalLahir(tanggalLahir);
+            }
+            if (!selectedJenisKelamin.isEmpty()) {
+                currentPengguna.setJenisKelamin(selectedJenisKelamin);
+            }
+            
+            currentPengguna.setTinggiBadan(tinggiBadan);
+            currentPengguna.setBeratBadan(beratBadan);
+            
+            if (!avatarPath.isEmpty()) {
+                currentPengguna.setAvatarPath(avatarPath);
+            }
+
+            // Simpan perubahan ke database menggunakan DAO
+            boolean updateSuccess = penggunaDAO.updatePengguna(currentPengguna);
+            
+            if (updateSuccess) {
+                System.out.println("Informasi pengguna berhasil diperbarui di database.");
+                showAlert(Alert.AlertType.INFORMATION, "Sukses", "Informasi pengguna berhasil diperbarui!");
+                
+                // Refresh tampilan
+                loadLoggedInUser();
+                loadUserData();
+                
+                // Clear password field setelah update berhasil
+                if (passwordField != null) {
+                    passwordField.clear();
+                }
+                
+            } else {
+                System.out.println("Gagal memperbarui informasi pengguna di database.");
+                showAlert(Alert.AlertType.ERROR, "Gagal", "Gagal memperbarui informasi pengguna.");
+            }
+            
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Terjadi kesalahan saat memperbarui pengguna: " + e.getMessage());
+        }
+    }
+
+    @FXML
+    private void handleChangeProfilePicture() {
+        if (profileAvatar == null) {
+            System.err.println("Profile avatar not initialized");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Pilih Foto Profil Baru");
+        fileChooser.getExtensionFilters().addAll(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+
+        File selectedFile = fileChooser.showOpenDialog(profileAvatar.getScene().getWindow());
+        if (selectedFile != null) {
+            try {
+                Image newImage = new Image(selectedFile.toURI().toString());
+                profileAvatar.setImage(newImage);
+                System.out.println("Foto profil berhasil diubah: " + selectedFile.getAbsolutePath());
+            } catch (Exception e) {
+                System.err.println("Gagal memuat gambar baru: " + e.getMessage());
+                showAlert(Alert.AlertType.ERROR, "Gagal", "Tidak dapat memuat gambar baru.");
+            }
+        }
+    }
+
+    @FXML
+    private void handleBrowseAvatar() {
+        if (profileAvatar == null) {
+            System.err.println("Profile avatar not initialized");
+            return;
+        }
+
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Pilih Gambar Avatar");
+        fileChooser.getExtensionFilters().add(
+                new FileChooser.ExtensionFilter("Image Files", "*.png", "*.jpg", "*.jpeg")
+        );
+        File selectedFile = fileChooser.showOpenDialog(profileAvatar.getScene().getWindow());
+        if (selectedFile != null && avatarPathField != null) {
+            avatarPathField.setText(selectedFile.getAbsolutePath());
+        }
+    }
+
+    private Optional<ButtonType> showAlert(Alert.AlertType type, String title, String content) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(content);
+        return alert.showAndWait();
+    }
+
+    // ==================== TEST METHODS ====================
+    
+    /**
+     * Test untuk update username dalam kondisi normal (valid)
+     * @return true jika test berhasil, false jika gagal
+     */
+    public boolean testUpdateUsernameValid() {
+        System.out.println("=== Test Update Username Valid ===");
+        
+        try {
+            // Setup test data
+            String testUsername = "testuser_" + System.currentTimeMillis();
+            int testUserId = UserSession.getUserId();
+            
+            if (testUserId <= 0) {
+                System.err.println("Test Failed: Tidak ada user yang login");
+                return false;
+            }
+            
+            // Simpan username lama untuk restore
+            PenggunaDAO dao = new PenggunaDAO();
+            Pengguna originalPengguna = dao.getPenggunaById(testUserId);
+            if (originalPengguna == null) {
+                System.err.println("Test Failed: User tidak ditemukan");
+                return false;
+            }
+            String originalUsername = originalPengguna.getNama();
+            
+            // Test update username
+            boolean updateResult = updateUsername(testUserId, testUsername);
+            
+            if (updateResult) {
+                System.out.println("✓ Update username berhasil");
+                
+                // Verifikasi perubahan di database
+                Pengguna updatedPengguna = dao.getPenggunaById(testUserId);
+                if (updatedPengguna != null && testUsername.equals(updatedPengguna.getNama())) {
+                    System.out.println("✓ Username berhasil tersimpan di database: " + testUsername);
+                    
+                    // Restore username asli
+                    updateUsername(testUserId, originalUsername);
+                    System.out.println("✓ Username dikembalikan ke nilai asli: " + originalUsername);
+                    
+                    System.out.println("=== Test Update Username Valid: PASSED ===");
+                    return true;
+                } else {
+                    System.err.println("✗ Username tidak tersimpan dengan benar di database");
+                    // Restore username asli
+                    updateUsername(testUserId, originalUsername);
+                    return false;
+                }
+            } else {
+                System.err.println("✗ Update username gagal");
+                return false;
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Test Failed dengan exception: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Test untuk update password dalam kondisi normal (valid)
+     * @return true jika test berhasil, false jika gagal
+     */
+    public boolean testUpdatePasswordValid() {
+        System.out.println("=== Test Update Password Valid ===");
+        
+        try {
+            // Setup test data
+            String testPassword = "newpassword123";
+            int testUserId = UserSession.getUserId();
+            
+            if (testUserId <= 0) {
+                System.err.println("Test Failed: Tidak ada user yang login");
+                return false;
+            }
+            
+            // Simpan password lama untuk restore
+            PenggunaDAO dao = new PenggunaDAO();
+            Pengguna originalPengguna = dao.getPenggunaById(testUserId);
+            if (originalPengguna == null) {
+                System.err.println("Test Failed: User tidak ditemukan");
+                return false;
+            }
+            String originalPassword = originalPengguna.getPassword();
+            
+            // Test update password
+            boolean updateResult = updatePassword(testUserId, testPassword);
+            
+            if (updateResult) {
+                System.out.println("✓ Update password berhasil");
+                
+                // Verifikasi perubahan di database
+                Pengguna updatedPengguna = dao.getPenggunaById(testUserId);
+                if (updatedPengguna != null && testPassword.equals(updatedPengguna.getPassword())) {
+                    System.out.println("✓ Password berhasil tersimpan di database");
+                    
+                    // Restore password asli
+                    updatePassword(testUserId, originalPassword);
+                    System.out.println("✓ Password dikembalikan ke nilai asli");
+                    
+                    System.out.println("=== Test Update Password Valid: PASSED ===");
+                    return true;
+                } else {
+                    System.err.println("✗ Password tidak tersimpan dengan benar di database");
+                    // Restore password asli
+                    updatePassword(testUserId, originalPassword);
+                    return false;
+                }
+            } else {
+                System.err.println("✗ Update password gagal");
+                return false;
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Test Failed dengan exception: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Test untuk update informasi pengguna lengkap dalam kondisi normal
+     * @return true jika test berhasil, false jika gagal
+     */
+    public boolean testUpdateUserInfoValid() {
+        System.out.println("=== Test Update User Info Valid ===");
+        
+        try {
+            int testUserId = UserSession.getUserId();
+            
+            if (testUserId <= 0) {
+                System.err.println("Test Failed: Tidak ada user yang login");
+                return false;
+            }
+            
+            PenggunaDAO dao = new PenggunaDAO();
+            Pengguna originalPengguna = dao.getPenggunaById(testUserId);
+            if (originalPengguna == null) {
+                System.err.println("Test Failed: User tidak ditemukan");
+                return false;
+            }
+            
+            // Backup data asli
+            String originalNama = originalPengguna.getNama();
+            String originalEmail = originalPengguna.getEmail();
+            String originalJenisKelamin = originalPengguna.getJenisKelamin();
+            Double originalTinggiBadan = originalPengguna.getTinggiBadan();
+            Double originalBeratBadan = originalPengguna.getBeratBadan();
+            
+            // Test data baru
+            String testNama = "Test User " + System.currentTimeMillis();
+            String testEmail = "testuser" + System.currentTimeMillis() + "@example.com";
+            String testJenisKelamin = "Pria";
+            Double testTinggiBadan = 175.5;
+            Double testBeratBadan = 70.0;
+            
+            // Update menggunakan DAO
+            Pengguna testPengguna = new Pengguna();
+            testPengguna.setIdPengguna(testUserId);
+            testPengguna.setNama(testNama);
+            testPengguna.setEmail(testEmail);
+            testPengguna.setPassword(originalPengguna.getPassword()); // Keep original password
+            testPengguna.setTanggalLahir(originalPengguna.getTanggalLahir());
+            testPengguna.setJenisKelamin(testJenisKelamin);
+            testPengguna.setTinggiBadan(testTinggiBadan);
+            testPengguna.setBeratBadan(testBeratBadan);
+            testPengguna.setAvatarPath(originalPengguna.getAvatarPath());
+            
+            boolean updateResult = dao.updatePengguna(testPengguna);
+            
+            if (updateResult) {
+                System.out.println("✓ Update user info berhasil");
+                
+                // Verifikasi perubahan di database
+                Pengguna updatedPengguna = dao.getPenggunaById(testUserId);
+                if (updatedPengguna != null && 
+                    testNama.equals(updatedPengguna.getNama()) &&
+                    testEmail.equals(updatedPengguna.getEmail()) &&
+                    testJenisKelamin.equals(updatedPengguna.getJenisKelamin()) &&
+                    testTinggiBadan.equals(updatedPengguna.getTinggiBadan()) &&
+                    testBeratBadan.equals(updatedPengguna.getBeratBadan())) {
+                    
+                    System.out.println("✓ Data user berhasil tersimpan di database");
+                    System.out.println("  - Nama: " + updatedPengguna.getNama());
+                    System.out.println("  - Email: " + updatedPengguna.getEmail());
+                    System.out.println("  - Jenis Kelamin: " + updatedPengguna.getJenisKelamin());
+                    System.out.println("  - Tinggi Badan: " + updatedPengguna.getTinggiBadan());
+                    System.out.println("  - Berat Badan: " + updatedPengguna.getBeratBadan());
+                    
+                    // Restore data asli
+                    originalPengguna.setIdPengguna(testUserId);
+                    dao.updatePengguna(originalPengguna);
+                    System.out.println("✓ Data dikembalikan ke nilai asli");
+                    
+                    System.out.println("=== Test Update User Info Valid: PASSED ===");
+                    return true;
+                } else {
+                    System.err.println("✗ Data tidak tersimpan dengan benar di database");
+                    // Restore data asli
+                    originalPengguna.setIdPengguna(testUserId);
+                    dao.updatePengguna(originalPengguna);
+                    return false;
+                }
+            } else {
+                System.err.println("✗ Update user info gagal");
+                return false;
+            }
+            
+        } catch (Exception e) {
+            System.err.println("Test Failed dengan exception: " + e.getMessage());
+            e.printStackTrace();
+            return false;
+        }
+    }
+    
+    /**
+     * Menjalankan semua test untuk ManajemenPengguna
+     * Test ini mengcover kondisi normal/valid untuk update username dan password
+     */
+    @FXML
+    private void handleRunTests() {
+        System.out.println("\n==================== RUNNING MANAJEMEN PENGGUNA TESTS ====================");
+        
+        int totalTests = 0;
+        int passedTests = 0;
+        
+        // Test 1: Update Username Valid
+        totalTests++;
+        if (testUpdateUsernameValid()) {
+            passedTests++;
+        }
+        
+        System.out.println(); // spacing
+        
+        // Test 2: Update Password Valid  
+        totalTests++;
+        if (testUpdatePasswordValid()) {
+            passedTests++;
+        }
+        
+        System.out.println(); // spacing
+        
+        // Test 3: Update User Info Valid
+        totalTests++;
+        if (testUpdateUserInfoValid()) {
+            passedTests++;
+        }
+        
+        System.out.println("\n==================== TEST RESULTS ====================");
+        System.out.println("Total Tests: " + totalTests);
+        System.out.println("Passed: " + passedTests);
+        System.out.println("Failed: " + (totalTests - passedTests));
+        System.out.println("Success Rate: " + (passedTests * 100 / totalTests) + "%");
+        
+        if (passedTests == totalTests) {
+            System.out.println("🎉 ALL TESTS PASSED! ManajemenPengguna functionality is working correctly.");
+            showAlert(Alert.AlertType.INFORMATION, "Test Results", 
+                "Semua test berhasil!\n\n" +
+                "✓ Update Username Valid: PASSED\n" +
+                "✓ Update Password Valid: PASSED\n" +
+                "✓ Update User Info Valid: PASSED\n\n" +
+                "ManajemenPengguna berfungsi dengan baik!");
+        } else {
+            System.out.println("❌ SOME TESTS FAILED! Please check the implementation.");
+            showAlert(Alert.AlertType.WARNING, "Test Results", 
+                "Beberapa test gagal!\n\n" +
+                "Total: " + totalTests + "\n" +
+                "Passed: " + passedTests + "\n" +
+                "Failed: " + (totalTests - passedTests) + "\n\n" +
+                "Silakan periksa implementasi ManajemenPengguna.");
+        }
+        
+        System.out.println("========================================================\n");
+    }
+}

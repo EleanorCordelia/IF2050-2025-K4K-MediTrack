@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.Button?>
+
+<VBox spacing="20" alignment="CENTER" xmlns="http://javafx.com/javafx"
+      xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.meditrack.controller.DashboardController">
+    <Label text="Selamat Datang di MediTrack Dashboard!" />
+    <Button text="Lihat Jadwal" />
+    <Button text="Cek Kondisi Fisik" />
+    <Button text="Rekomendasi Obat &amp; Suplemen" />
+
+</VBox>

@@ -1,0 +1,25 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(sqlite3:*)",
+      "Bash(find:*)",
+      "Bash(python3:*)",
+      "Bash(mkdir:*)",
+      "Bash(./gradlew test:*)",
+      "Bash(ls:*)",
+      "Bash(export:*)",
+      "Bash(./gradlew:*)",
+      "Bash(git reset:*)",
+      "Bash(grep:*)",
+      "Bash(git add:*)",
+      "Bash(git rm:*)",
+      "Bash(true)",
+      "Bash(git commit:*)",
+      "Bash(git config:*)",
+      "Bash(git checkout:*)",
+      "Bash(cp:*)",
+      "Bash(rg:*)"
+    ],
+    "deny": []
+  }
+}

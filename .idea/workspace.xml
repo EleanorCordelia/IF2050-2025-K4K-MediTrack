@@ -3,18 +3,21 @@
   <component name="AutoImportSettings">
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
+
   <component name="ChangeListManager">
-    <list default="true" id="9995e2fe-a314-4211-b076-9d62a795e6ee" name="Changes" comment="" />
+    <list default="true" id="1" name="Changes" comment="Initial sync" />
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
     <option name="LAST_RESOLUTION" value="IGNORE" />
   </component>
+
   <component name="ExternalProjectsData">
     <projectState path="$PROJECT_DIR$">
       <ProjectState />
     </projectState>
   </component>
+
   <component name="ExternalProjectsManager">
     <system id="GRADLE">
       <state>
@@ -32,25 +35,31 @@
       </state>
     </system>
   </component>
-  <component name="RecentsManager">
-    <key name="MoveFile.RECENT_KEYS">
-      <recent name="C:\Users\Thalita Zahra\Documents\ThalitaAll\STI - Semester 6\Tugas Besar-Smt6\IF2050-2025-K4K-MediTrack\app\src\main\java\com\meditrack\controller" />
-    </key>
-  </component>
+
   <component name="RunManager">
-    <configuration default="true" type="JetRunConfigurationType">
-      <module name="MediTrack" />
+    <configuration name="MainApp" type="Application" factoryName="Application" temporary="true" nameIsGenerated="true">
+      <option name="MAIN_CLASS_NAME" value="com.meditrack.MainApp" />
+      <module name="MediTrack.app.main" />
       <method v="2">
         <option name="Make" enabled="true" />
       </method>
     </configuration>
-    <configuration default="true" type="KotlinStandaloneScriptRunConfigurationType">
-      <module name="MediTrack" />
-      <option name="filePath" />
-      <method v="2" />
-    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Application.MainApp" />
+      </list>
+    </recent_temporary>
   </component>
+
   <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="1" name="Changes" comment="" />
+      <created>0</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>0</updated>
+    </task>
+    <option name="localTasksCounter" value="1" />
     <servers />
   </component>
 </project>

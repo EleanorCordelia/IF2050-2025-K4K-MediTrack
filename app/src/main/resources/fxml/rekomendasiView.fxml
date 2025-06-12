@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox xmlns="http://javafx.com/javafx/20"
+      xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="com.meditrack.controller.RekomendasiController"
+      spacing="10" padding="10">
+
+    <!-- Judul Halaman -->
+    <Label text="Daftar Rekomendasi"
+           style="-fx-font-size: 18px; -fx-font-weight: bold;" />
+
+    <!-- Tabel Rekomendasi -->
+    <TableView fx:id="tableRekomendasi" prefHeight="400">
+        <columns>
+            <TableColumn text="ID Rekomendasi"        fx:id="colIdRekomendasi"      prefWidth="100" />
+            <TableColumn text="ID Pengguna"           fx:id="colIdPengguna"         prefWidth="100" />
+            <TableColumn text="ID Obat"               fx:id="colIdObat"             prefWidth="100" />
+            <TableColumn text="Alasan"                fx:id="colAlasan"             prefWidth="200" />
+            <TableColumn text="Tanggal Rekomendasi"   fx:id="colTanggalRekomendasi" prefWidth="140" />
+            <TableColumn text="Status Rekomendasi"    fx:id="colStatusRekomendasi"  prefWidth="120" />
+        </columns>
+    </TableView>
+
+    <!-- Tombol CRUD dan Refresh -->
+    <HBox spacing="10">
+        <Button text="Tambah" onAction="#onAddRekomendasi"
+                style="-fx-background-color: #4CAF50; -fx-text-fill: white; -fx-font-size: 14px;" />
+        <Button text="Edit"   onAction="#onEditRekomendasi"
+                style="-fx-background-color: #FFC107; -fx-text-fill: white; -fx-font-size: 14px;" />
+        <Button text="Hapus"  onAction="#onDeleteRekomendasi"
+                style="-fx-background-color: #F44336; -fx-text-fill: white; -fx-font-size: 14px;" />
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Refresh" onAction="#onRefresh"
+                style="-fx-background-color: #2196F3; -fx-text-fill: white; -fx-font-size: 14px;" />
+    </HBox>
+</VBox>
