@@ -32,23 +32,56 @@ public class LoginController {
         String email = emailField.getText(); // Get text from the email input field
         String password = passwordField.getText(); // Get text from the password input field
 
+        System.out.println("=== LOGIN ATTEMPT ===");
+        System.out.println("Email: " + email);
+        System.out.println("Password length: " + password.length());
+
         // --- Database Login Logic ---
-        Pengguna user = penggunaDAO.getPenggunaByEmailAndPassword(email, password);
+        Pengguna user = null;
+        try {
+            user = penggunaDAO.getPenggunaByEmailAndPassword(email, password);
+            System.out.println("Database query completed. User found: " + (user != null));
+        } catch (Exception e) {
+            System.err.println("Database error during login: " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Database Error", "Terjadi kesalahan database: " + e.getMessage());
+            return;
+        }
 
         if (user != null) {
             // Set user session with the logged in user's ID
             UserSession.setUserId(user.getId());
-            System.out.println("Login successful for user: " + user.getNama());
-            // Navigate immediately without showing alert first
-            navigateToMenu(event);
+            System.out.println("Login successful for user: " + user.getNama() + " (ID: " + user.getId() + ")");
+            
+            // Direct navigation
+            try {
+                navigateToMenu(event);
+            } catch (Exception e) {
+                System.err.println("Navigation failed: " + e.getMessage());
+                e.printStackTrace();
+                showAlert(Alert.AlertType.ERROR, "Navigation Error", "Gagal berpindah ke menu: " + e.getMessage());
+            }
         } else {
+            System.out.println("Login failed - user not found or incorrect credentials");
             showAlert(Alert.AlertType.ERROR, "Login Gagal", "Email atau kata sandi salah. Silakan coba lagi.");
         }
     }
 
     @FXML
     private void handleLoginGoogleButton(ActionEvent event) {
-        showAlert(Alert.AlertType.INFORMATION, "Login Google", "Fitur Masuk dengan Google akan diimplementasikan.");
+        // TEMPORARY: Use this for testing navigation bypass
+        System.out.println("=== TESTING NAVIGATION BYPASS ===");
+        UserSession.setUserId(999); // Test user ID
+        try {
+            navigateToMenu(event);
+        } catch (Exception e) {
+            System.err.println("Test navigation failed: " + e.getMessage());
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Test Navigation Failed", "Error: " + e.getMessage());
+        }
+        
+        // Original code commented out for testing
+        // showAlert(Alert.AlertType.INFORMATION, "Login Google", "Fitur Masuk dengan Google akan diimplementasikan.");
         // TODO: Implementasi integrasi Google OAuth
     }
 
@@ -73,39 +106,21 @@ public class LoginController {
         }
     }
 
-    private void navigateToMenu(ActionEvent event) {
-        try {
-            System.out.println("=== STARTING NAVIGATION TO MENU ===");
-            System.out.println("Current user ID in session: " + UserSession.getUserId());
-            
-            // Load the FXML file
-            System.out.println("Loading menu.fxml...");
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
-            if (loader.getLocation() == null) {
-                throw new IOException("Cannot find /fxml/menu.fxml");
-            }
-            
-            Parent menuRoot = loader.load();
-            System.out.println("menu.fxml loaded successfully");
-            
-            // Get the current stage
-            System.out.println("Getting current stage...");
-            Stage stage = (Stage) ((javafx.scene.control.Button) event.getSource()).getScene().getWindow();
-            
-            // Create new scene and set it
-            System.out.println("Creating new scene...");
-            Scene scene = new Scene(menuRoot);
-            stage.setScene(scene);
-            stage.setTitle("MediTrack - Menu");
-            stage.show();
-            
-            System.out.println("=== NAVIGATION TO MENU SUCCESSFUL ===");
-            
-        } catch (Exception e) {
-            System.err.println("=== NAVIGATION TO MENU FAILED ===");
-            e.printStackTrace();
-            showAlert(Alert.AlertType.ERROR, "Navigasi Gagal", "Tidak bisa membuka halaman menu. Error: " + e.getMessage());
-        }
+    private void navigateToMenu(ActionEvent event) throws IOException {
+        System.out.println("=== ATTEMPTING MENU NAVIGATION ===");
+        System.out.println("User ID in session: " + UserSession.getUserId());
+        
+        // Use the same pattern as handleRegisterLink - this works
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/menu.fxml"));
+        Parent menuRoot = loader.load();
+        
+        Stage stage = (Stage) ((javafx.scene.control.Button) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(menuRoot);
+        stage.setScene(scene);
+        stage.setTitle("MediTrack - Menu Utama");
+        stage.show();
+        
+        System.out.println("=== MENU NAVIGATION SUCCESSFUL ===");
     }
 
     private void showAlert(Alert.AlertType alertType, String title, String message) {

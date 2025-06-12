@@ -115,6 +115,9 @@ public class MenuController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        System.out.println("=== MENU CONTROLLER INITIALIZING ===");
+        System.out.println("Current User ID in session: " + com.meditrack.util.UserSession.getUserId());
+        
         allContentViews = Arrays.asList(
                 dashboardViewPane, rekomendasiViewPane, obatViewPane, laporanViewPane,
                 konsultasiViewPane, jadwalViewPane, pengaturanViewPane
@@ -123,6 +126,8 @@ public class MenuController implements Initializable {
         currentActiveButton = menuButton;
         setActiveButton(menuButton);
         showView(dashboardViewPane);
+        
+        System.out.println("=== MENU CONTROLLER INITIALIZED SUCCESSFULLY ===");
 
         populateDashboardData();
         loadTestimonials();
@@ -477,9 +482,21 @@ public class MenuController implements Initializable {
         } else if (clickedButton == konsultasiButton) {
             showView(konsultasiViewPane);
         } else if (clickedButton == jadwalButton) {
-            showView(jadwalViewPane);
+            // Navigate to external jadwal page for better functionality
+            try {
+                navigateToExternalPage("/fxml/jadwalView.fxml", "MediTrack - Jadwal", event);
+            } catch (Exception e) {
+                System.err.println("Failed to navigate to jadwal: " + e.getMessage());
+                showView(jadwalViewPane); // Fallback to internal view
+            }
         } else if (clickedButton == pengaturanButton) {
-            showView(pengaturanViewPane);
+            // Navigate to external pengaturan page
+            try {
+                navigateToExternalPage("/fxml/manajemenpengguna.fxml", "MediTrack - Pengaturan", event);
+            } catch (Exception e) {
+                System.err.println("Failed to navigate to pengaturan: " + e.getMessage());
+                showView(pengaturanViewPane); // Fallback to internal view
+            }
         }
     }
 
@@ -557,6 +574,18 @@ public class MenuController implements Initializable {
         showInfoDialog("Konsultasi Cepat", "Anda memilih konsultasi: " + jenisKonsultasi);
     }
 
+    @FXML
+    private void handleUserProfileClicked(MouseEvent event) {
+        System.out.println("User profile clicked");
+        // Navigate to user profile page
+        try {
+            navigateToPage("/fxml/penggunaView.fxml", "MediTrack - Profil Pengguna", event);
+        } catch (Exception e) {
+            System.err.println("Failed to navigate to profile: " + e.getMessage());
+            showInfoDialog("Navigasi Gagal", "Tidak dapat membuka halaman profil: " + e.getMessage());
+        }
+    }
+
     private void handleKonsultasiDokterAction(Dokter dokter) {
         System.out.println("Tombol Konsultasi diklik untuk: " + dokter.getNama());
         showInfoDialog("Konsultasi Dokter", "Memulai sesi konsultasi dengan " + dokter.getNama());
@@ -579,11 +608,18 @@ public class MenuController implements Initializable {
     @FXML
     private void handleLihatSemuaJadwal(ActionEvent event) {
         System.out.println("Tombol Lihat Semua Jadwal diklik.");
-        if (jadwalViewPane != null && jadwalButton != null) {
-            showView(jadwalViewPane);
-            setActiveButton(jadwalButton);
-        } else {
-            System.err.println("Error: jadwalViewPane atau jadwalButton belum diinisialisasi.");
+        try {
+            // Navigate to external jadwal page for better functionality
+            navigateToExternalPage("/fxml/jadwalView.fxml", "MediTrack - Jadwal", event);
+        } catch (Exception e) {
+            System.err.println("Failed to navigate to jadwal: " + e.getMessage());
+            // Fallback to internal view
+            if (jadwalViewPane != null && jadwalButton != null) {
+                showView(jadwalViewPane);
+                setActiveButton(jadwalButton);
+            } else {
+                System.err.println("Error: jadwalViewPane atau jadwalButton belum diinisialisasi.");
+            }
         }
     }
 
@@ -862,6 +898,36 @@ public class MenuController implements Initializable {
             e.printStackTrace();
             showErrorDialog("Gagal Membuka Rekomendasi Obat", "Terjadi kesalahan saat membuka halaman rekomendasi obat.");
         }
+    }
+
+    // Navigation helper method for MouseEvent
+    private void navigateToPage(String fxmlPath, String title, MouseEvent event) throws IOException {
+        System.out.println("Navigating to: " + fxmlPath);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root = loader.load();
+        
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle(title);
+        stage.show();
+        
+        System.out.println("Navigation successful to: " + title);
+    }
+    
+    // Navigation helper method for ActionEvent (sidebar buttons)
+    private void navigateToExternalPage(String fxmlPath, String title, ActionEvent event) throws IOException {
+        System.out.println("External navigation to: " + fxmlPath);
+        FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+        Parent root = loader.load();
+        
+        Stage stage = (Stage) ((Node) event.getSource()).getScene().getWindow();
+        Scene scene = new Scene(root);
+        stage.setScene(scene);
+        stage.setTitle(title);
+        stage.show();
+        
+        System.out.println("External navigation successful to: " + title);
     }
 
     //</editor-fold>
