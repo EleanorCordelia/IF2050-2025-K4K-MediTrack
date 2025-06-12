@@ -12,12 +12,12 @@
 | 5  | Eleanor Cordelia              | 18222059  |
 
 
-## 📌 Penjelasan Singkat Aplikasi
+## Deskripsi Aplikasi
 MediTrack adalah aplikasi berbasis JavaFX yang bertujuan untuk membantu pengguna dalam memantau kondisi kesehatan mereka. Aplikasi ini menyediakan fitur seperti pencatatan jadwal kesehatan, konsultasi dengan dokter, rekomendasi obat dan suplemen, serta pengelolaan informasi akun pengguna. Data pengguna tersimpan secara lokal dalam database SQLite.
 
 ---
 
-## 💻 Cara Menjalankan Aplikasi MediTrack
+## Cara Menjalankan Aplikasi MediTrack
 
 Ikuti langkah-langkah berikut untuk menjalankan aplikasi MediTrack secara lokal:
 
