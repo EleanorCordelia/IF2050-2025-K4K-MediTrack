@@ -59,13 +59,13 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi MediTrack secara lokal:
 ## Daftar Modul yang Diimplementasikan
 | No | Nama Modul | Assignee | Screenshot |
 |----|-------------|----------|------------|
-| 1 | Autentikasi | Shali, Eleanor | ![Autentikasi](screenshots/autentikasi.png) |
-| 2 | Menu | Eleanor | ![Menu](screenshots/menu.png) |
-| 3 | Manajemen Pengguna | Marzel, Eleanor, Thalita | ![Manajemen Pengguna](screenshots/manajemen_pengguna.png) |
-| 4 | Kondisi Aktual | Thalita | ![Kondisi Aktual](screenshots/kondisi_aktual.png) |
-| 5 | Jadwal | Faiz, Eleanor | ![Jadwal](screenshots/jadwal.png) |
-| 6 | Rekomendasi | Eleanor | ![Rekomendasi](screenshots/rekomendasi.png) |
-| 7 | Landing | Eleanor | ![Landing](screenshots/landing.png) |
+| 1 | Autentikasi | Shali, Eleanor | ![Autentikasi](screenshots/autentikasi) |
+| 2 | Menu | Eleanor | ![Menu](screenshots/menu) |
+| 3 | Manajemen Pengguna | Marzel, Eleanor, Thalita | ![Manajemen Pengguna](screenshots/manajemen_pengguna) |
+| 4 | Kondisi Aktual | Thalita | ![Kondisi Aktual](screenshots/kondisi_aktual) |
+| 5 | Jadwal | Faiz, Eleanor | ![Jadwal](screenshots/jadwal) |
+| 6 | Rekomendasi | Eleanor | ![Rekomendasi](screenshots/rekomendasi) |
+| 7 | Landing | Eleanor | ![Landing](screenshots/landing) |
 
 
 ---
