@@ -185,3 +185,17 @@ Jika tidak menggunakan Git, aplikasi bisa dijalankan dari ZIP hasil rilis:
 | jam_selesai | TEXT |
 | kategori | TEXT |
 | catatan | TEXT |
+
+## Dokumentasi Proyek
+
+Berikut adalah daftar dokumentasi resmi yang telah disusun tim pengembang dengan target utama bagi _product owner_:
+
+- [RG (Requirement Gathering)](https://docs.google.com/document/d/1897fJV5IQBq5fTFebcHhMqe81nga3zAYm_-JJrxMR3w/edit?tab=t.0)  
+- [SKPLOO (Spesifikasi Kebutuhan Perangkat Lunak dan Organisasi Operasional)](https://docs.google.com/document/d/1PNAZqiMp9emhIqqdBl-IpBrZ-dOmIyRrz9YIULlxQIk/edit?tab=t.0)  
+- [DPPLOO1 (Dasar Perancangan Perangkat Lunak Tahap 1)](https://docs.google.com/document/d/1rk7PKVtKVR0Yg9v1EoRtwLdD3qO0BATHqlg3sCvrR50/edit?)  
+- [DPPLOO2 (Dasar Perancangan Perangkat Lunak Tahap 2)](https://docs.google.com/document/d/1VQ3PZhxpWXw4WK5gBm1TKqSPUQEAjgRq440W8UX-TCw/edit?tab=t.0)  
+- [HIUPL (Hasil Implementasi dan Pengujian Perangkat Lunak)](https://docs.google.com/document/d/1gMj4VMnL_sLZOdSa-7-nLD96Ophf2P2N3tNtqvhewi8/edit?tab=t.0#heading=h.56dp3rodd3rn)
+
+---
+
+### Dari kami, untuk Dunia
