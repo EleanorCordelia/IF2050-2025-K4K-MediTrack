@@ -126,18 +126,6 @@ Jika tidak menggunakan Git, aplikasi bisa dijalankan dari ZIP hasil rilis:
 | avatar_path | TEXT |
 
 
-### Tabel: `detailjadwal`
-
-| Nama Atribut | Tipe Data |
-|--------------|-----------|
-| idDetailJadwal | INTEGER |
-| idJadwal | INTEGER |
-| waktuMulai | TEXT |
-| waktuSelesai | TEXT |
-| deskripsi | TEXT |
-| kategori | TEXT |
-
-
 ### Tabel: `daftarobat`
 
 | Nama Atribut | Tipe Data |
