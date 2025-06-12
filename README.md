@@ -44,7 +44,7 @@ Langkah-langkah untuk menjalankan aplikasi secara lokal menggunakan Git:
 
 4. **Build Project dengan Gradle**
    ```bash
-   ./gradlew build
+   ./gradlew clean build
    ```
 
 5. **Pastikan Database SQLite Tersedia**
