@@ -23,7 +23,7 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi MediTrack secara lokal:
    ```
 
 3. **Pastikan Java dan Gradle Terinstal**
-   - Java: versi 17 atau lebih baru
+   - Java: versi 21 atau lebih baru
    - Gradle: gunakan wrapper bawaan (`./gradlew`) tanpa perlu menginstal manual
 
 4. **Build Project dengan Gradle**
