@@ -55,10 +55,10 @@
                 <Button fx:id="menuButton" text="Menu"
                         alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
                         style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 16;
-                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: 600; -fx-padding: 16;">
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
                     <graphic>
                         <ImageView fitWidth="20" fitHeight="20">
-                            <image><Image url="@/images/piechart.png"/></image>
+                            <image><Image url="@/images/piechart-nomenu.png"/></image>
                         </ImageView>
                     </graphic>
                 </Button>
@@ -211,11 +211,11 @@
 
             <!-- User Profile -->
             <HBox alignment="CENTER" spacing="16">
-                <StackPane prefWidth="56" prefHeight="56">
-                    <Circle radius="28" fill="#E5E7EB"/>
-                    <ImageView fx:id="ivProfile" fitWidth="56" fitHeight="56" preserveRatio="true"/>
-                    <Label fx:id="lblProfileInitial" text="" visible="false"
-                           style="-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: 600; -fx-text-fill: #6B7280;"/>
+                <StackPane prefWidth="36" prefHeight="36">
+                    <Circle radius="18" fill="#E5E7EB"/>
+                    <ImageView fx:id="ivProfile" fitWidth="36" fitHeight="36" preserveRatio="true">
+                        <image><Image url="@/images/user.png"/></image>
+                    </ImageView>
                 </StackPane>
 
                 <VBox spacing="0">

@@ -12,71 +12,122 @@
             prefWidth="1500" prefHeight="800"
             style="-fx-background-color: #FAFBFC; -fx-font-family: 'Poppins';">
 
-    <!-- Sidebar -->
-    <VBox fx:id="sidebar" alignment="TOP_CENTER" prefWidth="260" prefHeight="800" spacing="15"
-          style="-fx-background-color: #10217D;"
-          AnchorPane.leftAnchor="0" AnchorPane.topAnchor="0" AnchorPane.bottomAnchor="0">
-        <padding><Insets top="20"/></padding>
-        <HBox alignment="CENTER" prefHeight="60" prefWidth="200">
-            <ImageView fitHeight="40" fitWidth="40" preserveRatio="true">
-                <Image url="@/images/logo.png"/>
-            </ImageView>
-            <Label text="MediTrack" textFill="white">
-                <font><Font name="Poppins SemiBold" size="24"/></font>
-                <HBox.margin><Insets left="10"/></HBox.margin>
-            </Label>
+    <VBox fx:id="sidebar"
+          alignment="TOP_LEFT"
+          spacing="15"
+          prefWidth="250"
+          style="-fx-background-color: #FFFFFF;">
+        <padding><Insets top="30" left="40" right="24" bottom="30"/></padding>
+
+        <!-- Logo Section -->
+        <HBox alignment="CENTER_LEFT" spacing="12">
+            <StackPane prefWidth="50" prefHeight="50"
+                       style="-fx-background-color: #1E3A8A; -fx-background-radius: 12;">
+                <ImageView fitWidth="50" fitHeight="50" preserveRatio="true">
+                    <image><Image url="@/images/logo.png"/></image>
+                </ImageView>
+            </StackPane>
+            <Label text="MediTrack"
+                   style="-fx-font-family: 'Poppins'; -fx-font-size: 20px; -fx-font-weight: bold; -fx-text-fill: #1E3A8A;"/>
         </HBox>
-        <VBox fx:id="menuContainer" spacing="8" style="-fx-padding: 10 20;" VBox.vgrow="ALWAYS">
-            <!-- Sidebar Buttons -->
-            <Button fx:id="menuButton" alignment="BASELINE_LEFT" graphicTextGap="15" maxWidth="1.79769E308"
-                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
-                    text="Menu">
-                <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/icon-rekomendasi.png"/></ImageView></graphic>
-                <font><Font name="Poppins Regular" size="15"/></font>
+
+        <!-- Navigation Menu -->
+        <VBox spacing="12" VBox.vgrow="ALWAYS" style="-fx-padding: 40 0 0 0;">
+            <!-- Menu Button -->
+            <Button fx:id="menuButton" text="Menu"
+                    alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 16;
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image><Image url="@/images/piechart-nomenu.png"/></image>
+                    </ImageView>
+                </graphic>
             </Button>
-            <Button fx:id="rekomendasiButton" alignment="BASELINE_LEFT" graphicTextGap="15" maxWidth="1.79769E308"
-                    style="-fx-background-color: transparent; -fx-text-fill: white;"
-                    text="Rekomendasi">
-                <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/icon-rekomendasi.png"/></ImageView></graphic>
-                <font><Font name="Poppins Medium" size="15"/></font>
+
+            <!-- Rekomendasi Button (Active) -->
+            <Button fx:id="rekomendasiButton" text="Rekomendasi"
+                    alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                    style="-fx-background-color: #1D4ED8; -fx-text-fill: #DBEAFE; -fx-background-radius: 10;
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: 600; -fx-padding: 16;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image><Image url="@/images/graph.png"/></image>
+                    </ImageView>
+                </graphic>
             </Button>
-            <Button fx:id="obatButton" alignment="BASELINE_LEFT" graphicTextGap="15" maxWidth="1.79769E308"
-                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
-                    text="Obat">
-                <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/icon-obat.png"/></ImageView></graphic>
-                <font><Font name="Poppins Regular" size="15"/></font>
+
+            <!-- Obat Button -->
+            <Button fx:id="obatButton" text="Obat"
+                    alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 16;
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image><Image url="@/images/belanja.png"/></image>
+                    </ImageView>
+                </graphic>
             </Button>
-            <Button fx:id="laporanButton" alignment="BASELINE_LEFT" graphicTextGap="15" maxWidth="1.79769E308"
-                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
-                    text="Laporan Kesehatan">
-                <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/icon-laporan.png"/></ImageView></graphic>
-                <font><Font name="Poppins Regular" size="15"/></font>
+
+            <!-- Laporan Kesehatan Button -->
+            <Button fx:id="laporanButton" text="Laporan Kesehatan"
+                    alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 16;
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image><Image url="@/images/data.png"/></image>
+                    </ImageView>
+                </graphic>
             </Button>
-            <Button fx:id="konsultasiButton" alignment="BASELINE_LEFT" graphicTextGap="15" maxWidth="1.79769E308"
-                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
-                    text="Konsultasi">
-                <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/icon-konsultasi.png"/></ImageView></graphic>
-                <font><Font name="Poppins Regular" size="15"/></font>
+
+            <!-- Konsultasi Button -->
+            <Button fx:id="konsultasiButton" text="Konsultasi"
+                    alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 16;
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image><Image url="@/images/konsultasi.png"/></image>
+                    </ImageView>
+                </graphic>
             </Button>
-            <Button fx:id="jadwalButton" alignment="BASELINE_LEFT" graphicTextGap="15" maxWidth="1.79769E308"
-                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
-                    text="Jadwal">
-                <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/icon-jadwal.png"/></ImageView></graphic>
-                <font><Font name="Poppins Regular" size="15"/></font>
+
+            <!-- Jadwal Button -->
+            <Button fx:id="jadwalButton" text="Jadwal"
+                    alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 16;
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image><Image url="@/images/jadwal.png"/></image>
+                    </ImageView>
+                </graphic>
             </Button>
-            <Button fx:id="pengaturanButton" alignment="BASELINE_LEFT" graphicTextGap="15" maxWidth="1.79769E308"
-                    style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
-                    text="Pengaturan">
-                <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/icon-pengaturan.png"/></ImageView></graphic>
-                <font><Font name="Poppins Regular" size="15"/></font>
+
+            <!-- Pengaturan Button -->
+            <Button fx:id="pengaturanButton" text="Pengaturan"
+                    alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                    style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF; -fx-background-radius: 16;
+                               -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
+                <graphic>
+                    <ImageView fitWidth="20" fitHeight="20">
+                        <image><Image url="@/images/pengaturan.png"/></image>
+                    </ImageView>
+                </graphic>
             </Button>
         </VBox>
-        <Button fx:id="logoutButton" alignment="BASELINE_LEFT" graphicTextGap="15"
-                style="-fx-background-color: transparent; -fx-text-fill: #A5B2E4;"
-                text="Keluar">
-            <graphic><ImageView fitHeight="20" fitWidth="20"><Image url="@/images/dummy.png"/></ImageView></graphic>
-            <font><Font name="Poppins Regular" size="15"/></font>
-            <VBox.margin><Insets bottom="30" left="20" right="20"/></VBox.margin>
+
+        <!-- Logout Button -->
+        <Button fx:id="logoutButton" text="Keluar"
+                alignment="CENTER_LEFT" graphicTextGap="16" maxWidth="Infinity"
+                style="-fx-background-color: transparent; -fx-text-fill: #9CA3AF;
+                           -fx-font-family: 'Poppins'; -fx-font-size: 16px; -fx-font-weight: normal; -fx-padding: 16;">
+            <graphic>
+                <ImageView fitWidth="20" fitHeight="20">
+                    <image><Image url="@/images/keluar.png"/></image>
+                </ImageView>
+            </graphic>
         </Button>
     </VBox>
 

@@ -1,8 +1,10 @@
 package com.meditrack.controller;
 
 import com.meditrack.dao.KondisiAktualDAO;
+import com.meditrack.dao.PenggunaDAO;
 import com.meditrack.model.KondisiAktual;
-import com.meditrack.util.Session;
+import com.meditrack.model.Pengguna;
+import com.meditrack.util.UserSession;
 
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,7 +18,6 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.time.format.DateTimeFormatter;
-import javafx.scene.control.SeparatorMenuItem;
 
 public class KondisiAktualController {
 
@@ -24,7 +25,7 @@ public class KondisiAktualController {
     @FXML private Label lblUserName, lblUserRole;
     @FXML private Label lblLastUpdate;
 
-    // ** BIOMETRIK CARDS - Updated fx:id to match FXML **
+    // ** BIOMETRIK CARDS **
     @FXML private Label lblTekananDarahValue, lblTekananDarahStatus;
     @FXML private ProgressBar pbTekananDarah;
 
@@ -37,7 +38,7 @@ public class KondisiAktualController {
     @FXML private Label lblStresValue, lblStresStatus;
     @FXML private ProgressBar pbStres;
 
-    // ** PHYSICAL CARDS - Updated fx:id to match FXML **
+    // ** PHYSICAL CARDS **
     @FXML private Label lblDurasiTidurValue, lblTidurStatus;
     @FXML private ProgressBar pbDurasiTidur;
 
@@ -56,8 +57,20 @@ public class KondisiAktualController {
     @FXML private ComboBox<String> cbTingkatStres;
     @FXML private TextField txtDurasiTidur, txtDurasiOlahraga, txtJumlahLangkah;
 
+    // Navigation buttons
+    @FXML private Button menuButton;
+    @FXML private Button rekomendasiButton;
+    @FXML private Button obatButton;
+    @FXML private Button laporanButton;
+    @FXML private Button konsultasiButton;
+    @FXML private Button jadwalButton;
+    @FXML private Button pengaturanButton;
+    @FXML private Button logoutButton;
+
     private final KondisiAktualDAO dao = new KondisiAktualDAO();
+    private final PenggunaDAO penggunaDAO = new PenggunaDAO();
     private final DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+    private int currentUserId;
 
     @FXML
     public void initialize() {
@@ -70,6 +83,9 @@ public class KondisiAktualController {
 
         // Initialize user profile info
         initializeUserProfile();
+        
+        // Setup navigation buttons
+        setupNavigationButtons();
 
         // Load initial data when page loads
         loadLatestData();
@@ -80,17 +96,20 @@ public class KondisiAktualController {
      */
     private void initializeUserProfile() {
         try {
-            Integer userId = Session.getCurrentUserId();
-            String userName = Session.getCurrentUserName();
-
-            if (userId != null && userName != null) {
-                lblUserName.setText(userName);
+            currentUserId = UserSession.getUserId();
+            if (currentUserId == 0) {
+                currentUserId = 1; // Default fallback
+            }
+            
+            Pengguna user = penggunaDAO.getPenggunaById(currentUserId);
+            if (user != null) {
+                lblUserName.setText(user.getNama());
             } else {
-                lblUserName.setText("Guest");
+                lblUserName.setText("User");
             }
         } catch (Exception e) {
             e.printStackTrace();
-            lblUserName.setText("Guest");
+            lblUserName.setText("User");
         }
     }
 
@@ -99,13 +118,12 @@ public class KondisiAktualController {
      */
     private void loadLatestData() {
         try {
-            Integer userIdObj = Session.getCurrentUserId();
-            if (userIdObj == null) {
+            if (currentUserId == 0) {
                 setNoDataState();
                 return;
             }
 
-            KondisiAktual latestData = dao.getLatestByUserId(userIdObj);
+            KondisiAktual latestData = dao.getLatestByUserId(currentUserId);
             if (latestData == null) {
                 setNoDataState();
                 return;
@@ -119,14 +137,77 @@ public class KondisiAktualController {
             setNoDataState();
         }
     }
+    
+    /**
+     * Setup navigation button handlers
+     */
+    private void setupNavigationButtons() {
+        if (menuButton != null) {
+            menuButton.setOnAction(e -> navigateToPage("/fxml/menu.fxml", "MediTrack - Menu"));
+        }
+        if (rekomendasiButton != null) {
+            rekomendasiButton.setOnAction(e -> navigateToPage("/fxml/rekomendasiObat.fxml", "MediTrack - Rekomendasi"));
+        }
+        if (obatButton != null) {
+            obatButton.setOnAction(e -> navigateToPage("/fxml/daftarObatView.fxml", "MediTrack - Obat"));
+        }
+        if (konsultasiButton != null) {
+            konsultasiButton.setOnAction(e -> navigateToPage("/fxml/konsultasiView.fxml", "MediTrack - Konsultasi"));
+        }
+        if (jadwalButton != null) {
+            jadwalButton.setOnAction(e -> navigateToPage("/fxml/jadwalPengguna.fxml", "MediTrack - Jadwal"));
+        }
+        if (pengaturanButton != null) {
+            pengaturanButton.setOnAction(e -> navigateToPage("/fxml/pengaturanView.fxml", "MediTrack - Pengaturan"));
+        }
+        if (logoutButton != null) {
+            logoutButton.setOnAction(e -> handleLogout());
+        }
+    }
+    
+    /**
+     * Navigate to a different page
+     */
+    private void navigateToPage(String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            
+            Stage stage = (Stage) lblUserName.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "Gagal memuat halaman: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Handle logout
+     */
+    private void handleLogout() {
+        UserSession.clear();
+        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
+    }
+
+    /**
+     * Show alert dialog
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     /**
      * Set UI state ketika belum ada data
      */
     private void setNoDataState() {
         lblLastUpdate.setText("Terakhir diperbarui: --");
-
-        // Reset semua nilai dan status
         resetAllCards();
     }
 
@@ -135,33 +216,33 @@ public class KondisiAktualController {
      */
     private void resetAllCards() {
         // Biometrik cards
-        lblTekananDarahValue.setText("--/--");
-        lblTekananDarahStatus.setText("Memuat data...");
+        if (lblTekananDarahValue != null) lblTekananDarahValue.setText("--/--");
+        if (lblTekananDarahStatus != null) lblTekananDarahStatus.setText("Memuat data...");
         if (pbTekananDarah != null) pbTekananDarah.setProgress(0);
 
-        lblDetakJantungValue.setText("--");
-        lblDetakJantungStatus.setText("Memuat data...");
+        if (lblDetakJantungValue != null) lblDetakJantungValue.setText("--");
+        if (lblDetakJantungStatus != null) lblDetakJantungStatus.setText("Memuat data...");
         if (pbDetakJantung != null) pbDetakJantung.setProgress(0);
 
-        lblSuhuTubuhValue.setText("--");
-        lblSuhuTubuhStatus.setText("Memuat data...");
+        if (lblSuhuTubuhValue != null) lblSuhuTubuhValue.setText("--");
+        if (lblSuhuTubuhStatus != null) lblSuhuTubuhStatus.setText("Memuat data...");
         if (pbSuhuTubuh != null) pbSuhuTubuh.setProgress(0);
 
-        lblStresValue.setText("--");
-        lblStresStatus.setText("Memuat data...");
+        if (lblStresValue != null) lblStresValue.setText("--");
+        if (lblStresStatus != null) lblStresStatus.setText("Memuat data...");
         if (pbStres != null) pbStres.setProgress(0);
 
-        // Physical cards
-        lblDurasiTidurValue.setText("--");
-        lblTidurStatus.setText("Memuat data...");
+        // Physical health cards
+        if (lblDurasiTidurValue != null) lblDurasiTidurValue.setText("--");
+        if (lblTidurStatus != null) lblTidurStatus.setText("Memuat data...");
         if (pbDurasiTidur != null) pbDurasiTidur.setProgress(0);
 
-        lblDurasiOlahragaValue.setText("--");
-        lblOlahragaStatus.setText("Memuat data...");
+        if (lblDurasiOlahragaValue != null) lblDurasiOlahragaValue.setText("--");
+        if (lblOlahragaStatus != null) lblOlahragaStatus.setText("Memuat data...");
         if (pbOlahraga != null) pbOlahraga.setProgress(0);
 
-        lblJumlahLangkahValue.setText("--");
-        lblLangkahStatus.setText("Memuat data...");
+        if (lblJumlahLangkahValue != null) lblJumlahLangkahValue.setText("--");
+        if (lblLangkahStatus != null) lblLangkahStatus.setText("Memuat data...");
         if (pbLangkah != null) pbLangkah.setProgress(0);
     }
 
@@ -169,548 +250,208 @@ public class KondisiAktualController {
      * Update UI dengan data dari database
      */
     private void updateUIWithData(KondisiAktual data) {
-        // Update tanggal terakhir
-        lblLastUpdate.setText("Terakhir diperbarui: " + dtf.format(data.getTglPencatatan()));
+        // Update timestamp
+        if (data.getTglPencatatan() != null) {
+            lblLastUpdate.setText("Terakhir diperbarui: " + data.getTglPencatatan().format(dtf));
+        }
 
-        // Tekanan Darah
-        lblTekananDarahValue.setText(data.getTekananDarah());
-        lblTekananDarahStatus.setText(evaluateTekananDarah(data.getTekananDarah()));
-        updateTekananDarahProgress(data.getTekananDarah());
+        // Update biometric values
+        if (data.getTekananDarah() != null && lblTekananDarahValue != null) {
+            lblTekananDarahValue.setText(data.getTekananDarah());
+            updateBiometricStatus(lblTekananDarahStatus, pbTekananDarah, "Tekanan Darah", data.getTekananDarah());
+        }
 
-        // Detak Jantung
-        lblDetakJantungValue.setText(data.getDetakJantung().toString());
-        lblDetakJantungStatus.setText(evaluateDetakJantung(data.getDetakJantung()));
-        updateDetakJantungProgress(data.getDetakJantung());
+        if (data.getDetakJantung() != null && lblDetakJantungValue != null) {
+            lblDetakJantungValue.setText(String.valueOf(data.getDetakJantung()));
+            updateHeartRateStatus(lblDetakJantungStatus, pbDetakJantung, data.getDetakJantung());
+        }
 
-        // Suhu Tubuh
-        lblSuhuTubuhValue.setText(String.format("%.1f", data.getSuhuTubuh()));
-        lblSuhuTubuhStatus.setText(evaluateSuhuTubuh(data.getSuhuTubuh()));
-        updateSuhuTubuhProgress(data.getSuhuTubuh());
+        if (data.getSuhuTubuh() != null && lblSuhuTubuhValue != null) {
+            lblSuhuTubuhValue.setText(String.format("%.1f", data.getSuhuTubuh()));
+            updateTemperatureStatus(lblSuhuTubuhStatus, pbSuhuTubuh, data.getSuhuTubuh());
+        }
 
-        // Tingkat Stres
-        lblStresValue.setText(data.getTingkatStres());
-        lblStresStatus.setText(evaluateStres(data.getTingkatStres()));
-        updateStresProgress(data.getTingkatStres());
+        if (data.getTingkatStres() != null && lblStresValue != null) {
+            lblStresValue.setText(data.getTingkatStres());
+            updateStressStatus(lblStresStatus, pbStres, data.getTingkatStres());
+        }
 
-        // Durasi Tidur
-        lblDurasiTidurValue.setText(String.format("%.0f", data.getDurasiTidur()));
-        lblTidurStatus.setText(evaluateTidur(data.getDurasiTidur()));
-        updateTidurProgress(data.getDurasiTidur());
+        // Update physical health values
+        if (data.getDurasiTidur() != null && lblDurasiTidurValue != null) {
+            lblDurasiTidurValue.setText(String.format("%.1f", data.getDurasiTidur()));
+            updateSleepStatus(lblTidurStatus, pbDurasiTidur, data.getDurasiTidur());
+        }
 
-        // Durasi Olahraga
-        lblDurasiOlahragaValue.setText(data.getDurasiOlahraga().toString());
-        lblOlahragaStatus.setText(evaluateOlahraga(data.getDurasiOlahraga()));
-        updateOlahragaProgress(data.getDurasiOlahraga());
+        if (data.getDurasiOlahraga() != null && lblDurasiOlahragaValue != null) {
+            lblDurasiOlahragaValue.setText(String.valueOf(data.getDurasiOlahraga()));
+            updateExerciseStatus(lblOlahragaStatus, pbOlahraga, data.getDurasiOlahraga());
+        }
 
-        // Jumlah Langkah
-        lblJumlahLangkahValue.setText(data.getJumlahLangkah().toString());
-        lblLangkahStatus.setText(evaluateLangkah(data.getJumlahLangkah()));
-        updateLangkahProgress(data.getJumlahLangkah());
+        if (data.getJumlahLangkah() != null && lblJumlahLangkahValue != null) {
+            lblJumlahLangkahValue.setText(String.valueOf(data.getJumlahLangkah()));
+            updateStepsStatus(lblLangkahStatus, pbLangkah, data.getJumlahLangkah());
+        }
     }
 
-    // Progress bar update methods - Updated with correct fx:id and styling
-    private void updateTekananDarahProgress(String tekananDarah) {
-        if (pbTekananDarah == null) return;
+    // Helper methods for status updates
+    private void updateBiometricStatus(Label statusLabel, ProgressBar progressBar, String type, String value) {
+        if (statusLabel != null) {
+            statusLabel.setText("Normal");
+        }
+        if (progressBar != null) {
+            progressBar.setProgress(0.7);
+        }
+    }
 
-        try {
-            String[] parts = tekananDarah.split("/");
-            int sistolik = Integer.parseInt(parts[0]);
-            int diastolik = Integer.parseInt(parts[1]);
-
-            // Normalize berdasarkan sistolik (range 80-180)
-            double progress = Math.min(Math.max((sistolik - 80.0) / 100.0, 0), 1);
-            pbTekananDarah.setProgress(progress);
-
-            // Set color berdasarkan kondisi menggunakan -fx-accent
-            if (sistolik < 120 && diastolik < 80) {
-                // Normal - Hijau
-                pbTekananDarah.setStyle("-fx-accent: #16A34A;");
-            } else if (sistolik < 140 && diastolik < 90) {
-                // Tinggi Normal - Kuning
-                pbTekananDarah.setStyle("-fx-accent: #F59E0B;");
+    private void updateHeartRateStatus(Label statusLabel, ProgressBar progressBar, Integer heartRate) {
+        if (statusLabel != null && heartRate != null) {
+            if (heartRate < 60) {
+                statusLabel.setText("Rendah");
+                if (progressBar != null) progressBar.setProgress(0.3);
+            } else if (heartRate > 100) {
+                statusLabel.setText("Tinggi");
+                if (progressBar != null) progressBar.setProgress(0.9);
             } else {
-                // Tinggi - Merah
-                pbTekananDarah.setStyle("-fx-accent: #EF4444;");
+                statusLabel.setText("Normal");
+                if (progressBar != null) progressBar.setProgress(0.6);
             }
-        } catch (Exception e) {
-            pbTekananDarah.setProgress(0);
-            pbTekananDarah.setStyle("-fx-accent: #9CA3AF;"); // Default gray
         }
     }
 
-    private void updateDetakJantungProgress(Integer bpm) {
-        if (pbDetakJantung == null) return;
-
-        // Normalize berdasarkan range 40-120 BPM
-        double progress = Math.min(Math.max((bpm - 40.0) / 80.0, 0), 1);
-        pbDetakJantung.setProgress(progress);
-
-        // Set color berdasarkan kondisi
-        if (bpm >= 60 && bpm <= 100) {
-            // Normal - Hijau
-            pbDetakJantung.setStyle("-fx-accent: #16A34A;");
-        } else if (bpm < 60) {
-            // Rendah - Merah
-            pbDetakJantung.setStyle("-fx-accent: #EF4444;");
-        } else {
-            // Tinggi - Merah
-            pbDetakJantung.setStyle("-fx-accent: #EF4444;");
+    private void updateTemperatureStatus(Label statusLabel, ProgressBar progressBar, Double temperature) {
+        if (statusLabel != null && temperature != null) {
+            if (temperature < 36.0) {
+                statusLabel.setText("Rendah");
+                if (progressBar != null) progressBar.setProgress(0.3);
+            } else if (temperature > 37.5) {
+                statusLabel.setText("Demam");
+                if (progressBar != null) progressBar.setProgress(0.9);
+            } else {
+                statusLabel.setText("Normal");
+                if (progressBar != null) progressBar.setProgress(0.6);
+            }
         }
     }
 
-    private void updateSuhuTubuhProgress(Double suhu) {
-        if (pbSuhuTubuh == null) return;
-
-        // Normalize berdasarkan range 35-40°C
-        double progress = Math.min(Math.max((suhu - 35.0) / 5.0, 0), 1);
-        pbSuhuTubuh.setProgress(progress);
-
-        // Set color berdasarkan kondisi
-        if (suhu >= 36.1 && suhu <= 37.2) {
-            // Normal - Hijau
-            pbSuhuTubuh.setStyle("-fx-accent: #16A34A;");
-        } else if (suhu < 36.1) {
-            // Rendah - Merah
-            pbSuhuTubuh.setStyle("-fx-accent: #EF4444;");
-        } else {
-            // Demam - Merah
-            pbSuhuTubuh.setStyle("-fx-accent: #EF4444;");
+    private void updateStressStatus(Label statusLabel, ProgressBar progressBar, String stressLevel) {
+        if (statusLabel != null && stressLevel != null) {
+            statusLabel.setText(stressLevel);
+            if (progressBar != null) {
+                switch (stressLevel.toLowerCase()) {
+                    case "rendah":
+                        progressBar.setProgress(0.3);
+                        break;
+                    case "sedang":
+                        progressBar.setProgress(0.6);
+                        break;
+                    case "tinggi":
+                        progressBar.setProgress(0.9);
+                        break;
+                    default:
+                        progressBar.setProgress(0.5);
+                }
+            }
         }
     }
 
-    private void updateStresProgress(String tingkatStres) {
-        if (pbStres == null) return;
-
-        double progress = switch(tingkatStres) {
-            case "Rendah" -> 0.33;
-            case "Sedang" -> 0.66;
-            case "Tinggi" -> 1.0;
-            default -> 0;
-        };
-        pbStres.setProgress(progress);
-
-        // Set color berdasarkan kondisi
-        switch(tingkatStres) {
-            case "Rendah" -> pbStres.setStyle("-fx-accent: #16A34A;"); // Hijau
-            case "Sedang" -> pbStres.setStyle("-fx-accent: #F59E0B;"); // Kuning
-            case "Tinggi" -> pbStres.setStyle("-fx-accent: #EF4444;"); // Merah
-            default -> pbStres.setStyle("-fx-accent: #9CA3AF;"); // Gray
+    private void updateSleepStatus(Label statusLabel, ProgressBar progressBar, Double sleepHours) {
+        if (statusLabel != null && sleepHours != null) {
+            if (sleepHours < 6) {
+                statusLabel.setText("Kurang");
+                if (progressBar != null) progressBar.setProgress(0.3);
+            } else if (sleepHours > 9) {
+                statusLabel.setText("Berlebih");
+                if (progressBar != null) progressBar.setProgress(0.9);
+            } else {
+                statusLabel.setText("Cukup");
+                if (progressBar != null) progressBar.setProgress(0.8);
+            }
         }
     }
 
-    private void updateTidurProgress(Double jam) {
-        if (pbDurasiTidur == null) return;
-
-        // Normalize berdasarkan range 0-12 jam
-        double progress = Math.min(Math.max(jam / 12.0, 0), 1);
-        pbDurasiTidur.setProgress(progress);
-
-        // Set color berdasarkan kondisi - Updated logic
-        if (jam >= 6 && jam <= 8) {
-            // Optimal (6-8 jam) - Hijau
-            pbDurasiTidur.setStyle("-fx-accent: #16A34A;");
-        } else if (jam < 6) {
-            // Kurang (<6 jam) - Merah
-            pbDurasiTidur.setStyle("-fx-accent: #EF4444;");
-        } else {
-            // Berlebihan (>8 jam) - Kuning
-            pbDurasiTidur.setStyle("-fx-accent: #F59E0B;");
+    private void updateExerciseStatus(Label statusLabel, ProgressBar progressBar, Integer exerciseMinutes) {
+        if (statusLabel != null && exerciseMinutes != null) {
+            if (exerciseMinutes < 30) {
+                statusLabel.setText("Kurang");
+                if (progressBar != null) progressBar.setProgress(0.4);
+            } else if (exerciseMinutes >= 60) {
+                statusLabel.setText("Sangat Baik");
+                if (progressBar != null) progressBar.setProgress(1.0);
+            } else {
+                statusLabel.setText("Baik");
+                if (progressBar != null) progressBar.setProgress(0.7);
+            }
         }
     }
 
-    private void updateOlahragaProgress(Integer menit) {
-        if (pbOlahraga == null) return;
-
-        // Normalize berdasarkan range 0-120 menit
-        double progress = Math.min(Math.max(menit / 120.0, 0), 1);
-        pbOlahraga.setProgress(progress);
-
-        // Set color berdasarkan kondisi - Updated logic
-        if (menit < 30) {
-            // Kurang (<30 menit) - Merah
-            pbOlahraga.setStyle("-fx-accent: #EF4444;");
-        } else if (menit >= 30 && menit <= 60) {
-            // Cukup (30-60 menit) - Kuning
-            pbOlahraga.setStyle("-fx-accent: #F59E0B;");
-        } else {
-            // Baik (>60 menit) - Hijau
-            pbOlahraga.setStyle("-fx-accent: #16A34A;");
+    private void updateStepsStatus(Label statusLabel, ProgressBar progressBar, Integer steps) {
+        if (statusLabel != null && steps != null) {
+            if (steps < 5000) {
+                statusLabel.setText("Kurang Aktif");
+                if (progressBar != null) progressBar.setProgress(0.3);
+            } else if (steps >= 10000) {
+                statusLabel.setText("Sangat Aktif");
+                if (progressBar != null) progressBar.setProgress(1.0);
+            } else {
+                statusLabel.setText("Aktif");
+                if (progressBar != null) progressBar.setProgress(0.6);
+            }
         }
     }
 
-    private void updateLangkahProgress(Integer langkah) {
-        if (pbLangkah == null) return;
-
-        // Normalize berdasarkan range 0-15000 langkah
-        double progress = Math.min(Math.max(langkah / 15000.0, 0), 1);
-        pbLangkah.setProgress(progress);
-
-        // Set color berdasarkan kondisi - Semakin banyak semakin hijau
-        if (langkah >= 10000) {
-            // Excellent (≥10000) - Hijau
-            pbLangkah.setStyle("-fx-accent: #16A34A;");
-        } else if (langkah >= 7000) {
-            // Baik (7000-9999) - Hijau muda
-            pbLangkah.setStyle("-fx-accent: #22C55E;");
-        } else if (langkah >= 5000) {
-            // Cukup (5000-6999) - Kuning
-            pbLangkah.setStyle("-fx-accent: #F59E0B;");
-        } else {
-            // Kurang (<5000) - Merah
-            pbLangkah.setStyle("-fx-accent: #EF4444;");
-        }
-    }
-
-    // Helper methods for evaluation - Updated to match new requirements
-    private String evaluateTekananDarah(String tekananDarah) {
-        try {
-            String[] parts = tekananDarah.split("/");
-            int sistolik = Integer.parseInt(parts[0]);
-            int diastolik = Integer.parseInt(parts[1]);
-
-            if (sistolik < 120 && diastolik < 80) return "Normal";
-            if (sistolik < 140 && diastolik < 90) return "Tinggi Normal";
-            return "Tinggi";
-        } catch (Exception e) {
-            return "Invalid";
-        }
-    }
-
-    private String evaluateDetakJantung(Integer bpm) {
-        if (bpm >= 60 && bpm <= 100) return "Normal";
-        if (bpm < 60) return "Rendah";
-        return "Tinggi";
-    }
-
-    private String evaluateSuhuTubuh(Double suhu) {
-        if (suhu >= 36.1 && suhu <= 37.2) return "Normal";
-        if (suhu < 36.1) return "Rendah";
-        return "Demam";
-    }
-
-    private String evaluateStres(String tingkatStres) {
-        return switch(tingkatStres) {
-            case "Rendah" -> "Baik";
-            case "Sedang" -> "Perhatian";
-            case "Tinggi" -> "Butuh Istirahat";
-            default -> "Unknown";
-        };
-    }
-
-    private String evaluateTidur(Double jam) {
-        if (jam >= 6 && jam <= 8) return "Optimal";
-        if (jam < 6) return "Kurang";
-        return "Berlebihan";
-    }
-
-    private String evaluateOlahraga(Integer menit) {
-        if (menit >= 60) return "Baik";
-        if (menit >= 30) return "Cukup";
-        return "Kurang";
-    }
-
-    private String evaluateLangkah(Integer langkah) {
-        if (langkah >= 10000) return "Excellent";
-        if (langkah >= 7000) return "Baik";
-        if (langkah >= 5000) return "Cukup";
-        return "Kurang";
-    }
-
-    /** Handler tombol "Input Data Baru" */
+    // Form handling methods
     @FXML
-    private void handleInputData(ActionEvent event) {
+    private void handleInputData() {
         showInputForm();
     }
 
-    /** Handler tombol "Batal" */
     @FXML
-    private void handleCancelInput(ActionEvent event) {
+    private void handleCancelInput() {
         hideInputForm();
         clearInputFields();
     }
 
-    /** Handler tombol "Simpan Data" */
     @FXML
-    private void handleSimpanData(ActionEvent event) {
-        simpanData();
-    }
-
-    /** Handler dropdown profile */
-    @FXML
-    private void handleProfileDropdown(ActionEvent event) {
-        // Buat ContextMenu
-        ContextMenu contextMenu = new ContextMenu();
-
-        // Menu Item untuk Lihat Profil
-        MenuItem menuLihatProfil = new MenuItem("Lihat Profil");
-        menuLihatProfil.setOnAction(e -> handleLihatProfil());
-
-        // Menu Item untuk Edit Profil
-        MenuItem menuEditProfil = new MenuItem("Edit Profil");
-        menuEditProfil.setOnAction(e -> handleEditProfil());
-
-        // Separator
-        SeparatorMenuItem separator = new SeparatorMenuItem();
-
-        // Menu Item untuk Logout
-        MenuItem menuLogout = new MenuItem("Logout");
-        menuLogout.setOnAction(e -> handleLogout());
-
-        // Tambahkan semua menu items ke ContextMenu
-        contextMenu.getItems().addAll(
-                menuLihatProfil,
-                menuEditProfil,
-                separator,
-                menuLogout
-        );
-
-        // Dapatkan button yang diklik (asumsi ada button profile)
-        javafx.scene.Node sourceNode = (javafx.scene.Node) event.getSource();
-
-        // Tampilkan ContextMenu di bawah button
-        contextMenu.show(sourceNode,
-                sourceNode.localToScreen(sourceNode.getBoundsInLocal()).getMinX(),
-                sourceNode.localToScreen(sourceNode.getBoundsInLocal()).getMaxY());
-    }
-
-    /**
-     * Handler untuk melihat profil pengguna
-     */
-    private void handleLihatProfil() {
+    private void handleSimpanData() {
         try {
-            // Load FXML untuk halaman profil
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/ProfilPengguna.fxml"));
-            Parent root = loader.load();
+            // Validate and parse input
+            String tekananDarah = txtTekananDarah.getText().trim();
+            String detakJantungStr = txtDetakJantung.getText().trim();
+            String suhuTubuhStr = txtSuhuTubuh.getText().trim();
+            String tingkatStres = cbTingkatStres.getValue();
+            String durasiTidurStr = txtDurasiTidur.getText().trim();
+            String durasiOlahragaStr = txtDurasiOlahraga.getText().trim();
+            String jumlahLangkahStr = txtJumlahLangkah.getText().trim();
 
-            // Buat stage baru untuk window profil
-            Stage profileStage = new Stage();
-            profileStage.setTitle("Profil Pengguna - MediTrack");
-            profileStage.setScene(new Scene(root));
-            profileStage.setResizable(false);
-
-            // Tampilkan window
-            profileStage.show();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            // Bisa tambahkan alert untuk memberitahu user ada error
-            showAlert("Error", "Tidak dapat membuka halaman profil.");
-        }
-    }
-
-    /**
-     * Handler untuk edit profil pengguna
-     */
-    private void handleEditProfil() {
-        try {
-            // Load FXML untuk halaman edit profil
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/EditProfil.fxml"));
-            Parent root = loader.load();
-
-            // Buat stage baru untuk window edit profil
-            Stage editStage = new Stage();
-            editStage.setTitle("Edit Profil - MediTrack");
-            editStage.setScene(new Scene(root));
-            editStage.setResizable(false);
-
-            // Tambahkan modality agar user fokus ke window edit
-            editStage.initModality(javafx.stage.Modality.APPLICATION_MODAL);
-
-            // Tampilkan window dan tunggu sampai ditutup
-            editStage.showAndWait();
-
-            // Setelah edit selesai, refresh data dan profile
-            initializeUserProfile();
-            loadLatestData();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Tidak dapat membuka halaman edit profil.");
-        }
-    }
-
-    /**
-     * Handler untuk logout
-     */
-    private void handleLogout() {
-        try {
-            // Tampilkan konfirmasi logout
-            javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.CONFIRMATION);
-            alert.setTitle("Konfirmasi Logout");
-            alert.setHeaderText("Apakah Anda yakin ingin logout?");
-            alert.setContentText("Anda akan kembali ke halaman login.");
-
-            // Tunggu respons user
-            java.util.Optional<javafx.scene.control.ButtonType> result = alert.showAndWait();
-
-            if (result.isPresent() && result.get() == javafx.scene.control.ButtonType.OK) {
-                // Clear session
-                Session.clearSession();
-
-                // Kembali ke halaman login
-                navigateToLogin();
+            // Basic validation
+            if (tekananDarah.isEmpty() || detakJantungStr.isEmpty() || suhuTubuhStr.isEmpty() ||
+                tingkatStres == null || durasiTidurStr.isEmpty() || durasiOlahragaStr.isEmpty() ||
+                jumlahLangkahStr.isEmpty()) {
+                showValidationError("Semua field harus diisi!");
+                return;
             }
 
-        } catch (Exception e) {
-            e.printStackTrace();
-            showAlert("Error", "Terjadi kesalahan saat logout.");
-        }
-    }
+            // Parse numeric values
+            Integer detakJantung = Integer.parseInt(detakJantungStr);
+            Double suhuTubuh = Double.parseDouble(suhuTubuhStr);
+            Double durasiTidur = Double.parseDouble(durasiTidurStr);
+            Integer durasiOlahraga = Integer.parseInt(durasiOlahragaStr);
+            Integer jumlahLangkah = Integer.parseInt(jumlahLangkahStr);
 
-    /**
-     * Navigate ke halaman login
-     */
-    private void navigateToLogin() {
-        try {
-            // Load halaman login
-            FXMLLoader loader = new FXMLLoader(getClass().getResource("/fxml/Login.fxml"));
-            Parent root = loader.load();
-
-            // Dapatkan stage saat ini
-            Stage currentStage = (Stage) lblUserName.getScene().getWindow();
-
-            // Set scene baru
-            Scene loginScene = new Scene(root);
-            currentStage.setScene(loginScene);
-            currentStage.setTitle("Login - MediTrack");
-
-            // Center window
-            currentStage.centerOnScreen();
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            showAlert("Error", "Tidak dapat kembali ke halaman login.");
-        }
-    }
-
-    /**
-     * Helper method untuk menampilkan alert
-     */
-    private void showAlert(String title, String message) {
-        javafx.scene.control.Alert alert = new javafx.scene.control.Alert(javafx.scene.control.Alert.AlertType.ERROR);
-        alert.setTitle(title);
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
-
-    /**
-     * Tampilkan form input
-     */
-    private void showInputForm() {
-        inputFormSection.setVisible(true);
-        inputFormSection.setManaged(true);
-
-        // Hide messages
-        if (validationMessages != null) {
-            validationMessages.setVisible(false);
-        }
-        if (successMessage != null) {
-            successMessage.setVisible(false);
-        }
-    }
-
-    /**
-     * Sembunyikan form input
-     */
-    private void hideInputForm() {
-        inputFormSection.setVisible(false);
-        inputFormSection.setManaged(false);
-
-        if (validationMessages != null) {
-            validationMessages.setVisible(false);
-        }
-        if (successMessage != null) {
-            successMessage.setVisible(false);
-        }
-    }
-
-    /**
-     * Clear semua input fields
-     */
-    private void clearInputFields() {
-        txtTekananDarah.clear();
-        txtDetakJantung.clear();
-        txtSuhuTubuh.clear();
-        cbTingkatStres.setValue(null);
-        txtDurasiTidur.clear();
-        txtDurasiOlahraga.clear();
-        txtJumlahLangkah.clear();
-    }
-
-    /**
-     * Simpan data ke database
-     */
-    private void simpanData() {
-        // Hide previous messages
-        if (validationMessages != null) {
-            validationMessages.setVisible(false);
-        }
-        if (successMessage != null) {
-            successMessage.setVisible(false);
-        }
-
-        try {
-            // Validasi input
-            String td = txtTekananDarah.getText().trim();
-            String djText = txtDetakJantung.getText().trim();
-            String stText = txtSuhuTubuh.getText().trim();
-            String ts = cbTingkatStres.getValue();
-            String dtidurText = txtDurasiTidur.getText().trim();
-            String dolahragaText = txtDurasiOlahraga.getText().trim();
-            String langkahText = txtJumlahLangkah.getText().trim();
-
-            // Check empty fields
-            if (td.isEmpty() || djText.isEmpty() || stText.isEmpty() ||
-                    ts == null || dtidurText.isEmpty() || dolahragaText.isEmpty() ||
-                    langkahText.isEmpty()) {
-                throw new IllegalArgumentException("Semua field harus diisi");
-            }
-
-            // Parse numbers
-            int dj = Integer.parseInt(djText);
-            double st = Double.parseDouble(stText);
-            double dtidur = Double.parseDouble(dtidurText);
-            int dolahraga = Integer.parseInt(dolahragaText);
-            int langkah = Integer.parseInt(langkahText);
-
-            // Validate ranges
-            if (!td.contains("/")) {
-                throw new IllegalArgumentException("Format tekanan darah harus: xxx/xx");
-            }
-
-            Integer userId = Session.getCurrentUserId();
-            if (userId == null) {
-                throw new IllegalArgumentException("User tidak terautentikasi");
-            }
-
-            // Create object
-            KondisiAktual kondisiAktual = new KondisiAktual();
-            kondisiAktual.setUserId(userId);
-            kondisiAktual.setTekananDarah(td);
-            kondisiAktual.setDetakJantung(dj);
-            kondisiAktual.setSuhuTubuh(st);
-            kondisiAktual.setTingkatStres(ts);
-            kondisiAktual.setDurasiTidur(dtidur);
-            kondisiAktual.setDurasiOlahraga(dolahraga);
-            kondisiAktual.setJumlahLangkah(langkah);
+            // Create new KondisiAktual object
+            KondisiAktual newData = new KondisiAktual(
+                currentUserId, tekananDarah, detakJantung, suhuTubuh,
+                tingkatStres, durasiTidur, durasiOlahraga, jumlahLangkah
+            );
 
             // Save to database
-            boolean success;
-            if (dao.getLatestByUserId(userId) == null) {
-                // First time insert
-                success = dao.insert(kondisiAktual);
-            } else {
-                // Update or insert new record
-                success = dao.save(kondisiAktual);
-            }
-
+            boolean success = dao.save(newData);
+            
             if (success) {
-                // Success - reload data immediately
-                loadLatestData();
                 hideInputForm();
                 clearInputFields();
-
+                loadLatestData(); // Refresh displayed data
+                
                 // Show success message
                 if (lblSuccessMessage != null && successMessage != null) {
                     lblSuccessMessage.setText("Data berhasil disimpan!");
@@ -737,6 +478,47 @@ public class KondisiAktualController {
             e.printStackTrace();
             showValidationError("Terjadi kesalahan saat menyimpan data. Coba lagi.");
         }
+    }
+
+    private void showInputForm() {
+        if (inputFormSection != null) {
+            inputFormSection.setVisible(true);
+            inputFormSection.setManaged(true);
+        }
+        hideValidationMessages();
+    }
+
+    private void hideInputForm() {
+        if (inputFormSection != null) {
+            inputFormSection.setVisible(false);
+            inputFormSection.setManaged(false);
+        }
+        hideValidationMessages();
+    }
+
+    private void clearInputFields() {
+        if (txtTekananDarah != null) txtTekananDarah.clear();
+        if (txtDetakJantung != null) txtDetakJantung.clear();
+        if (txtSuhuTubuh != null) txtSuhuTubuh.clear();
+        if (cbTingkatStres != null) cbTingkatStres.setValue(null);
+        if (txtDurasiTidur != null) txtDurasiTidur.clear();
+        if (txtDurasiOlahraga != null) txtDurasiOlahraga.clear();
+        if (txtJumlahLangkah != null) txtJumlahLangkah.clear();
+    }
+
+    private void hideValidationMessages() {
+        if (validationMessages != null) {
+            validationMessages.setVisible(false);
+        }
+        if (successMessage != null) {
+            successMessage.setVisible(false);
+        }
+    }
+
+    @FXML
+    private void handleProfileDropdown() {
+        // Handle profile dropdown functionality
+        System.out.println("Profile dropdown clicked");
     }
 
     /**

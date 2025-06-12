@@ -7,10 +7,16 @@ import com.meditrack.dao.RekomendasiDAO;
 import com.meditrack.model.DaftarObat;
 import com.meditrack.model.Pengguna;
 import com.meditrack.model.Rekomendasi;
+import com.meditrack.util.UserSession;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.Node;
+import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
@@ -38,16 +44,115 @@ public class RekomendasiObatController {
 
     @FXML
     public Label userNameLabel;
+    
+    // Navigation buttons
+    @FXML private Button menuButton;
+    @FXML private Button rekomendasiButton;
+    @FXML private Button obatButton;
+    @FXML private Button laporanButton;
+    @FXML private Button konsultasiButton;
+    @FXML private Button jadwalButton;
+    @FXML private Button pengaturanButton;
+    @FXML private Button logoutButton;
 
     public final RekomendasiDAO rekomendasiDAO = new RekomendasiDAO();
     public final DaftarObatDAO daftarObatDAO = new DaftarObatDAO();
     public final PenggunaDAO penggunaDAO = new PenggunaDAO();
     public final List<Rekomendasi> allRekomendasi = new ArrayList<>();
     private final KondisiAktualDAO kondisiAktualDAO = new KondisiAktualDAO();
+    private int currentUserId;
+    
+    /**
+     * Load user data from session
+     */
+    private void loadUserData() {
+        currentUserId = UserSession.getUserId();
+        if (currentUserId == 0) {
+            currentUserId = 1; // Default fallback
+        }
+        
+        try {
+            Pengguna user = penggunaDAO.getPenggunaById(currentUserId);
+            if (user != null) {
+                userNameLabel.setText(user.getNama());
+            } else {
+                userNameLabel.setText("User");
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to load user data: " + e.getMessage());
+            userNameLabel.setText("User");
+        }
+    }
+    
+    /**
+     * Setup navigation button handlers
+     */
+    private void setupNavigationButtons() {
+        if (menuButton != null) {
+            menuButton.setOnAction(e -> navigateToPage("/fxml/menu.fxml", "MediTrack - Menu"));
+        }
+        if (obatButton != null) {
+            obatButton.setOnAction(e -> navigateToPage("/fxml/daftarObatView.fxml", "MediTrack - Obat"));
+        }
+        if (laporanButton != null) {
+            laporanButton.setOnAction(e -> navigateToPage("/fxml/kondisiAktual.fxml", "MediTrack - Laporan Kesehatan"));
+        }
+        if (konsultasiButton != null) {
+            konsultasiButton.setOnAction(e -> navigateToPage("/fxml/konsultasiView.fxml", "MediTrack - Konsultasi"));
+        }
+        if (jadwalButton != null) {
+            jadwalButton.setOnAction(e -> navigateToPage("/fxml/jadwalPengguna.fxml", "MediTrack - Jadwal"));
+        }
+        if (pengaturanButton != null) {
+            pengaturanButton.setOnAction(e -> navigateToPage("/fxml/pengaturanView.fxml", "MediTrack - Pengaturan"));
+        }
+        if (logoutButton != null) {
+            logoutButton.setOnAction(e -> handleLogout());
+        }
+    }
+    
+    /**
+     * Navigate to a different page
+     */
+    private void navigateToPage(String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            
+            Stage stage = (Stage) rekomendasiContainer.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert("Error", "Gagal memuat halaman: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Handle logout
+     */
+    private void handleLogout() {
+        UserSession.clear();
+        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
+    }
+    
+    /**
+     * Show alert dialog
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
 
     @FXML
     public void initialize() {
-        userNameLabel.setText("Carlos");
+        loadUserData();
+        setupNavigationButtons();
         loadRekomendasi();
     }
 

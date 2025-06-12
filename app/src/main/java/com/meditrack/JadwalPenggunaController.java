@@ -1,8 +1,11 @@
 package com.meditrack;
 
 import com.meditrack.dao.JadwalDAO;
+import com.meditrack.dao.PenggunaDAO;
 import com.meditrack.model.Jadwal;
+import com.meditrack.model.Pengguna;
 import com.meditrack.util.SQLiteConnection;
+import com.meditrack.util.UserSession;
 import javafx.animation.FadeTransition;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -52,16 +55,23 @@ public class JadwalPenggunaController implements Initializable {
     private LocalDate selectedDate;
     private List<Button> dayButtons = new ArrayList<>();
     private JadwalDAO jadwalDAO;
+    private PenggunaDAO penggunaDAO;
+    private int currentUserId;
+    private String currentUserName = "User";
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         try {
             Connection conn = SQLiteConnection.getConnection();
             jadwalDAO = new JadwalDAO(conn);
+            penggunaDAO = new PenggunaDAO();
         } catch (SQLException e) {
             e.printStackTrace();
             showAlert(Alert.AlertType.ERROR, "Koneksi Gagal", "Tidak dapat terhubung ke database.");
         }
+        
+        // Load user data from session
+        loadUserData();
 
         selectedDate = LocalDate.now();
         currentYearMonth = YearMonth.from(selectedDate);
@@ -163,7 +173,7 @@ public class JadwalPenggunaController implements Initializable {
         fadeOut.setFromValue(1.0);
         fadeOut.setToValue(0.0);
         fadeOut.setOnFinished(event -> {
-            selectedDateActivitiesLabel.setText("Pada " + date.format(DateTimeFormatter.ofPattern("dd MMMM uuuu")) + ", Anda akan:");
+            selectedDateActivitiesLabel.setText("Pada " + date.format(DateTimeFormatter.ofPattern("dd MMMM uuuu")) + ", " + currentUserName + " akan:");
             activityListContainer.getChildren().clear();
 
             List<Activity> activities = getActivitiesForDate(date);
@@ -184,6 +194,25 @@ public class JadwalPenggunaController implements Initializable {
             fadeIn.play();
         });
         fadeOut.play();
+    }
+    
+    /**
+     * Load user data from session
+     */
+    private void loadUserData() {
+        currentUserId = UserSession.getUserId();
+        if (currentUserId == 0) {
+            currentUserId = 1; // Default fallback
+        }
+        
+        try {
+            Pengguna user = penggunaDAO.getPenggunaById(currentUserId);
+            if (user != null) {
+                currentUserName = user.getNama();
+            }
+        } catch (Exception e) {
+            System.err.println("Failed to load user data: " + e.getMessage());
+        }
     }
 
     private HBox createActivityCard(Activity activity) {
@@ -399,7 +428,46 @@ public class JadwalPenggunaController implements Initializable {
     private void handleEditAktivitas() {
         showAlert(Alert.AlertType.INFORMATION, "Edit Aktivitas", "Silakan pilih aktivitas yang ingin diedit.");
     }
-
-
+    
+    // Navigation Methods
+    @FXML
+    private void navigateToMenu() {
+        navigateToPage("/fxml/menu.fxml", "MediTrack - Menu");
+    }
+    
+    @FXML
+    private void navigateToRekomendasi() {
+        navigateToPage("/fxml/rekomendasiObat.fxml", "MediTrack - Rekomendasi");
+    }
+    
+    @FXML
+    private void navigateToLaporan() {
+        navigateToPage("/fxml/kondisiAktual.fxml", "MediTrack - Laporan Kesehatan");
+    }
+    
+    @FXML
+    private void handleLogout() {
+        UserSession.clear();
+        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
+    }
+    
+    /**
+     * Navigate to a different page
+     */
+    private void navigateToPage(String fxmlPath, String title) {
+        try {
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            
+            Stage stage = (Stage) monthYearLabel.getScene().getWindow();
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.show();
+        } catch (Exception e) {
+            e.printStackTrace();
+            showAlert(Alert.AlertType.ERROR, "Error", "Gagal memuat halaman: " + e.getMessage());
+        }
+    }
 
 }

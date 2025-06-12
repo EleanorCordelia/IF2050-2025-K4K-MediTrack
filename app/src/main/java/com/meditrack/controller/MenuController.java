@@ -1,18 +1,26 @@
 package com.meditrack.controller;
 
+import com.meditrack.util.UserSession;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.chart.CategoryAxis;
 import javafx.scene.chart.LineChart;
 import javafx.scene.chart.NumberAxis;
 import javafx.scene.chart.XYChart;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 import java.net.URL;
 import java.sql.*;
@@ -41,17 +49,31 @@ public class MenuController implements Initializable {
     @FXML private LineChart<String, Number> healthChart;
     @FXML private CategoryAxis xAxis;
     @FXML private NumberAxis yAxis;
+    
+    // FXML Components - Biometric Data
+    @FXML private Label bloodPressureValue;
+    @FXML private Label heartRateValue;
+    @FXML private Label bodyTempValue;
+    @FXML private Label stressLevelValue;
+    @FXML private Label heroUserName;
 
     // Database connection
     private Connection connection;
-    private int currentUserId = 1; // Default user ID, bisa diambil dari session/login
+    private int currentUserId;
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+        // Get current user ID from session
+        currentUserId = UserSession.getUserId();
+        if (currentUserId == 0) {
+            currentUserId = 1; // Default fallback
+        }
+        
         initializeDatabase();
         loadUserData();
         loadBiometricData();
         loadHealthChart();
+        loadTodaySchedule();
         setupEventHandlers();
     }
 
@@ -128,10 +150,10 @@ public class MenuController implements Initializable {
      */
     private void loadBiometricData() {
         String query = """
-            SELECT tekananDarah, detakJantung, suhuTubuh, tingkatStres, waktuPencatatan
+            SELECT tekananDarah, detakJantung, suhuTubuh, tingkatStres, tglPencatatan
             FROM kondisiaktual 
             WHERE idPengguna = ? 
-            ORDER BY waktuPencatatan DESC 
+            ORDER BY tglPencatatan DESC 
             LIMIT 1
         """;
 
@@ -163,18 +185,32 @@ public class MenuController implements Initializable {
     }
 
     /**
-     * Update biometric cards with data (this would require accessing the labels in the cards)
-     * Since FXML doesn't have fx:id for card labels, this is a placeholder method
+     * Update biometric cards with data
      */
     private void updateBiometricCards(String tekananDarah, int detakJantung, double suhuTubuh, String tingkatStres) {
-        // In a real implementation, you would need to add fx:id to the labels in the FXML
-        // and update them here. For now, this serves as documentation of what data is available.
-
-        System.out.println("Updating biometric cards:");
-        System.out.println("Tekanan Darah: " + tekananDarah);
-        System.out.println("Detak Jantung: " + detakJantung + " BPM");
-        System.out.println("Suhu Tubuh: " + suhuTubuh + "°C");
-        System.out.println("Tingkat Stress: " + tingkatStres);
+        try {
+            if (bloodPressureValue != null) {
+                bloodPressureValue.setText(tekananDarah);
+            }
+            if (heartRateValue != null) {
+                heartRateValue.setText(String.valueOf(detakJantung));
+            }
+            if (bodyTempValue != null) {
+                bodyTempValue.setText(String.valueOf(suhuTubuh));
+            }
+            if (stressLevelValue != null) {
+                stressLevelValue.setText(tingkatStres);
+            }
+            
+            // Update hero section username
+            if (heroUserName != null && lblUserName != null) {
+                heroUserName.setText(lblUserName.getText());
+            }
+            
+            System.out.println("Biometric cards updated successfully");
+        } catch (Exception e) {
+            System.err.println("Failed to update biometric cards: " + e.getMessage());
+        }
     }
 
     /**
@@ -182,10 +218,10 @@ public class MenuController implements Initializable {
      */
     private void loadHealthChart() {
         String query = """
-            SELECT durasi_tidur, durasi_olahraga, jumlah_langkah, waktu_pencatatan
+            SELECT durasiTidur, durasiOlahraga, jumlahLangkah, tglPencatatan
             FROM kondisiaktual 
             WHERE idPengguna = ? 
-            ORDER BY waktuPencatatan DESC 
+            ORDER BY tglPencatatan DESC 
             LIMIT 12
         """;
 
@@ -210,14 +246,14 @@ public class MenuController implements Initializable {
                 double durasiTidur = rs.getDouble("durasiTidur");
                 double durasiOlahraga = rs.getDouble("durasiOlahraga");
                 int jumlahLangkah = rs.getInt("jumlahLangkah");
-                String waktuPencatatan = rs.getString("waktuPencatatan");
+                Timestamp tglPencatatan = rs.getTimestamp("tglPencatatan");
 
-                // Extract month from date (you might want to format this better)
-                String month = extractMonthFromDate(waktuPencatatan);
+                // Extract month from date
+                String month = extractMonthFromDate(tglPencatatan.toString());
                 months.add(month);
 
                 sleepSeries.getData().add(new XYChart.Data<>(month, durasiTidur));
-                exerciseSeries.getData().add(new XYChart.Data<>(month, durasiOlahraga * 60)); // Convert to minutes
+                exerciseSeries.getData().add(new XYChart.Data<>(month, durasiOlahraga)); // Already in minutes
                 stepsSeries.getData().add(new XYChart.Data<>(month, jumlahLangkah / 100)); // Scale down for visibility
             }
 
@@ -317,39 +353,42 @@ public class MenuController implements Initializable {
     // Navigation methods
     private void navigateToRecommendation() {
         System.out.println("Navigating to Recommendation page");
-        // Implementation for navigation
+        navigateToPage("/fxml/rekomendasiObat.fxml", "MediTrack - Rekomendasi");
     }
 
     private void navigateToMedicine() {
         System.out.println("Navigating to Medicine page");
-        // Implementation for navigation
+        navigateToPage("/fxml/daftarObatView.fxml", "MediTrack - Obat");
     }
 
     private void navigateToHealthReport() {
         System.out.println("Navigating to Health Report page");
-        // Implementation for navigation
+        navigateToPage("/fxml/kondisiAktual.fxml", "MediTrack - Laporan Kesehatan");
     }
 
     private void navigateToConsultation() {
         System.out.println("Navigating to Consultation page");
-        // Implementation for navigation
+        navigateToPage("/fxml/konsultasiView.fxml", "MediTrack - Konsultasi");
     }
 
     private void navigateToSchedule() {
         System.out.println("Navigating to Schedule page");
-        // Implementation for navigation
+        navigateToPage("/fxml/jadwalPengguna.fxml", "MediTrack - Jadwal");
     }
 
     private void navigateToSettings() {
         System.out.println("Navigating to Settings page");
-        // Implementation for navigation
+        navigateToPage("/fxml/pengaturanView.fxml", "MediTrack - Pengaturan");
     }
 
     private void handleLogout() {
         System.out.println("User logout");
+        // Clear user session
+        UserSession.clear();
         // Close database connection
         closeDatabase();
-        // Navigate to login page or close application
+        // Navigate to login page
+        navigateToPage("/fxml/login.fxml", "MediTrack - Login");
     }
 
     /**
@@ -385,7 +424,7 @@ public class MenuController implements Initializable {
                 System.out.println("Average Heart Rate: " + String.format("%.1f", avgHeartRate) + " BPM");
                 System.out.println("Average Temperature: " + String.format("%.1f", avgTemperature) + "°C");
                 System.out.println("Average Sleep Duration: " + String.format("%.1f", avgSleep) + " hours");
-                System.out.println("Average Exercise Duration: " + String.format("%.1f", avgExercise) + " hours");
+                System.out.println("Average Exercise Duration: " + String.format("%.1f", avgExercise) + " minutes");
                 System.out.println("Average Steps: " + String.format("%.0f", avgSteps) + " steps");
             }
         } catch (SQLException e) {
@@ -426,5 +465,104 @@ public class MenuController implements Initializable {
 
     public int getCurrentUserId() {
         return currentUserId;
+    }
+    
+    /**
+     * Load today's schedule data from database
+     */
+    private void loadTodaySchedule() {
+        String query = """
+            SELECT namaAktivitas, waktuMulai, waktuSelesai, kategori
+            FROM jadwal 
+            WHERE idPengguna = ? AND tanggalMulai = CURRENT_DATE
+            ORDER BY waktuMulai ASC 
+            LIMIT 3
+        """;
+
+        try (PreparedStatement pstmt = connection.prepareStatement(query)) {
+            pstmt.setInt(1, currentUserId);
+            ResultSet rs = pstmt.executeQuery();
+
+            int scheduleCount = 0;
+            while (rs.next() && scheduleCount < 3) {
+                String namaAktivitas = rs.getString("namaAktivitas");
+                String waktuMulai = rs.getString("waktuMulai");
+                String waktuSelesai = rs.getString("waktuSelesai");
+                String kategori = rs.getString("kategori");
+                
+                System.out.println("Schedule " + (scheduleCount + 1) + ": " + namaAktivitas + " (" + waktuMulai + " - " + waktuSelesai + ")");
+                scheduleCount++;
+            }
+
+            if (scheduleCount == 0) {
+                System.out.println("No schedule found for today");
+            } else {
+                System.out.println("Today's schedule loaded successfully");
+            }
+        } catch (SQLException e) {
+            System.err.println("Failed to load today's schedule: " + e.getMessage());
+            e.printStackTrace();
+        }
+    }
+    
+    /**
+     * Navigate to a different page
+     */
+    private void navigateToPage(String fxmlPath, String title) {
+        try {
+            System.out.println("Attempting to navigate to: " + fxmlPath);
+            FXMLLoader loader = new FXMLLoader(getClass().getResource(fxmlPath));
+            Parent root = loader.load();
+            Scene scene = new Scene(root);
+            
+            // Get the current stage
+            Stage stage = (Stage) sidebar.getScene().getWindow();
+            
+            stage.setScene(scene);
+            stage.setTitle(title);
+            stage.show();
+            
+            System.out.println("Navigation successful to: " + title);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.err.println("Navigation failed: " + e.getMessage());
+            showAlert("Error", "Gagal memuat halaman: " + e.getMessage());
+        }
+    }
+    
+    /**
+     * Show alert dialog
+     */
+    private void showAlert(String title, String message) {
+        Alert alert = new Alert(Alert.AlertType.INFORMATION);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.getDialogPane().setStyle("-fx-font-family: 'Poppins'; -fx-font-size: 14px;");
+        alert.showAndWait();
+    }
+    
+    /**
+     * Handle sidebar button clicks
+     */
+    @FXML
+    private void handleSidebarButton(ActionEvent event) {
+        Button sourceButton = (Button) event.getSource();
+        
+        if (sourceButton == rekomendasiButton) {
+            navigateToRecommendation();
+        } else if (sourceButton == obatButton) {
+            navigateToMedicine();
+        } else if (sourceButton == laporanButton) {
+            navigateToHealthReport();
+        } else if (sourceButton == konsultasiButton) {
+            navigateToConsultation();
+        } else if (sourceButton == jadwalButton) {
+            navigateToSchedule();
+        } else if (sourceButton == pengaturanButton) {
+            navigateToSettings();
+        } else if (sourceButton == keluarButton) {
+            handleLogout();
+        }
     }
 }
