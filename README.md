@@ -201,4 +201,3 @@ Berikut adalah daftar dokumentasi resmi yang telah disusun tim pengembang dengan
 ---
 
 ### Dari kami, untuk Dunia
----
