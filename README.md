@@ -1,6 +1,17 @@
 # IF2050 Dasar Rekayasa Perangkat Lunak 
 # Nama Proyek: MediTrack
 
+## Anggota Kelompok 4K
+
+| No | Nama                         | NIM       |
+|----|------------------------------|-----------|
+| 1  | Shalihah Ramadhanty Nurhaliza | 14421017  |
+| 2  | Marzel Zhafir Nugroho         | 14422006  |
+| 3  | M. Faiz Fadhlurrahman         | 14422030  |
+| 4  | Thalita Zahra Sutejo          | 18222023  |
+| 5  | Eleanor Cordelia              | 18222059  |
+
+
 ## 📌 Penjelasan Singkat Aplikasi
 MediTrack adalah aplikasi berbasis JavaFX yang bertujuan untuk membantu pengguna dalam memantau kondisi kesehatan mereka. Aplikasi ini menyediakan fitur seperti pencatatan jadwal kesehatan, konsultasi dengan dokter, rekomendasi obat dan suplemen, serta pengelolaan informasi akun pengguna. Data pengguna tersimpan secara lokal dalam database SQLite.
 
@@ -41,6 +52,20 @@ Ikuti langkah-langkah berikut untuk menjalankan aplikasi MediTrack secara lokal:
 
 7. **Jika terjadi error JavaFX**
    Atur konfigurasi JavaFX pada `build.gradle` dan `Run Configuration`, atau gunakan SDK yang sudah bundling JavaFX seperti Liberica JDK.
+
+
+---
+
+## Daftar Modul yang Diimplementasikan
+| No | Nama Modul | Assignee | Screenshot |
+|----|-------------|----------|------------|
+| 1 | Autentikasi | Shali, Eleanor | ![Autentikasi](screenshots/autentikasi.png) |
+| 2 | Menu | Eleanor | ![Menu](screenshots/menu.png) |
+| 3 | Manajemen Pengguna | Marzel, Eleanor, Thalita | ![Manajemen Pengguna](screenshots/manajemen_pengguna.png) |
+| 4 | Kondisi Aktual | Thalita | ![Kondisi Aktual](screenshots/kondisi_aktual.png) |
+| 5 | Jadwal | Faiz, Eleanor | ![Jadwal](screenshots/jadwal.png) |
+| 6 | Rekomendasi | Eleanor | ![Rekomendasi](screenshots/rekomendasi.png) |
+| 7 | Landing | Eleanor | ![Landing](screenshots/landing.png) |
 
 
 ---
