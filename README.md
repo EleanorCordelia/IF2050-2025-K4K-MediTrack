@@ -1,6 +1,5 @@
-# MediTrack-Tugas-Besar-DRPL
-
-# MediTrack
+# IF2050 Dasar Rekayasa Perangkat Lunak 
+# Nama Proyek: MediTrack
 
 ## 📌 Penjelasan Singkat Aplikasi
 MediTrack adalah aplikasi berbasis JavaFX yang bertujuan untuk membantu pengguna dalam memantau kondisi kesehatan mereka. Aplikasi ini menyediakan fitur seperti pencatatan jadwal kesehatan, konsultasi dengan dokter, rekomendasi obat dan suplemen, serta pengelolaan informasi akun pengguna. Data pengguna tersimpan secara lokal dalam database SQLite.
