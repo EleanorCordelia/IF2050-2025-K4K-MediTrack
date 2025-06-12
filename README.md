@@ -23,7 +23,7 @@ Aplikasi MediTrack dapat dijalankan melalui dua cara:
 
 ---
 
-### 🔁 **1. Melalui Clone Repository dari GitHub**
+### **1. Melalui Clone Repository dari GitHub**
 
 Langkah-langkah untuk menjalankan aplikasi secara lokal menggunakan Git:
 
@@ -62,7 +62,7 @@ Langkah-langkah untuk menjalankan aplikasi secara lokal menggunakan Git:
 
 ---
 
-### 📦 **2. Melalui Download ZIP dari Halaman Release GitHub**
+### **2. Melalui Download ZIP dari Halaman Release GitHub**
 
 Jika tidak menggunakan Git, aplikasi bisa dijalankan dari ZIP hasil rilis:
 
