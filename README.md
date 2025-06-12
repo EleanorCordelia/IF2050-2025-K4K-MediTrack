@@ -77,7 +77,7 @@ Jika tidak menggunakan Git, aplikasi bisa dijalankan dari ZIP hasil rilis:
 
 3. **Build Project dengan Gradle**
    ```bash
-   ./gradlew build
+   ./gradlew clean build
    ```
 
 4. **Pastikan File `meditrack.db` Ada**
