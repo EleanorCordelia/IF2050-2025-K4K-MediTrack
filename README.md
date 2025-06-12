@@ -13,8 +13,10 @@
 
 
 ## Deskripsi Aplikasi
-MediTrack adalah aplikasi berbasis JavaFX yang bertujuan untuk membantu pengguna dalam memantau kondisi kesehatan mereka. Aplikasi ini menyediakan fitur seperti pencatatan jadwal kesehatan, konsultasi dengan dokter, rekomendasi obat dan suplemen, serta pengelolaan informasi akun pengguna. Data pengguna tersimpan secara lokal dalam database SQLite.
+MediTrack adalah aplikasi berbasis JavaFX yang bertujuan untuk membantu pengguna dalam memantau kondisi kesehatan mereka. Aplikasi ini menyediakan fitur seperti pencatatan jadwal kesehatan, konsultasi dengan dokter, rekomendasi obat dan suplemen, serta pengelolaan informasi akun pengguna. Data pengguna tersimpan secara lokal dalam database SQLite yang memastikan data aman dan memiliki aksesibilitas yang baik. MediTrack mampu mendukung penggunanya dalam mencapai gaya hidup yang lebih sehat melalui peningkatan kontrol hidup dengan adanya penampilan notifikasi terkait jadwal kegiatan harian yang dimiliki oleh pengguna. Selain itu, MediTrack juga mampu menghasilkan rekomendasi obat atau suplemen yang akurat berdasarkan data aktual dan historis dari penggunanya. Pengguna juga dapat mendapatkan informasi dengan validitas yang terjamin melalui konsultasi dengan dokter-dokter terpilih pada spesialisasinya masing-masing. 
 
+## Scope Pengembangan Aplikasi
+Pada pengembangan aplikasi ini, kami dari tim pengembangan Perangkat Lunak MediTrack berfokus pada fitur-fitur utama. fitur-fitur ini terdiri dari deteksi dan input data aktual, penambahan dan modifikasi jadwal harian, dan generate rekomendasi secara personal bagi pengguna. Selain itu, terdapat juga fitur login dan registrasi sebagai inisiasi akses pengguna ke dalam aplikasi ini melalui pembuatan akun dan login ke akun yang telah didaftarkan di dalam database tersebut. Setelah pengguna berhasil login, MediTrack akan menampilkan tampilan menu yang lengkap terkait informasi kesehatan, preview kondisi aktual, serta visualisasi grafik kondisi pengguna. Pengguna juga dapat melalukan manajemen akun untuk memodifikasi data diri, terutama username dan password dari akun mereka.
 ---
 
 ## Cara Menjalankan Aplikasi MediTrack
